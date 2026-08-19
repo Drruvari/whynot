@@ -1,0 +1,5 @@
+UI clicks (click, select, back, toggle, error) are from Kenney UI Audio,
+licensed CC0 1.0: https://kenney.nl/assets/ui-audio
+
+Game and spy stingers in this folder are original short synthesized pulses
+for WhyNot (not third-party recordings).

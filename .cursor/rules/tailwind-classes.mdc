@@ -1,0 +1,46 @@
+---
+description: Canonical Tailwind classes, no CSS conflicts
+globs: "**/*.{ts,tsx,css}"
+alwaysApply: false
+---
+
+# Tailwind class strings
+
+`pnpm lint` fails on non-canonical or conflicting utilities. Write the short form the first time.
+
+## Canonical (suggestCanonicalClasses)
+
+Collapse utilities that set the same thing:
+
+- `px-4 py-4` → `p-4`
+- `translate-x-2 translate-y-2` → `translate-2` (`active:translate-[2px]` for the arcade press)
+- `-translate-x-1/2 -translate-y-1/2` → `-translate-1/2`
+- `text-3xl leading-tight` → `text-3xl/tight`
+- `min-h-[4.25rem]` → `min-h-17` (use the spacing scale, not arbitrary px/rem)
+
+Do not stack a shorthand with the long form it already covers.
+
+## Conflicts (cssConflict)
+
+Never put two utilities on the same element that set the same CSS properties in the same variant:
+
+```tsx
+// BAD — both set outline-style and outline-width
+className="outline outline-2 outline-go"
+
+// GOOD
+className="outline-2 outline-go"
+```
+
+Mutually exclusive styles belong in separate `cn()` / ternary branches, not in one string:
+
+```tsx
+// BAD
+className="flex grid"
+className="bg-card bg-elevated"
+
+// GOOD
+className={cn("flex", selected ? "bg-elevated" : "bg-card")}
+```
+
+`outline-2` already includes the outline style. Do not also add `outline`.
