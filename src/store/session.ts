@@ -2,6 +2,7 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
 import type { Player, PlayerSymbol } from "@/lib/types"
+import { identityMigrate } from "@/store/persist"
 
 const PLAYER_COLORS = [
   "#C8F542",
@@ -50,7 +51,11 @@ export const useSession = create<SessionState>()(
           return null
         }
 
-        if (get().players.some((player) => player.name.toLowerCase() === name.toLowerCase())) {
+        if (
+          get().players.some(
+            (player) => player.name.toLowerCase() === name.toLowerCase()
+          )
+        ) {
           return null
         }
 
@@ -65,6 +70,6 @@ export const useSession = create<SessionState>()(
         set({ players: [] })
       },
     }),
-    { name: "whynot-session" }
+    { name: "whynot-session", version: 1, migrate: identityMigrate }
   )
 )

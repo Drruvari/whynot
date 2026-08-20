@@ -17,6 +17,26 @@ import { useSession } from "@/store/session"
 
 const ARCADE_PRESS = { x: 2, y: 2 }
 
+function accentBorder(accent: GameDef["accent"]) {
+  return accent === "danger"
+    ? "border-b-2 border-danger/60"
+    : accent === "secret"
+      ? "border-b-2 border-secret/60"
+      : accent === "warn"
+        ? "border-b-2 border-warn/60"
+        : "border-b-2 border-go/60"
+}
+
+function accentText(accent: GameDef["accent"]) {
+  return accent === "danger"
+    ? "text-danger"
+    : accent === "secret"
+      ? "text-secret"
+      : accent === "warn"
+        ? "text-warn"
+        : "text-go"
+}
+
 export function HomeScreen() {
   const players = useSession((state) => state.players)
   const openPlayers = useApp((state) => state.openPlayers)
@@ -72,6 +92,12 @@ export function HomeScreen() {
           playing?
         </p>
 
+        {players.length === 0 ? (
+          <p className="mt-3 text-xs font-medium tracking-[0.14em] text-muted-foreground uppercase">
+            Add players to start
+          </p>
+        ) : null}
+
         <div className="mt-6">
           <GameCard
             game={FEATURED_GAME}
@@ -89,7 +115,7 @@ export function HomeScreen() {
               playSound("select")
               startGame(continueTarget.id)
             }}
-            className="mt-2 flex w-full items-center justify-between bg-elevated p-4 text-left active:translate-[2px]"
+            className="game-card mt-2 flex w-full items-center justify-between bg-elevated p-4 text-left active:translate-[2px]"
           >
             <span className="text-xs font-medium tracking-[0.16em] text-muted-foreground uppercase">
               Continue
@@ -153,14 +179,7 @@ function GameCard({
   reduceMotion: boolean
   onSelect: () => void
 }) {
-  const accent =
-    game.accent === "danger"
-      ? "text-danger"
-      : game.accent === "secret"
-        ? "text-secret"
-        : game.accent === "warn"
-          ? "text-warn"
-          : "text-go"
+  const accent = accentText(game.accent)
 
   return (
     <motion.button
@@ -169,7 +188,8 @@ function GameCard({
       onClick={onSelect}
       className={cn(
         "game-card flex w-full flex-col bg-card text-left",
-        featured ? "min-h-48 justify-between p-5" : "min-h-40 p-4"
+        featured ? "min-h-48 justify-between p-5" : "min-h-40 p-4",
+        !featured && accentBorder(game.accent)
       )}
     >
       <GameIcon id={game.id} size={featured ? 48 : 32} className={accent} />

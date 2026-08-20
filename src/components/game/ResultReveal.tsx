@@ -50,8 +50,22 @@ export function ResultReveal({
         >
           <motion.div
             initial={reduceMotion ? false : { scale: 0.84, y: 16 }}
-            animate={{ scale: 1, y: 0 }}
-            transition={{ type: "spring", stiffness: 320, damping: 20 }}
+            animate={
+              reduceMotion
+                ? { scale: 1, y: 0 }
+                : tone === "danger"
+                  ? {
+                      scale: 1,
+                      y: 0,
+                      x: [0, -10, 12, -8, 6, -3, 0],
+                    }
+                  : { scale: 1, y: 0 }
+            }
+            transition={
+              tone === "danger" && !reduceMotion
+                ? { duration: 0.45, ease: "easeOut" }
+                : { type: "spring", stiffness: 320, damping: 20 }
+            }
             className="flex flex-col items-center"
           >
             <div className="text-white">{icon}</div>

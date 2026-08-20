@@ -1,5 +1,5 @@
 import { Detective, Target } from "@phosphor-icons/react"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { motion } from "motion/react"
 
 import {
@@ -37,11 +37,16 @@ export function SpyGame() {
   const [hasLooked, setHasLooked] = useState(false)
   const [voteId, setVoteId] = useState<string | null>(null)
   const [seconds, setSeconds] = useState(8)
+  const secondsRef = useRef(seconds)
 
   const current = round.order[index]
   const spy = players.find((player) => player.id === round.spyId)
   const voted = players.find((player) => player.id === voteId)
   const caught = voteId === round.spyId
+
+  useEffect(() => {
+    secondsRef.current = seconds
+  }, [seconds])
 
   useEffect(() => {
     if (phase !== "result") {
@@ -57,20 +62,22 @@ export function SpyGame() {
     }
 
     const timer = window.setInterval(() => {
-      setSeconds((value) => {
-        if (value <= 1) {
-          window.clearInterval(timer)
-          haptic("warn")
-          playSound("voteReveal")
-          setPhase("result")
-          return 0
-        }
-        if (value <= 4) {
-          haptic("tap")
-          playSound(value <= 2 ? "tickFinal" : "tick")
-        }
-        return value - 1
-      })
+      const currentSeconds = secondsRef.current
+
+      if (currentSeconds <= 1) {
+        setSeconds(0)
+        haptic("warn")
+        playSound("voteReveal")
+        setPhase("result")
+        return
+      }
+
+      const next = currentSeconds - 1
+      setSeconds(next)
+      if (next <= 4) {
+        haptic("tap")
+        playSound(next <= 2 ? "tickFinal" : "tick")
+      }
     }, 1000)
 
     return () => window.clearInterval(timer)

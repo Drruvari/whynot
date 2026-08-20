@@ -2,6 +2,7 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
 import { shuffle } from "@/lib/shuffle"
+import { identityMigrate } from "@/store/persist"
 
 export type RoulettePhase = "aim" | "result" | "spin"
 
@@ -109,6 +110,6 @@ export const useRoulette = create<RouletteState>()(
         })
       },
     }),
-    { name: "whynot-roulette" }
+    { name: "whynot-roulette", version: 1, migrate: identityMigrate }
   )
 )

@@ -29,4 +29,6 @@ export type GameDef = {
   ready: boolean
   featured?: boolean
   accent: "go" | "danger" | "secret" | "warn"
+  howTo: string
+  tip?: string
 }

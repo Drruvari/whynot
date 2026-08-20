@@ -2,6 +2,7 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
 import { pickRandom, shuffle } from "@/lib/shuffle"
+import { identityMigrate } from "@/store/persist"
 
 export type BeerCell = {
   id: string
@@ -161,6 +162,6 @@ export const useBeerBomb = create<BeerBombState>()(
         })
       },
     }),
-    { name: "whynot-beer-bomb" }
+    { name: "whynot-beer-bomb", version: 1, migrate: identityMigrate }
   )
 )

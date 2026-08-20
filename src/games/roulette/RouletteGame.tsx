@@ -14,6 +14,7 @@ import { useGameMotion } from "@/hooks/use-game-motion"
 import { haptic } from "@/lib/haptic"
 import { playSound } from "@/lib/sound"
 import { cn } from "@/lib/utils"
+import { wait } from "@/lib/wait"
 import { useRoulette } from "@/store/roulette"
 import { useSession } from "@/store/session"
 
@@ -116,10 +117,4 @@ export function RouletteGame() {
       />
     </GameScreen>
   )
-}
-
-function wait(ms: number) {
-  return new Promise((resolve) => {
-    window.setTimeout(resolve, ms)
-  })
 }

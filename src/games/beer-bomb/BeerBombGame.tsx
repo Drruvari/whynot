@@ -15,6 +15,7 @@ import { useGameMotion } from "@/hooks/use-game-motion"
 import { haptic } from "@/lib/haptic"
 import { playSound } from "@/lib/sound"
 import { cn } from "@/lib/utils"
+import { wait } from "@/lib/wait"
 import { useBeerBomb, type BeerCell } from "@/store/beer-bomb"
 import { useSession } from "@/store/session"
 
@@ -173,10 +174,16 @@ export function BeerBombGame() {
           <GameArea>
             <div className="flex w-full flex-col gap-4 text-center">
               <Crown weight="fill" size={48} className="mx-auto text-go" />
-              {magnet ? (
-                <Award label="BOMB MAGNET" playerName={magnet.player.name} detail={`${magnet.hits} BOMBS`} />
+              {magnet && magnet.hits > 0 ? (
+                <Award
+                  label="BOMB MAGNET"
+                  playerName={magnet.player.name}
+                  detail={`${magnet.hits} BOMBS`}
+                />
               ) : null}
-              {luckiest && luckiest.player.id !== magnet?.player.id ? (
+              {luckiest &&
+              luckiest.hits > 0 &&
+              luckiest.player.id !== magnet?.player.id ? (
                 <Award
                   label="LUCKIEST"
                   playerName={luckiest.player.name}
@@ -265,9 +272,7 @@ function BeerButton({
       disabled={cell.opened}
       whileTap={reduceMotion || cell.opened ? undefined : { x: 2, y: 2 }}
       animate={
-        cell.opened
-          ? { scale: 0.84, opacity: 0.28 }
-          : { scale: 1, opacity: 1 }
+        cell.opened ? { scale: 0.84, opacity: 0.28 } : { scale: 1, opacity: 1 }
       }
       onClick={onPick}
       className={cn(
@@ -286,10 +291,4 @@ function BeerButton({
       )}
     </motion.button>
   )
-}
-
-function wait(ms: number) {
-  return new Promise((resolve) => {
-    window.setTimeout(resolve, ms)
-  })
 }

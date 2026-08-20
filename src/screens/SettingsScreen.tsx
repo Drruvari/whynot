@@ -35,6 +35,12 @@ export function SettingsScreen() {
   const players = useSession((state) => state.players)
   const { theme, setTheme } = useTheme()
   const [confirm, setConfirm] = useState<"reset" | "end-night" | null>(null)
+  const [flash, setFlash] = useState<"reset" | "end-night" | null>(null)
+
+  function flashDone(kind: "reset" | "end-night") {
+    setFlash(kind)
+    window.setTimeout(() => setFlash(null), 1000)
+  }
 
   return (
     <div className="flex h-full min-h-0 flex-col bg-background px-4 pt-[max(0.75rem,env(safe-area-inset-top))] pb-[max(0.75rem,env(safe-area-inset-bottom))]">
@@ -156,6 +162,7 @@ export function SettingsScreen() {
           </SettingsRow>
           <SettingsRow
             label="Reset game data"
+            value={flash === "reset" ? "DONE" : undefined}
             onClick={() => {
               playSound("warning")
               setConfirm("reset")
@@ -193,6 +200,7 @@ export function SettingsScreen() {
         onConfirm={() => {
           resetAllGames()
           haptic("warn")
+          flashDone("reset")
         }}
       />
       <ConfirmDialog
@@ -208,6 +216,7 @@ export function SettingsScreen() {
         confirmLabel="END NIGHT"
         onConfirm={() => {
           haptic("warn")
+          flashDone("end-night")
           endNight()
         }}
       />

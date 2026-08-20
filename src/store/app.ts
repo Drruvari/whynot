@@ -2,6 +2,7 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
 import type { GameId, MotionPref, Screen } from "@/lib/types"
+import { identityMigrate } from "@/store/persist"
 
 type AppState = {
   screen: Screen
@@ -74,6 +75,8 @@ export const useApp = create<AppState>()(
     }),
     {
       name: "whynot-app",
+      version: 1,
+      migrate: identityMigrate,
       partialize: (state) => ({
         soundOn: state.soundOn,
         soundVolume: state.soundVolume,

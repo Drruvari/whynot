@@ -131,12 +131,44 @@ export function VolumeSlider({
         disabled && "opacity-40"
       )}
     >
-      <span className="text-sm font-medium tracking-[0.14em] uppercase">
+      <span
+        id="volume-label"
+        className="text-sm font-medium tracking-[0.14em] uppercase"
+      >
         Volume
       </span>
       <div
         ref={trackRef}
-        className="relative h-3 min-w-0 flex-1 bg-elevated"
+        role="slider"
+        tabIndex={disabled ? -1 : 0}
+        aria-labelledby="volume-label"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={value}
+        aria-disabled={disabled || undefined}
+        className="relative h-3 min-w-0 flex-1 bg-elevated outline-none focus-visible:ring-1 focus-visible:ring-ring"
+        onKeyDown={(event) => {
+          if (disabled) {
+            return
+          }
+
+          if (event.key === "ArrowRight" || event.key === "ArrowUp") {
+            event.preventDefault()
+            onChange(Math.min(100, value + 5))
+          }
+          if (event.key === "ArrowLeft" || event.key === "ArrowDown") {
+            event.preventDefault()
+            onChange(Math.max(0, value - 5))
+          }
+          if (event.key === "Home") {
+            event.preventDefault()
+            onChange(0)
+          }
+          if (event.key === "End") {
+            event.preventDefault()
+            onChange(100)
+          }
+        }}
         onPointerDown={(event) => {
           if (disabled) {
             return

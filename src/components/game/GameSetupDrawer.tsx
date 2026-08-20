@@ -6,6 +6,7 @@ import { GameIcon } from "@/components/game/GameIcon"
 import { FEATURED_GAME, getGame } from "@/games/catalog"
 import { haptic } from "@/lib/haptic"
 import { playSound } from "@/lib/sound"
+import { cn } from "@/lib/utils"
 import { useApp } from "@/store/app"
 import { useBeerBomb } from "@/store/beer-bomb"
 import { useRoulette } from "@/store/roulette"
@@ -20,6 +21,10 @@ import {
 } from "@/components/ui/drawer"
 import { Switch } from "@/components/ui/switch"
 
+function suggestedBombs(playerCount: number) {
+  return Math.min(4, Math.max(1, Math.ceil(playerCount / 3)))
+}
+
 export function GameSetupDrawer() {
   const setupGameId = useApp((state) => state.setupGameId)
   const closeSetup = useApp((state) => state.closeSetup)
@@ -33,12 +38,35 @@ export function GameSetupDrawer() {
   const [bombs, setBombs] = useState(2)
   const [chambers, setChambers] = useState(6)
   const [bullets, setBullets] = useState(1)
+  const [seededFor, setSeededFor] = useState<string | null>(null)
 
   const game = setupGameId ? getGame(setupGameId) : undefined
   const enoughPlayers = game ? players.length >= game.minPlayers : false
+  const tooManyPlayers = game ? players.length > game.maxPlayers : false
+
+  if (setupGameId !== seededFor) {
+    setSeededFor(setupGameId)
+    if (setupGameId) {
+      const playerCount = useSession.getState().players.length
+      const beer = useBeerBomb.getState()
+      const roulette = useRoulette.getState()
+      setBombs(beer.bombCount > 0 ? beer.bombCount : suggestedBombs(playerCount))
+      setChambers(roulette.chamberCount || 6)
+      setBullets(
+        Math.min(roulette.bullets || 1, (roulette.chamberCount || 6) - 1)
+      )
+    }
+  }
 
   function play() {
     if (!game) {
+      return
+    }
+
+    if (tooManyPlayers) {
+      haptic("warn")
+      playSound("error")
+      openPlayers()
       return
     }
 
@@ -61,6 +89,15 @@ export function GameSetupDrawer() {
     playSound("roundStart")
     startGame(game.id)
   }
+
+  const accentText =
+    game?.accent === "danger"
+      ? "text-danger"
+      : game?.accent === "secret"
+        ? "text-secret"
+        : game?.accent === "warn"
+          ? "text-warn"
+          : "text-go"
 
   return (
     <Drawer
@@ -85,6 +122,15 @@ export function GameSetupDrawer() {
               </DrawerDescription>
             </DrawerHeader>
 
+            <div className="mx-5 mt-4 bg-elevated px-4 py-3">
+              <p className="text-sm/relaxed">{game.howTo}</p>
+              {game.tip ? (
+                <p className="mt-2 text-xs font-medium tracking-widest text-muted-foreground uppercase">
+                  Tip: {game.tip}
+                </p>
+              ) : null}
+            </div>
+
             <div className="flex flex-col gap-5 px-5 py-6">
               <button
                 type="button"
@@ -94,7 +140,14 @@ export function GameSetupDrawer() {
                 <span className="text-sm font-medium tracking-[0.14em] text-muted-foreground uppercase">
                   Players
                 </span>
-                <span className="font-pixel text-lg">{players.length}</span>
+                <span
+                  className={cn(
+                    "font-pixel text-lg",
+                    tooManyPlayers && "text-danger"
+                  )}
+                >
+                  {players.length}
+                </span>
               </button>
 
               {game.id === "beer-bomb" ? (
@@ -110,7 +163,12 @@ export function GameSetupDrawer() {
                     >
                       <Minus weight="fill" size={16} />
                     </button>
-                    <span className="w-6 text-center font-pixel text-2xl">
+                    <span
+                      className={cn(
+                        "w-6 text-center font-pixel text-2xl",
+                        accentText
+                      )}
+                    >
                       {bombs}
                     </span>
                     <button
@@ -140,7 +198,12 @@ export function GameSetupDrawer() {
                       >
                         <Minus weight="fill" size={16} />
                       </button>
-                      <span className="w-6 text-center font-pixel text-2xl">
+                      <span
+                        className={cn(
+                          "w-6 text-center font-pixel text-2xl",
+                          accentText
+                        )}
+                      >
                         {chambers}
                       </span>
                       <button
@@ -168,7 +231,12 @@ export function GameSetupDrawer() {
                       >
                         <Minus weight="fill" size={16} />
                       </button>
-                      <span className="w-6 text-center font-pixel text-2xl">
+                      <span
+                        className={cn(
+                          "w-6 text-center font-pixel text-2xl",
+                          accentText
+                        )}
+                      >
                         {bullets}
                       </span>
                       <button
@@ -213,11 +281,13 @@ export function GameSetupDrawer() {
                 tone={game.id === FEATURED_GAME.id ? "danger" : "go"}
                 onClick={play}
               >
-                {game.ready
-                  ? enoughPlayers
-                    ? "PLAY"
-                    : `NEED ${game.minPlayers}`
-                  : "SOON"}
+                {!game.ready
+                  ? "SOON"
+                  : tooManyPlayers
+                    ? `TOO MANY (MAX ${game.maxPlayers})`
+                    : enoughPlayers
+                      ? "PLAY"
+                      : `NEED ${game.minPlayers}`}
               </GameButton>
             </DrawerFooter>
           </>
