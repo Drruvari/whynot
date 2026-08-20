@@ -13,7 +13,7 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["audio/**/*.ogg", "icons/*.png", "vite.svg"],
+      includeAssets: ["audio/**/*.ogg", "brand/*.png", "icons/*.png"],
       manifest: {
         name: "WhyNot",
         short_name: "WhyNot",

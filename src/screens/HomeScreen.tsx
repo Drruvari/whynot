@@ -2,6 +2,7 @@ import { GearIcon, PlusIcon } from "@phosphor-icons/react"
 import { motion } from "motion/react"
 
 import { GameIcon } from "@/components/game/GameIcon"
+import { Logo } from "@/components/Logo"
 import { GameSetupDrawer } from "@/components/game/GameSetupDrawer"
 import { PlayerToken } from "@/components/game/PlayerToken"
 import { FEATURED_GAME, GRID_GAMES } from "@/games/catalog"
@@ -71,15 +72,13 @@ export function HomeScreen() {
 
   return (
     <div className="flex h-full min-h-0 flex-col bg-background px-4 pt-[max(0.75rem,env(safe-area-inset-top))] pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-      <header className="flex h-12 items-center justify-between">
-        <h1 className="font-display text-[1.65rem] font-extrabold tracking-[0.22em]">
-          WHYNOT
-        </h1>
+      <header className="flex h-12 shrink-0 items-center justify-between gap-3">
+        <Logo />
         <button
           type="button"
           aria-label="Settings"
           onClick={goSettings}
-          className="flex size-11 items-center justify-center text-muted-foreground"
+          className="flex size-11 shrink-0 items-center justify-center text-muted-foreground"
         >
           <GearIcon weight="fill" size={22} />
         </button>
