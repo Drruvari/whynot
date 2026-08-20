@@ -27,6 +27,8 @@ type BeerBombState = {
   cells: BeerCell[]
   turnIndex: number
   lastHit: LastHit | null
+  streakPlayerId: string | null
+  streakCount: number
   bombHits: Record<string, number>
   drinks: Record<string, number>
   start: (bombCount: number) => void
@@ -64,6 +66,8 @@ export const useBeerBomb = create<BeerBombState>()(
       cells: [],
       turnIndex: 0,
       lastHit: null,
+      streakPlayerId: null,
+      streakCount: 0,
       bombHits: {},
       drinks: {},
       start: (bombCount) => {
@@ -75,6 +79,8 @@ export const useBeerBomb = create<BeerBombState>()(
           cells: deal(bombCount),
           turnIndex: 0,
           lastHit: null,
+          streakPlayerId: null,
+          streakCount: 0,
           bombHits: {},
           drinks: {},
         })
@@ -93,6 +99,10 @@ export const useBeerBomb = create<BeerBombState>()(
 
         if (cell.bomb) {
           const sips = pickRandom([1, 2, 2, 3])
+          const streakPlayerId = playerId
+          const streakCount =
+            state.streakPlayerId === playerId ? state.streakCount + 1 : 1
+
           set({
             cells,
             lastHit: {
@@ -101,6 +111,8 @@ export const useBeerBomb = create<BeerBombState>()(
               drinks: sips,
             },
             phase: "result",
+            streakPlayerId,
+            streakCount,
             bombHits: {
               ...state.bombHits,
               [playerId]: (state.bombHits[playerId] ?? 0) + 1,

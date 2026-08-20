@@ -1,4 +1,4 @@
-import { Gear, Plus } from "@phosphor-icons/react"
+import { GearIcon, PlusIcon } from "@phosphor-icons/react"
 import { motion } from "motion/react"
 
 import { GameIcon } from "@/components/game/GameIcon"
@@ -81,7 +81,7 @@ export function HomeScreen() {
           onClick={goSettings}
           className="flex size-11 items-center justify-center text-muted-foreground"
         >
-          <Gear weight="fill" size={22} />
+          <GearIcon weight="fill" size={22} />
         </button>
       </header>
 
@@ -160,7 +160,7 @@ export function HomeScreen() {
             ) : null}
           </span>
         )}
-        <Plus weight="fill" size={18} className="text-go" />
+        <PlusIcon weight="fill" size={18} className="text-go" />
       </button>
 
       <GameSetupDrawer />

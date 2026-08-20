@@ -1,9 +1,9 @@
 import {
-  Bomb,
-  Detective,
-  HandPointing,
-  Question,
-  Skull,
+  BombIcon,
+  DetectiveIcon,
+  HandPointingIcon,
+  QuestionIcon,
+  SkullIcon,
   type Icon,
 } from "@phosphor-icons/react"
 
@@ -11,11 +11,11 @@ import type { GameId } from "@/lib/types"
 import { cn } from "@/lib/utils"
 
 const ICONS: Record<GameId, Icon> = {
-  "beer-bomb": Bomb,
-  spy: Detective,
-  roulette: Skull,
-  vote: HandPointing,
-  liar: Question,
+  "beer-bomb": BombIcon,
+  spy: DetectiveIcon,
+  roulette: SkullIcon,
+  vote: HandPointingIcon,
+  liar: QuestionIcon,
 }
 
 export function GameIcon({

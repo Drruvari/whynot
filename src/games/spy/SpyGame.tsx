@@ -1,4 +1,4 @@
-import { Detective, Target } from "@phosphor-icons/react"
+import { DetectiveIcon, TargetIcon } from "@phosphor-icons/react"
 import { useEffect, useRef, useState } from "react"
 import { motion } from "motion/react"
 
@@ -14,16 +14,31 @@ import { ResultReveal } from "@/components/game/ResultReveal"
 import { useGameMotion } from "@/hooks/use-game-motion"
 import { haptic } from "@/lib/haptic"
 import { playSound } from "@/lib/sound"
-import { shuffle } from "@/lib/shuffle"
+import { pickRandom, shuffle } from "@/lib/shuffle"
 import type { Player } from "@/lib/types"
 import { useSession } from "@/store/session"
 
 type SpyPhase = "pass" | "vote" | "result"
 
+const SPY_CATEGORIES = [
+  "Movies",
+  "Countries",
+  "Foods",
+  "Sports",
+  "Animals",
+  "Jobs",
+  "Celebrities",
+]
+
+function voteSeconds(playerCount: number) {
+  return Math.min(20, Math.max(8, playerCount * 2))
+}
+
 function dealSpy(players: Player[]) {
   return {
     spyId: players[Math.floor(Math.random() * Math.max(players.length, 1))]?.id,
     order: shuffle(players),
+    category: pickRandom(SPY_CATEGORIES),
   }
 }
 
@@ -36,7 +51,7 @@ export function SpyGame() {
   const [holding, setHolding] = useState(false)
   const [hasLooked, setHasLooked] = useState(false)
   const [voteId, setVoteId] = useState<string | null>(null)
-  const [seconds, setSeconds] = useState(8)
+  const [seconds, setSeconds] = useState(() => voteSeconds(players.length))
   const secondsRef = useRef(seconds)
 
   const current = round.order[index]
@@ -121,7 +136,7 @@ export function SpyGame() {
             className="mt-3 h-12 text-sm font-semibold tracking-wide text-muted-foreground uppercase disabled:opacity-30"
             onClick={() => {
               if (index >= round.order.length - 1) {
-                setSeconds(8)
+                setSeconds(voteSeconds(players.length))
                 setPhase("vote")
                 return
               }
@@ -143,8 +158,8 @@ export function SpyGame() {
               </p>
               <p className="mt-4 text-sm font-medium tracking-wide text-muted-foreground">
                 {current.id === round.spyId
-                  ? "Blend in."
-                  : `Hi ${current.name}. Stay cool.`}
+                  ? `Category: ${round.category}. Blend in.`
+                  : `${round.category}. Stay cool, ${current.name}.`}
               </p>
             </div>
           ) : null}
@@ -195,9 +210,9 @@ export function SpyGame() {
         tone={caught ? "go" : "secret"}
         icon={
           caught ? (
-            <Target weight="fill" size={72} />
+            <TargetIcon weight="fill" size={72} />
           ) : (
-            <Detective weight="fill" size={72} />
+            <DetectiveIcon weight="fill" size={72} />
           )
         }
         title={caught ? "CAUGHT" : "SPY"}

@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react"
-import { SpeakerHigh, SpeakerSlash, X } from "@phosphor-icons/react"
+import { SpeakerHighIcon, SpeakerSlashIcon, XIcon } from "@phosphor-icons/react"
 
 import { ConfirmDialog } from "@/components/game/ConfirmDialog"
 import { cn } from "@/lib/utils"
@@ -50,7 +50,7 @@ export function GameHeader({ title }: { title: string }) {
           onClick={requestExit}
           className="flex size-11 items-center justify-center text-muted-foreground"
         >
-          <X weight="fill" size={22} />
+          <XIcon weight="fill" size={22} />
         </button>
         <p className="font-display text-sm font-extrabold tracking-[0.22em] text-muted-foreground">
           {title}
@@ -68,9 +68,9 @@ export function GameHeader({ title }: { title: string }) {
           className="flex size-11 items-center justify-center text-muted-foreground"
         >
           {soundOn ? (
-            <SpeakerHigh weight="fill" size={22} />
+            <SpeakerHighIcon weight="fill" size={22} />
           ) : (
-            <SpeakerSlash weight="fill" size={22} />
+            <SpeakerSlashIcon weight="fill" size={22} />
           )}
         </button>
       </header>

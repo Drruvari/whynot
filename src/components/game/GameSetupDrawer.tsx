@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Minus, Plus } from "@phosphor-icons/react"
+import { MinusIcon, PlusIcon } from "@phosphor-icons/react"
 
 import { GameButton } from "@/components/game/GameButton"
 import { GameIcon } from "@/components/game/GameIcon"
@@ -25,6 +25,10 @@ function suggestedBombs(playerCount: number) {
   return Math.min(4, Math.max(1, Math.ceil(playerCount / 3)))
 }
 
+function suggestedBullets(chambers: number, playerCount: number) {
+  return Math.max(1, Math.min(chambers - 1, Math.round(playerCount / 4)))
+}
+
 export function GameSetupDrawer() {
   const setupGameId = useApp((state) => state.setupGameId)
   const closeSetup = useApp((state) => state.closeSetup)
@@ -47,13 +51,15 @@ export function GameSetupDrawer() {
   if (setupGameId !== seededFor) {
     setSeededFor(setupGameId)
     if (setupGameId) {
-      const playerCount = useSession.getState().players.length
+      const playerCount = players.length
       const beer = useBeerBomb.getState()
       const roulette = useRoulette.getState()
       setBombs(beer.bombCount > 0 ? beer.bombCount : suggestedBombs(playerCount))
       setChambers(roulette.chamberCount || 6)
       setBullets(
-        Math.min(roulette.bullets || 1, (roulette.chamberCount || 6) - 1)
+        roulette.bullets > 1
+          ? Math.min(roulette.bullets, (roulette.chamberCount || 6) - 1)
+          : suggestedBullets(roulette.chamberCount || 6, playerCount)
       )
     }
   }
@@ -63,14 +69,7 @@ export function GameSetupDrawer() {
       return
     }
 
-    if (tooManyPlayers) {
-      haptic("warn")
-      playSound("error")
-      openPlayers()
-      return
-    }
-
-    if (!enoughPlayers) {
+    if (tooManyPlayers || !enoughPlayers) {
       haptic("warn")
       playSound("error")
       openPlayers()
@@ -161,7 +160,7 @@ export function GameSetupDrawer() {
                       className="flex size-11 items-center justify-center bg-elevated"
                       onClick={() => setBombs((value) => Math.max(1, value - 1))}
                     >
-                      <Minus weight="fill" size={16} />
+                      <MinusIcon weight="fill" size={16} />
                     </button>
                     <span
                       className={cn(
@@ -176,7 +175,7 @@ export function GameSetupDrawer() {
                       className="flex size-11 items-center justify-center bg-elevated"
                       onClick={() => setBombs((value) => Math.min(4, value + 1))}
                     >
-                      <Plus weight="fill" size={16} />
+                      <PlusIcon weight="fill" size={16} />
                     </button>
                   </div>
                 </div>
@@ -196,7 +195,7 @@ export function GameSetupDrawer() {
                           setChambers((value) => Math.max(4, value - 1))
                         }
                       >
-                        <Minus weight="fill" size={16} />
+                        <MinusIcon weight="fill" size={16} />
                       </button>
                       <span
                         className={cn(
@@ -213,7 +212,7 @@ export function GameSetupDrawer() {
                           setChambers((value) => Math.min(8, value + 1))
                         }
                       >
-                        <Plus weight="fill" size={16} />
+                        <PlusIcon weight="fill" size={16} />
                       </button>
                     </div>
                   </div>
@@ -229,7 +228,7 @@ export function GameSetupDrawer() {
                           setBullets((value) => Math.max(1, value - 1))
                         }
                       >
-                        <Minus weight="fill" size={16} />
+                        <MinusIcon weight="fill" size={16} />
                       </button>
                       <span
                         className={cn(
@@ -248,7 +247,7 @@ export function GameSetupDrawer() {
                           )
                         }
                       >
-                        <Plus weight="fill" size={16} />
+                        <PlusIcon weight="fill" size={16} />
                       </button>
                     </div>
                   </div>

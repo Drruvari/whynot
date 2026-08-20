@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Question } from "@phosphor-icons/react"
+import { QuestionIcon, TargetIcon } from "@phosphor-icons/react"
 
 import { GameButton } from "@/components/game/GameButton"
 import { PlayerToken } from "@/components/game/PlayerToken"
@@ -15,6 +15,7 @@ import { haptic } from "@/lib/haptic"
 import { playSound } from "@/lib/sound"
 import { pickRandom } from "@/lib/shuffle"
 import type { Player } from "@/lib/types"
+import { useLiar } from "@/store/liar"
 import { useSession } from "@/store/session"
 
 type LiarPhase = "claim" | "result"
@@ -28,10 +29,16 @@ function dealLiar(players: Player[]) {
 
 export function LiarGame() {
   const players = useSession((state) => state.players)
+  const caught = useLiar((state) => state.caught)
+  const recordVerdict = useLiar((state) => state.recordVerdict)
   const [round, setRound] = useState(() => dealLiar(players))
   const [phase, setPhase] = useState<LiarPhase>("claim")
   const [calledLiar, setCalledLiar] = useState(false)
   const accused = round.accused
+
+  const [worstId, worstCount] =
+    Object.entries(caught).sort((a, b) => b[1] - a[1])[0] ?? []
+  const worstLiar = players.find((player) => player.id === worstId)
 
   function nextClaim() {
     playSound("roundStart")
@@ -43,6 +50,7 @@ export function LiarGame() {
   function verdict(liar: boolean) {
     haptic(liar ? "warn" : "success")
     playSound(liar ? "warning" : "safe")
+    recordVerdict(accused.id, liar)
     setCalledLiar(liar)
     setPhase("result")
   }
@@ -54,6 +62,15 @@ export function LiarGame() {
   return (
     <GameScreen className="relative">
       <GameHeader title="LIAR" />
+
+      {worstLiar && worstCount ? (
+        <div className="flex items-center justify-center gap-1.5 pb-1 text-xs font-medium tracking-widest text-muted-foreground uppercase">
+          <TargetIcon weight="fill" size={14} className="text-danger" />
+          <PlayerToken player={worstLiar} size="sm" />
+          <span>caught × {worstCount}</span>
+        </div>
+      ) : null}
+
       <GamePrompt title={`${accused.name} claims`} subtitle="believe them?" />
       <GameArea>
         <div className="flex flex-col items-center text-center">
@@ -75,7 +92,7 @@ export function LiarGame() {
       <ResultReveal
         open={phase === "result"}
         tone={calledLiar ? "danger" : "go"}
-        icon={<Question weight="fill" size={72} />}
+        icon={<QuestionIcon weight="fill" size={72} />}
         title={calledLiar ? "LIAR" : "TRUE?"}
         name={accused.name}
         detail={calledLiar ? "DRINK 2" : "DRINK 0"}

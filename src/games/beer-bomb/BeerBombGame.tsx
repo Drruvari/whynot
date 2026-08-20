@@ -1,4 +1,4 @@
-import { BeerStein, Bomb, Check, Crown } from "@phosphor-icons/react"
+import { BeerSteinIcon, BombIcon, CheckIcon, CrownIcon } from "@phosphor-icons/react"
 import { useEffect, useState } from "react"
 import { AnimatePresence, motion } from "motion/react"
 
@@ -35,6 +35,8 @@ export function BeerBombGame() {
     cells,
     turnIndex,
     lastHit,
+    streakPlayerId,
+    streakCount,
     bombHits,
     drinks,
     pick,
@@ -58,6 +60,10 @@ export function BeerBombGame() {
   const bombsLeft = remaining.filter((cell) => cell.bomb).length
   const bombsFound = cells.filter((cell) => cell.opened && cell.bomb).length
   const hitPlayer = players.find((item) => item.id === lastHit?.playerId)
+  const bombCaption =
+    streakCount >= 2 && streakPlayerId === lastHit?.playerId
+      ? `${streakCount} bombs in a row. brutal.`
+      : "unlucky bro"
   const ranked = players
     .map((item) => ({
       player: item,
@@ -173,7 +179,7 @@ export function BeerBombGame() {
           <GamePrompt title="Night over" />
           <GameArea>
             <div className="flex w-full flex-col gap-4 text-center">
-              <Crown weight="fill" size={48} className="mx-auto text-go" />
+              <CrownIcon weight="fill" size={48} className="mx-auto text-go" />
               {magnet && magnet.hits > 0 ? (
                 <Award
                   label="BOMB MAGNET"
@@ -226,11 +232,11 @@ export function BeerBombGame() {
 
       <ResultReveal
         open={phase === "result" && lastHit?.kind === "bomb"}
-        icon={<Bomb weight="fill" size={72} />}
+        icon={<BombIcon weight="fill" size={72} />}
         title="BOMB!"
         name={hitPlayer?.name}
         detail={lastHit ? `DRINK ${lastHit.drinks}` : undefined}
-        caption="unlucky bro"
+        caption={bombCaption}
         onContinue={() => continueAfterResult()}
       />
     </GameScreen>
@@ -282,12 +288,12 @@ function BeerButton({
     >
       {cell.opened ? (
         cell.bomb ? (
-          <Bomb weight="fill" size={28} className="text-danger" />
+          <BombIcon weight="fill" size={28} className="text-danger" />
         ) : (
-          <Check weight="fill" size={28} className="text-go" />
+          <CheckIcon weight="fill" size={28} className="text-go" />
         )
       ) : (
-        <BeerStein weight="fill" size={30} />
+        <BeerSteinIcon weight="fill" size={30} />
       )}
     </motion.button>
   )

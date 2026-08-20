@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { ArrowLeft, CaretRight } from "@phosphor-icons/react"
+import { ArrowLeftIcon, CaretRightIcon } from "@phosphor-icons/react"
 
 import { ConfirmDialog } from "@/components/game/ConfirmDialog"
 import { GameButton } from "@/components/game/GameButton"
@@ -35,10 +35,10 @@ export function SettingsScreen() {
   const players = useSession((state) => state.players)
   const { theme, setTheme } = useTheme()
   const [confirm, setConfirm] = useState<"reset" | "end-night" | null>(null)
-  const [flash, setFlash] = useState<"reset" | "end-night" | null>(null)
+  const [flash, setFlash] = useState<"reset" | null>(null)
 
-  function flashDone(kind: "reset" | "end-night") {
-    setFlash(kind)
+  function flashDone() {
+    setFlash("reset")
     window.setTimeout(() => setFlash(null), 1000)
   }
 
@@ -54,7 +54,7 @@ export function SettingsScreen() {
           }}
           className="flex size-11 items-center justify-center text-muted-foreground"
         >
-          <ArrowLeft weight="fill" size={22} />
+          <ArrowLeftIcon weight="fill" size={22} />
         </button>
         <h1 className="font-display text-xl font-extrabold tracking-tight">
           SETTINGS
@@ -158,7 +158,7 @@ export function SettingsScreen() {
               openPlayers()
             }}
           >
-            <CaretRight weight="fill" size={16} className="text-muted-foreground" />
+            <CaretRightIcon weight="fill" size={16} className="text-muted-foreground" />
           </SettingsRow>
           <SettingsRow
             label="Reset game data"
@@ -168,7 +168,7 @@ export function SettingsScreen() {
               setConfirm("reset")
             }}
           >
-            <CaretRight weight="fill" size={16} className="text-muted-foreground" />
+            <CaretRightIcon weight="fill" size={16} className="text-muted-foreground" />
           </SettingsRow>
         </SettingsSection>
       </div>
@@ -200,7 +200,7 @@ export function SettingsScreen() {
         onConfirm={() => {
           resetAllGames()
           haptic("warn")
-          flashDone("reset")
+          flashDone()
         }}
       />
       <ConfirmDialog
@@ -216,7 +216,6 @@ export function SettingsScreen() {
         confirmLabel="END NIGHT"
         onConfirm={() => {
           haptic("warn")
-          flashDone("end-night")
           endNight()
         }}
       />

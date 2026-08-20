@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Plus, X } from "@phosphor-icons/react"
+import { PlusIcon, XIcon } from "@phosphor-icons/react"
 
 import { GameButton } from "@/components/game/GameButton"
 import { PlayerToken } from "@/components/game/PlayerToken"
@@ -68,7 +68,7 @@ export function PlayersDrawer() {
                 }}
                 className="flex size-11 items-center justify-center text-muted-foreground"
               >
-                <X weight="fill" size={18} />
+                <XIcon weight="fill" size={18} />
               </button>
             </div>
           ))}
@@ -102,7 +102,7 @@ export function PlayersDrawer() {
               onClick={() => setAdding(true)}
               className="flex min-h-14 items-center justify-center gap-2 bg-elevated text-sm font-semibold tracking-[0.16em] text-muted-foreground uppercase"
             >
-              <Plus weight="fill" size={16} />
+              <PlusIcon weight="fill" size={16} />
               Add player
             </button>
           )}
