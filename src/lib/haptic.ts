@@ -16,5 +16,6 @@ export function haptic(kind: keyof typeof PATTERNS) {
     return
   }
 
-  navigator.vibrate(PATTERNS[kind])
+  const pattern = PATTERNS[kind]
+  navigator.vibrate(typeof pattern === "number" ? pattern : [...pattern])
 }
