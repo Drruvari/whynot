@@ -50,7 +50,7 @@ export function HomeScreen() {
   }
 
   return (
-    <div className="flex h-dvh flex-col bg-background px-4 pt-[max(0.75rem,env(safe-area-inset-top))] pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+    <div className="flex h-full min-h-0 flex-col bg-background px-4 pt-[max(0.75rem,env(safe-area-inset-top))] pb-[max(0.75rem,env(safe-area-inset-bottom))]">
       <header className="flex h-12 items-center justify-between">
         <h1 className="font-display text-[1.65rem] font-extrabold tracking-[0.22em]">
           WHYNOT

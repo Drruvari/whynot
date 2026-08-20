@@ -16,7 +16,7 @@ export function GameScreen({
   return (
     <div
       className={cn(
-        "relative flex h-dvh flex-col overflow-hidden bg-background px-4 pt-[max(0.75rem,env(safe-area-inset-top))] pb-[max(0.75rem,env(safe-area-inset-bottom))]",
+        "relative flex h-full min-h-0 flex-col overflow-hidden bg-background px-4 pt-[max(0.75rem,env(safe-area-inset-top))] pb-[max(0.75rem,env(safe-area-inset-bottom))]",
         className
       )}
     >

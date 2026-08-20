@@ -37,7 +37,7 @@ export function SettingsScreen() {
   const [confirm, setConfirm] = useState<"reset" | "end-night" | null>(null)
 
   return (
-    <div className="flex h-dvh flex-col bg-background px-4 pt-[max(0.75rem,env(safe-area-inset-top))] pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+    <div className="flex h-full min-h-0 flex-col bg-background px-4 pt-[max(0.75rem,env(safe-area-inset-top))] pb-[max(0.75rem,env(safe-area-inset-bottom))]">
       <header className="flex h-12 shrink-0 items-center gap-2">
         <button
           type="button"

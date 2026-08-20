@@ -55,7 +55,13 @@ function DrawerTrigger({ ...props }: DrawerPrimitive.Trigger.Props) {
 }
 
 function DrawerPortal({ ...props }: DrawerPrimitive.Portal.Props) {
-  return <DrawerPrimitive.Portal data-slot="drawer-portal" {...props} />
+  return (
+    <DrawerPrimitive.Portal
+      data-slot="drawer-portal"
+      container={document.getElementById("root")}
+      {...props}
+    />
+  )
 }
 
 function DrawerClose({ ...props }: DrawerPrimitive.Close.Props) {

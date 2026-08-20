@@ -10,7 +10,7 @@ export function App() {
   useWakeLock(screen === "play")
 
   return (
-    <div className="mx-auto h-dvh max-w-md bg-background">
+    <div className="flex size-full min-h-0 flex-col bg-background">
       {screen === "home" ? <HomeScreen /> : null}
       {screen === "settings" ? <SettingsScreen /> : null}
       {screen === "play" ? <PlayScreen /> : null}
