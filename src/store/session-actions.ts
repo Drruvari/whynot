@@ -1,5 +1,5 @@
 import { useApp } from "@/store/app"
-import { useBeerBomb } from "@/store/beer-bomb"
+import { useBeerBomb } from "@/games/beer-bomb/store"
 import { useLiar } from "@/store/liar"
 import { useRoulette } from "@/store/roulette"
 import { useSession } from "@/store/session"
@@ -17,3 +17,4 @@ export function endNight() {
   useSession.getState().clearPlayers()
   useApp.getState().goHome()
 }
+

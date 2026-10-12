@@ -12,8 +12,8 @@ export const GAMES: GameDef[] = [
     featured: true,
     accent: "danger",
     howTo:
-      "10 beers, hidden bombs. Take turns picking one — safe and it's the next player's turn, bomb and you drink.",
-    tip: "More bombs = faster, meaner rounds.",
+      "10 mystery beers, 1–4 hidden bombs. Take turns picking. A safe beer passes play; a bomb means a small sip or forfeit. Find every bomb to finish a round.",
+    tip: "Six rounds. New hiding spots every round. No takebacks.",
   },
   {
     id: "spy",
@@ -74,3 +74,4 @@ export const GRID_GAMES = GAMES.filter((game) => !game.featured)
 export function getGame(id: GameId) {
   return GAMES.find((game) => game.id === id)
 }
+

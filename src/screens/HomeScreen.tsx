@@ -12,7 +12,7 @@ import { playSound } from "@/lib/sound"
 import type { GameDef } from "@/lib/types"
 import { cn } from "@/lib/utils"
 import { useApp } from "@/store/app"
-import { useBeerBomb } from "@/store/beer-bomb"
+import { useBeerBomb } from "@/games/beer-bomb/store"
 import { useRoulette } from "@/store/roulette"
 import { useSession } from "@/store/session"
 
@@ -51,7 +51,10 @@ export function HomeScreen() {
   const continueTarget =
     beerBomb.inProgress &&
     beerBomb.phase !== "night-over" &&
-    beerBomb.cells.length > 0
+    beerBomb.cells.length > 0 &&
+    (beerBomb.playerIds?.length === 0 ||
+      (beerBomb.playerIds?.length === players.length &&
+        beerBomb.playerIds.every((id) => players.some((player) => player.id === id))))
       ? {
           id: "beer-bomb" as const,
           label: `BEER BOMB / R${String(beerBomb.round).padStart(2, "0")}`,
@@ -208,3 +211,4 @@ function GameCard({
     </motion.button>
   )
 }
+

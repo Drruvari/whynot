@@ -3,12 +3,12 @@ import { MinusIcon, PlusIcon } from "@phosphor-icons/react"
 
 import { GameButton } from "@/components/game/GameButton"
 import { GameIcon } from "@/components/game/GameIcon"
-import { FEATURED_GAME, getGame } from "@/games/catalog"
+import { getGame } from "@/games/catalog"
+import { BeerBombSetup } from "@/games/beer-bomb/components/BeerBombSetup"
 import { haptic } from "@/lib/haptic"
 import { playSound } from "@/lib/sound"
 import { cn } from "@/lib/utils"
 import { useApp } from "@/store/app"
-import { useBeerBomb } from "@/store/beer-bomb"
 import { useRoulette } from "@/store/roulette"
 import { useSession } from "@/store/session"
 import {
@@ -20,10 +20,6 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer"
 import { Switch } from "@/components/ui/switch"
-
-function suggestedBombs(playerCount: number) {
-  return Math.min(4, Math.max(1, Math.ceil(playerCount / 3)))
-}
 
 function suggestedBullets(chambers: number, playerCount: number) {
   return Math.max(1, Math.min(chambers - 1, Math.round(playerCount / 4)))
@@ -37,9 +33,7 @@ export function GameSetupDrawer() {
   const soundOn = useApp((state) => state.soundOn)
   const setSoundOn = useApp((state) => state.setSoundOn)
   const players = useSession((state) => state.players)
-  const startBeerBomb = useBeerBomb((state) => state.start)
   const startRoulette = useRoulette((state) => state.start)
-  const [bombs, setBombs] = useState(2)
   const [chambers, setChambers] = useState(6)
   const [bullets, setBullets] = useState(1)
   const [seededFor, setSeededFor] = useState<string | null>(null)
@@ -52,9 +46,7 @@ export function GameSetupDrawer() {
     setSeededFor(setupGameId)
     if (setupGameId) {
       const playerCount = players.length
-      const beer = useBeerBomb.getState()
       const roulette = useRoulette.getState()
-      setBombs(beer.bombCount > 0 ? beer.bombCount : suggestedBombs(playerCount))
       setChambers(roulette.chamberCount || 6)
       setBullets(
         roulette.bullets > 1
@@ -74,10 +66,6 @@ export function GameSetupDrawer() {
       playSound("error")
       openPlayers()
       return
-    }
-
-    if (game.id === "beer-bomb") {
-      startBeerBomb(bombs)
     }
 
     if (game.id === "roulette") {
@@ -148,38 +136,6 @@ export function GameSetupDrawer() {
                   {players.length}
                 </span>
               </button>
-
-              {game.id === "beer-bomb" ? (
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium tracking-[0.14em] text-muted-foreground uppercase">
-                    Bombs
-                  </span>
-                  <div className="flex items-center gap-3">
-                    <button
-                      type="button"
-                      className="flex size-11 items-center justify-center bg-elevated"
-                      onClick={() => setBombs((value) => Math.max(1, value - 1))}
-                    >
-                      <MinusIcon weight="fill" size={16} />
-                    </button>
-                    <span
-                      className={cn(
-                        "w-6 text-center font-pixel text-2xl",
-                        accentText
-                      )}
-                    >
-                      {bombs}
-                    </span>
-                    <button
-                      type="button"
-                      className="flex size-11 items-center justify-center bg-elevated"
-                      onClick={() => setBombs((value) => Math.min(4, value + 1))}
-                    >
-                      <PlusIcon weight="fill" size={16} />
-                    </button>
-                  </div>
-                </div>
-              ) : null}
 
               {game.id === "roulette" ? (
                 <>
@@ -254,14 +210,12 @@ export function GameSetupDrawer() {
                 </>
               ) : null}
 
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium tracking-[0.14em] text-muted-foreground uppercase">
-                  Punishments
-                </span>
-                <span className="bg-elevated px-3 py-1 font-pixel text-xs tracking-wider">
-                  MIXED
-                </span>
-              </div>
+              {game.id !== "beer-bomb" ? (
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium tracking-[0.14em] text-muted-foreground uppercase">Punishments</span>
+                  <span className="bg-elevated px-3 py-1 font-pixel text-xs tracking-wider">MIXED</span>
+                </div>
+              ) : null}
 
               <label className="flex items-center justify-between">
                 <span className="text-sm font-medium tracking-[0.14em] text-muted-foreground uppercase">
@@ -275,20 +229,27 @@ export function GameSetupDrawer() {
               </label>
             </div>
 
-            <DrawerFooter className="px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
-              <GameButton
-                tone={game.id === FEATURED_GAME.id ? "danger" : "go"}
-                onClick={play}
-              >
-                {!game.ready
-                  ? "SOON"
-                  : tooManyPlayers
-                    ? `TOO MANY (MAX ${game.maxPlayers})`
-                    : enoughPlayers
-                      ? "PLAY"
-                      : `NEED ${game.minPlayers}`}
-              </GameButton>
-            </DrawerFooter>
+            {game.id === "beer-bomb" ? (
+              <BeerBombSetup
+                key={setupGameId}
+                playerIds={players.map((player) => player.id)}
+                tooManyPlayers={tooManyPlayers}
+                onNeedPlayers={openPlayers}
+                onStarted={() => startGame("beer-bomb")}
+              />
+            ) : (
+              <DrawerFooter className="px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+                <GameButton tone="go" onClick={play}>
+                  {!game.ready
+                    ? "SOON"
+                    : tooManyPlayers
+                      ? `TOO MANY (MAX ${game.maxPlayers})`
+                      : enoughPlayers
+                        ? "PLAY"
+                        : `NEED ${game.minPlayers}`}
+                </GameButton>
+              </DrawerFooter>
+            )}
           </>
         ) : null}
       </DrawerContent>

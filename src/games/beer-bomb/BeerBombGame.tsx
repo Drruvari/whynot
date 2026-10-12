@@ -1,300 +1,142 @@
-import { BeerSteinIcon, BombIcon, CheckIcon, CrownIcon } from "@phosphor-icons/react"
 import { useEffect, useState } from "react"
-import { AnimatePresence, motion } from "motion/react"
+import { motion, AnimatePresence } from "motion/react"
+import { ArrowRightIcon, BombIcon, CheckCircleIcon } from "@phosphor-icons/react"
 
-import {
-  GameArea,
-  GameHeader,
-  GamePrompt,
-  GameScreen,
-  GameStatus,
-} from "@/components/game/GameScreen"
+import { GameArea, GameHeader, GamePrompt, GameScreen, GameStatus } from "@/components/game/GameScreen"
 import { GameButton } from "@/components/game/GameButton"
-import { ResultReveal } from "@/components/game/ResultReveal"
 import { useGameMotion } from "@/hooks/use-game-motion"
 import { haptic } from "@/lib/haptic"
 import { playSound } from "@/lib/sound"
-import { cn } from "@/lib/utils"
-import { wait } from "@/lib/wait"
-import { useBeerBomb, type BeerCell } from "@/store/beer-bomb"
 import { useSession } from "@/store/session"
+import { BeerBoard } from "./components/BeerBoard"
+import { BombReveal } from "./components/BombReveal"
+import { NightResults } from "./components/NightResults"
+import { useBeerBomb } from "./store"
+import { BEER_COUNT, isRoundClear } from "./rules"
+import "./beer-bomb.css"
 
-const ROWS = [
-  [0, 1, 2],
-  [3, 4, 5, 6],
-  [7, 8, 9],
-] as const
+const SAFE_LINES = ["CLEAN!", "PHEW!", "NICE PICK!", "SAFE!", "NOT TODAY!"] as const
 
 export function BeerBombGame() {
   const players = useSession((state) => state.players)
   const reduceMotion = useGameMotion()
-  const {
-    phase,
-    round,
-    totalRounds,
-    cells,
-    turnIndex,
-    lastHit,
-    streakPlayerId,
-    streakCount,
-    bombHits,
-    drinks,
-    pick,
-    continueAfterResult,
-    nextRound,
-    start,
-    bombCount,
-    inProgress,
-  } = useBeerBomb()
-  const [shaking, setShaking] = useState(false)
-  const [safeFlash, setSafeFlash] = useState(false)
+  const phase = useBeerBomb((state) => state.phase)
+  const round = useBeerBomb((state) => state.round)
+  const totalRounds = useBeerBomb((state) => state.totalRounds)
+  const cells = useBeerBomb((state) => state.cells)
+  const turnIndex = useBeerBomb((state) => state.turnIndex)
+  const playerIds = useBeerBomb((state) => state.playerIds)
+  const lastHit = useBeerBomb((state) => state.lastHit)
+  const streakCount = useBeerBomb((state) => state.streakCount)
+  const bombHits = useBeerBomb((state) => state.bombHits)
+  const drinks = useBeerBomb((state) => state.drinks)
+  const bombCount = useBeerBomb((state) => state.bombCount)
+  const pick = useBeerBomb((state) => state.pick)
+  const nextRound = useBeerBomb((state) => state.nextRound)
+  const continueAfterResult = useBeerBomb((state) => state.continueAfterResult)
+  const start = useBeerBomb((state) => state.start)
+  const [safeToast, setSafeToast] = useState(0)
 
   useEffect(() => {
-    if (inProgress && cells.length === 0) {
-      start(bombCount)
-    }
-  }, [bombCount, cells.length, inProgress, start])
+    if (!safeToast) return
+    const timeout = window.setTimeout(() => setSafeToast(0), 700)
+    return () => window.clearTimeout(timeout)
+  }, [safeToast])
 
-  const player = players[turnIndex % Math.max(players.length, 1)]
-  const remaining = cells.filter((cell) => !cell.opened)
-  const bombsLeft = remaining.filter((cell) => cell.bomb).length
-  const bombsFound = cells.filter((cell) => cell.opened && cell.bomb).length
+  // Legacy saved games may have no playerIds. Current games snapshot the turn order.
+  const order = playerIds?.length ? playerIds : players.map((player) => player.id)
+  const currentId = order.length ? order[turnIndex % order.length] : undefined
+  const player = players.find((item) => item.id === currentId)
   const hitPlayer = players.find((item) => item.id === lastHit?.playerId)
-  const bombCaption =
-    streakCount >= 2 && streakPlayerId === lastHit?.playerId
-      ? `${streakCount} bombs in a row. brutal.`
-      : "unlucky bro"
-  const ranked = players
-    .map((item) => ({
-      player: item,
-      hits: bombHits[item.id] ?? 0,
-      drinks: drinks[item.id] ?? 0,
-    }))
-    .sort((a, b) => b.hits - a.hits)
-  const magnet = ranked[0]
-  const luckiest = [...ranked].sort((a, b) => a.hits - b.hits)[0]
-  const thirstiest = [...ranked].sort((a, b) => b.drinks - a.drinks)[0]
+  const remaining = cells.filter((cell) => !cell.opened).length
+  const bombsRemaining = cells.filter((cell) => cell.bomb && !cell.opened).length
+  const bombsFound = cells.filter((cell) => cell.bomb && cell.opened).length
 
-  async function handlePick(cell: BeerCell) {
-    if (!player || cell.opened || phase !== "play" || shaking) {
-      return
-    }
-
-    if (cell.bomb) {
+  function handlePick(cellId: string) {
+    if (!player || phase !== "play") return
+    // Store validates the current turn and cell, including back-to-back taps.
+    const hit = pick(cellId, player.id)
+    if (!hit) return
+    if (hit.kind === "bomb") {
       haptic("bomb")
       playSound("bomb")
-      if (!reduceMotion) {
-        setShaking(true)
-        await wait(520)
-        setShaking(false)
-      }
-      pick(cell.id, player.id)
       return
     }
-
     haptic("success")
     playSound("safe")
-    setSafeFlash(true)
-    window.setTimeout(() => setSafeFlash(false), 420)
-    pick(cell.id, player.id)
+    setSafeToast((count) => count + 1)
   }
 
-  if (players.length < 2) {
-    return null
+  function again() {
+    start(bombCount, order)
+  }
+
+  if (players.length < 2 || !player && phase === "play" || cells.length !== BEER_COUNT && phase !== "night-over") {
+    return (
+      <GameScreen>
+        <GameHeader title="BEER BOMB" />
+        <GameArea><p className="text-center font-pixel text-sm text-muted-foreground">THIS GAME NEEDS ITS ORIGINAL PLAYERS. EXIT AND START A NEW GAME.</p></GameArea>
+      </GameScreen>
+    )
   }
 
   return (
     <GameScreen className="relative">
       <GameHeader title="BEER BOMB" />
-
-      {phase === "play" ? (
+      {phase === "play" && player ? (
         <>
-          <GamePrompt title={`${player.name}'s turn`} subtitle="pick a beer" />
-          <GameArea>
-            <motion.div
-              className="flex w-full flex-col items-center gap-4"
-              animate={
-                shaking && !reduceMotion
-                  ? { x: [0, -16, 18, -12, 10, -6, 0] }
-                  : { x: 0 }
-              }
-              transition={{ duration: 0.5 }}
-            >
-              {ROWS.map((row, rowIndex) => (
-                <div key={rowIndex} className="flex justify-center gap-4">
-                  {row.map((index) => {
-                    const cell = cells[index]
-                    if (!cell) {
-                      return null
-                    }
-
-                    return (
-                      <BeerButton
-                        key={cell.id}
-                        cell={cell}
-                        reduceMotion={Boolean(reduceMotion)}
-                        onPick={() => handlePick(cell)}
-                      />
-                    )
-                  })}
-                </div>
-              ))}
-            </motion.div>
+          <GamePrompt title={`${player.name}'S TURN`} subtitle="pick a beer. hope for the best." />
+          <GameArea className="relative flex-col gap-5">
+            <motion.p key={`round-${round}`} initial={reduceMotion ? false : { opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+              className="font-pixel text-sm tracking-[.12em] text-amber-500/90">ROUND {round} / {totalRounds}</motion.p>
+            <BeerBoard cells={cells} disabled={phase !== "play"} reduceMotion={Boolean(reduceMotion)} onPick={(cell) => handlePick(cell.id)} />
+            <p className="text-center text-xs font-semibold tracking-[.17em] text-muted-foreground uppercase">no takebacks. no peeking.</p>
           </GameArea>
-          <GameStatus
-            footer={`ROUND ${String(round).padStart(2, "0")} / ${String(totalRounds).padStart(2, "0")}`}
-          >
-            {remaining.length} LEFT / BOMB {bombsLeft}
+          <GameStatus footer={`${remaining} UNOPENED · ${bombsFound} FOUND`}>
+            <span className="inline-flex items-center gap-2"><BombIcon weight="fill" size={19} className="text-danger" /> {bombsRemaining} BOMBS LEFT</span>
           </GameStatus>
+        </>
+      ) : null}
+
+      {phase === "result" ? (
+        <>
+          <GamePrompt title="UH OH" subtitle="the beer fought back" />
+          <GameArea><BeerBoard cells={cells} disabled reduceMotion={Boolean(reduceMotion)} onPick={() => {}} /></GameArea>
+          <GameStatus>{bombsRemaining} BOMBS LEFT</GameStatus>
         </>
       ) : null}
 
       {phase === "round-over" ? (
         <>
-          <GamePrompt
-            title={`Round ${String(round).padStart(2, "0")}`}
-            subtitle="shuffle the beers"
-          />
+          <GamePrompt title={`ROUND ${round} CLEARED`} subtitle="somehow you're still here" />
           <GameArea>
-            <div className="text-center">
-              <p className="font-pixel text-5xl">CLEAR</p>
-              <p className="mt-3 font-pixel text-xl text-muted-foreground">
-                {bombsFound} BOMB{bombsFound === 1 ? "" : "S"} HIT
-              </p>
-            </div>
+            <motion.div initial={reduceMotion ? false : { scale: .8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="flex flex-col items-center gap-4 text-center">
+              <CheckCircleIcon weight="fill" size={72} className="text-go" aria-hidden="true" />
+              <p className="font-pixel text-4xl">DEFUSED!</p>
+              <p className="font-pixel text-sm text-muted-foreground">{bombsFound} BOMBS FOUND · {BEER_COUNT - remaining} BEERS OPENED</p>
+              {isRoundClear(cells) && <p className="max-w-64 text-sm text-muted-foreground">New beers, new hiding spots. Everyone keeps their score.</p>}
+            </motion.div>
           </GameArea>
-          <GameButton
-            onClick={() => {
-              playSound("roundStart")
-              nextRound()
-            }}
-          >
-            {round >= totalRounds ? "NIGHT OVER" : "NEXT ROUND"}
+          <GameButton onClick={() => { playSound(round === totalRounds ? "winner" : "roundStart"); nextRound() }}>
+            <span className="inline-flex items-center gap-2">{round >= totalRounds ? "SEE THE RESULTS" : "RESHUFFLE & GO"}<ArrowRightIcon weight="bold" size={20} /></span>
           </GameButton>
         </>
       ) : null}
 
       {phase === "night-over" ? (
-        <>
-          <GamePrompt title="Night over" />
-          <GameArea>
-            <div className="flex w-full flex-col gap-4 text-center">
-              <CrownIcon weight="fill" size={48} className="mx-auto text-go" />
-              {magnet && magnet.hits > 0 ? (
-                <Award
-                  label="BOMB MAGNET"
-                  playerName={magnet.player.name}
-                  detail={`${magnet.hits} BOMBS`}
-                />
-              ) : null}
-              {luckiest &&
-              luckiest.hits > 0 &&
-              luckiest.player.id !== magnet?.player.id ? (
-                <Award
-                  label="LUCKIEST"
-                  playerName={luckiest.player.name}
-                  detail={`${luckiest.hits} BOMBS`}
-                />
-              ) : null}
-              {thirstiest && thirstiest.drinks > 0 ? (
-                <Award
-                  label="THIRSTIEST"
-                  playerName={thirstiest.player.name}
-                  detail={`${thirstiest.drinks} SIPS`}
-                />
-              ) : null}
-            </div>
-          </GameArea>
-          <GameButton
-            tone="danger"
-            onClick={() => {
-              playSound("roundStart")
-              start(bombCount)
-            }}
-          >
-            PLAY AGAIN
-          </GameButton>
-        </>
+        <NightResults players={players.filter((item) => order.includes(item.id))} bombHits={bombHits} drinks={drinks} onAgain={again} />
       ) : null}
 
       <AnimatePresence>
-        {safeFlash ? (
-          <motion.p
-            className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center font-pixel text-6xl text-go"
-            initial={reduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            SAFE
-          </motion.p>
+        {safeToast > 0 && phase === "play" ? (
+          <motion.div key={safeToast} aria-live="polite" role="status" className="beer-bomb-safe-feedback pointer-events-none absolute inset-x-6 top-[20%] z-10 flex justify-center"
+            initial={reduceMotion ? false : { opacity: 0, y: 10, scale: .8 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -10 }}>
+            <span className="bg-go px-6 py-3 font-pixel text-xl text-primary-foreground shadow-2xl">{SAFE_LINES[(round + turnIndex) % SAFE_LINES.length]}</span>
+          </motion.div>
         ) : null}
       </AnimatePresence>
-
-      <ResultReveal
-        open={phase === "result" && lastHit?.kind === "bomb"}
-        icon={<BombIcon weight="fill" size={72} />}
-        title="BOMB!"
-        name={hitPlayer?.name}
-        detail={lastHit ? `DRINK ${lastHit.drinks}` : undefined}
-        caption={bombCaption}
-        onContinue={() => continueAfterResult()}
-      />
+      <BombReveal hit={phase === "result" ? lastHit : null} playerName={hitPlayer?.name ?? "UNKNOWN PLAYER"}
+        round={round} streakCount={streakCount} onContinue={continueAfterResult} />
     </GameScreen>
-  )
-}
-
-function Award({
-  label,
-  playerName,
-  detail,
-}: {
-  label: string
-  playerName: string
-  detail: string
-}) {
-  return (
-    <div className="bg-card px-4 py-3">
-      <p className="font-pixel text-sm text-muted-foreground">{label}</p>
-      <p className="mt-1 font-display text-xl font-extrabold uppercase">
-        {playerName}
-      </p>
-      <p className="font-pixel text-lg text-danger">{detail}</p>
-    </div>
-  )
-}
-
-function BeerButton({
-  cell,
-  reduceMotion,
-  onPick,
-}: {
-  cell: BeerCell
-  reduceMotion: boolean
-  onPick: () => void
-}) {
-  return (
-    <motion.button
-      type="button"
-      disabled={cell.opened}
-      whileTap={reduceMotion || cell.opened ? undefined : { x: 2, y: 2 }}
-      animate={
-        cell.opened ? { scale: 0.84, opacity: 0.28 } : { scale: 1, opacity: 1 }
-      }
-      onClick={onPick}
-      className={cn(
-        "flex size-[4.6rem] items-center justify-center rounded-full",
-        cell.opened ? "bg-elevated" : "bg-card"
-      )}
-    >
-      {cell.opened ? (
-        cell.bomb ? (
-          <BombIcon weight="fill" size={28} className="text-danger" />
-        ) : (
-          <CheckIcon weight="fill" size={28} className="text-go" />
-        )
-      ) : (
-        <BeerSteinIcon weight="fill" size={30} />
-      )}
-    </motion.button>
   )
 }
