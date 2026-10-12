@@ -1,0 +1,21 @@
+/* Roulette-specific styling only. Shared design tokens come from index.css. */
+.roulette-machine { isolation: isolate; filter: drop-shadow(0 16px 18px rgba(0,0,0,.21)); }
+.roulette-cylinder {
+  border: 11px solid #25201b;
+  box-shadow: 0 0 0 3px #c88729, inset 0 0 0 5px #f1ad46, inset 0 0 28px rgba(0,0,0,.55), 0 13px 0 #523b24;
+  background: repeating-conic-gradient(from 0deg, #f4b34a 0deg 20deg, #e09a32 20deg 40deg);
+}
+.roulette-hub { background: #241914; border: 5px solid #ad6c2b; box-shadow: inset 0 2px 12px #100c0a; }
+.roulette-chamber {
+  position: absolute; left: 50%; top: 50%; display: flex; align-items: center; justify-content: center;
+  width: clamp(2.35rem, 10vw, 3.45rem); aspect-ratio: 1; border-radius: 50%;
+  border: 4px solid #3d2819; background: radial-gradient(circle at 40% 35%, #45413b, #171612 75%);
+  box-shadow: 0 2px 3px rgba(255,255,255,.3), inset 0 5px 12px #000;
+  font-family: inherit; font-size: .9rem; font-weight: 900; color: #fff8df;
+}
+.roulette-chamber-spent { color: #9d8b6d; background: #342b20; opacity: .75; }
+.roulette-pointer { position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 3; width: 0; height: 0;
+  border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 23px solid #f8ebcc;
+  filter: drop-shadow(0 3px 0 #22130e); }
+.roulette-trigger { color: #fffdf0; border: 5px solid #f5db98; background: #cc3d36; box-shadow: inset 0 -7px 0 rgba(0,0,0,.2), 0 7px 0 #8c241f, 0 0 22px #c8323240; }
+@media (prefers-reduced-motion: reduce) { .roulette-trigger, .roulette-cylinder { transition: none !important; } }

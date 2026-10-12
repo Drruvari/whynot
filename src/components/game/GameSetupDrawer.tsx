@@ -1,15 +1,13 @@
-import { useState } from "react"
-import { MinusIcon, PlusIcon } from "@phosphor-icons/react"
 
 import { GameButton } from "@/components/game/GameButton"
 import { GameIcon } from "@/components/game/GameIcon"
 import { getGame } from "@/games/catalog"
+import { RouletteSetup } from "@/games/roulette/components/RouletteSetup"
 import { BeerBombSetup } from "@/games/beer-bomb/components/BeerBombSetup"
 import { haptic } from "@/lib/haptic"
 import { playSound } from "@/lib/sound"
 import { cn } from "@/lib/utils"
 import { useApp } from "@/store/app"
-import { useRoulette } from "@/store/roulette"
 import { useSession } from "@/store/session"
 import {
   Drawer,
@@ -21,9 +19,6 @@ import {
 } from "@/components/ui/drawer"
 import { Switch } from "@/components/ui/switch"
 
-function suggestedBullets(chambers: number, playerCount: number) {
-  return Math.max(1, Math.min(chambers - 1, Math.round(playerCount / 4)))
-}
 
 export function GameSetupDrawer() {
   const setupGameId = useApp((state) => state.setupGameId)
@@ -33,28 +28,10 @@ export function GameSetupDrawer() {
   const soundOn = useApp((state) => state.soundOn)
   const setSoundOn = useApp((state) => state.setSoundOn)
   const players = useSession((state) => state.players)
-  const startRoulette = useRoulette((state) => state.start)
-  const [chambers, setChambers] = useState(6)
-  const [bullets, setBullets] = useState(1)
-  const [seededFor, setSeededFor] = useState<string | null>(null)
 
   const game = setupGameId ? getGame(setupGameId) : undefined
   const enoughPlayers = game ? players.length >= game.minPlayers : false
   const tooManyPlayers = game ? players.length > game.maxPlayers : false
-
-  if (setupGameId !== seededFor) {
-    setSeededFor(setupGameId)
-    if (setupGameId) {
-      const playerCount = players.length
-      const roulette = useRoulette.getState()
-      setChambers(roulette.chamberCount || 6)
-      setBullets(
-        roulette.bullets > 1
-          ? Math.min(roulette.bullets, (roulette.chamberCount || 6) - 1)
-          : suggestedBullets(roulette.chamberCount || 6, playerCount)
-      )
-    }
-  }
 
   function play() {
     if (!game) {
@@ -68,23 +45,10 @@ export function GameSetupDrawer() {
       return
     }
 
-    if (game.id === "roulette") {
-      startRoulette(chambers, Math.min(bullets, chambers - 1))
-    }
-
     haptic("success")
     playSound("roundStart")
     startGame(game.id)
   }
-
-  const accentText =
-    game?.accent === "danger"
-      ? "text-danger"
-      : game?.accent === "secret"
-        ? "text-secret"
-        : game?.accent === "warn"
-          ? "text-warn"
-          : "text-go"
 
   return (
     <Drawer
@@ -137,78 +101,7 @@ export function GameSetupDrawer() {
                 </span>
               </button>
 
-              {game.id === "roulette" ? (
-                <>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium tracking-[0.14em] text-muted-foreground uppercase">
-                      Chambers
-                    </span>
-                    <div className="flex items-center gap-3">
-                      <button
-                        type="button"
-                        className="flex size-11 items-center justify-center bg-elevated"
-                        onClick={() =>
-                          setChambers((value) => Math.max(4, value - 1))
-                        }
-                      >
-                        <MinusIcon weight="fill" size={16} />
-                      </button>
-                      <span
-                        className={cn(
-                          "w-6 text-center font-pixel text-2xl",
-                          accentText
-                        )}
-                      >
-                        {chambers}
-                      </span>
-                      <button
-                        type="button"
-                        className="flex size-11 items-center justify-center bg-elevated"
-                        onClick={() =>
-                          setChambers((value) => Math.min(8, value + 1))
-                        }
-                      >
-                        <PlusIcon weight="fill" size={16} />
-                      </button>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium tracking-[0.14em] text-muted-foreground uppercase">
-                      Bullets
-                    </span>
-                    <div className="flex items-center gap-3">
-                      <button
-                        type="button"
-                        className="flex size-11 items-center justify-center bg-elevated"
-                        onClick={() =>
-                          setBullets((value) => Math.max(1, value - 1))
-                        }
-                      >
-                        <MinusIcon weight="fill" size={16} />
-                      </button>
-                      <span
-                        className={cn(
-                          "w-6 text-center font-pixel text-2xl",
-                          accentText
-                        )}
-                      >
-                        {bullets}
-                      </span>
-                      <button
-                        type="button"
-                        className="flex size-11 items-center justify-center bg-elevated"
-                        onClick={() =>
-                          setBullets((value) =>
-                            Math.min(chambers - 1, value + 1)
-                          )
-                        }
-                      >
-                        <PlusIcon weight="fill" size={16} />
-                      </button>
-                    </div>
-                  </div>
-                </>
-              ) : null}
+
 
               {game.id !== "beer-bomb" ? (
                 <div className="flex items-center justify-between">
@@ -236,6 +129,14 @@ export function GameSetupDrawer() {
                 tooManyPlayers={tooManyPlayers}
                 onNeedPlayers={openPlayers}
                 onStarted={() => startGame("beer-bomb")}
+              />
+            ) : game.id === "roulette" ? (
+              <RouletteSetup
+                key={setupGameId}
+                playerIds={players.map((player) => player.id)}
+                tooManyPlayers={tooManyPlayers}
+                onNeedPlayers={openPlayers}
+                onStarted={() => startGame("roulette")}
               />
             ) : (
               <DrawerFooter className="px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
