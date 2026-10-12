@@ -20,7 +20,10 @@ export function clampBullets(input: number, chamberCount: number): number {
     : DEFAULT_BULLETS
 }
 
-export function suggestedBullets(chambers: number, playerCount: number): number {
+export function suggestedBullets(
+  chambers: number,
+  playerCount: number
+): number {
   return clampBullets(Math.round(playerCount / 4), chambers)
 }
 
@@ -35,7 +38,10 @@ export function loadCylinder(
   const indices = Array.from({ length: count }, (_, index) => index)
   for (let i = count - 1; i > 0; i--) {
     const roll = random()
-    const j = Math.min(i, Math.max(0, Math.floor((Number.isFinite(roll) ? roll : 0) * (i + 1))))
+    const j = Math.min(
+      i,
+      Math.max(0, Math.floor((Number.isFinite(roll) ? roll : 0) * (i + 1)))
+    )
     ;[indices[i], indices[j]] = [indices[j], indices[i]]
   }
   const loaded = new Set(indices.slice(0, bullets))
@@ -82,12 +88,16 @@ export function fireShot(
   playerId: string
 ): { next: RouletteData; shot: RouletteShot | null } {
   if (
-    !state.inProgress || state.phase !== "aim" || !playerId ||
+    !state.inProgress ||
+    state.phase !== "aim" ||
+    !playerId ||
     playerId !== currentShooterId(state) ||
     state.chambers.length !== state.chamberCount ||
-    state.shotsFired < 0 || state.shotsFired >= state.chamberCount ||
+    state.shotsFired < 0 ||
+    state.shotsFired >= state.chamberCount ||
     state.index !== state.shotsFired
-  ) return { next: state, shot: null }
+  )
+    return { next: state, shot: null }
 
   const bang = state.chambers[state.index] === true
   const shot: RouletteShot = {
@@ -115,8 +125,9 @@ export function fireShot(
 }
 
 export function willReload(state: RouletteData): boolean {
-  return state.phase === "result" && Boolean(
-    state.lastShot?.bang || state.shotsFired >= state.chamberCount
+  return (
+    state.phase === "result" &&
+    Boolean(state.lastShot?.bang || state.shotsFired >= state.chamberCount)
   )
 }
 

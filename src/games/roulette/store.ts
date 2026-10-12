@@ -45,7 +45,8 @@ const initial: RouletteData = {
  * Give those saves a fresh cylinder rather than misattribute the old result.
  */
 function migrateLegacy(saved: unknown): RouletteData {
-  const old = saved && typeof saved === "object" ? saved as Partial<RouletteData> : {}
+  const old =
+    saved && typeof saved === "object" ? (saved as Partial<RouletteData>) : {}
   const ids = useSession.getState().players.map((player) => player.id)
   const count = clampChambers(old.chamberCount ?? DEFAULT_CHAMBERS)
   const bullets = clampBullets(old.bullets ?? DEFAULT_BULLETS, count)
@@ -57,7 +58,10 @@ function migrateLegacy(saved: unknown): RouletteData {
     bullets,
     playerIds: ids,
     chambers: resumed ? loadCylinder(count, bullets) : [],
-    turnIndex: Number.isInteger(old.turnIndex) && (old.turnIndex ?? 0) >= 0 ? old.turnIndex! : 0,
+    turnIndex:
+      Number.isInteger(old.turnIndex) && (old.turnIndex ?? 0) >= 0
+        ? old.turnIndex!
+        : 0,
     bangs: old.bangs && typeof old.bangs === "object" ? old.bangs : {},
   }
 }
@@ -66,7 +70,11 @@ export const useRoulette = create<RouletteStore>()(
   persist(
     (set, get) => ({
       ...initial,
-      start: (chambers, bullets, playerIds = useSession.getState().players.map((p) => p.id)) => {
+      start: (
+        chambers,
+        bullets,
+        playerIds = useSession.getState().players.map((p) => p.id)
+      ) => {
         const game = newRoulette(chambers, bullets, playerIds)
         if (!game) return false
         set(game)
