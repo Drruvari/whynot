@@ -42,28 +42,16 @@ export const GAMES: GameDef[] = [
     tip: "More bullets = shorter fuses.",
   },
   {
-    id: "vote",
-    name: "VOTE",
-    vibe: "Chaos",
-    players: "3–12",
-    minPlayers: 3,
-    maxPlayers: 12,
+    id: "wobble",
+    name: "WOBBLE LAB",
+    vibe: "Physics",
+    players: "1–10",
+    minPlayers: 1,
+    maxPlayers: 10,
     ready: true,
     accent: "go",
-    howTo:
-      "A prompt appears. Point at whoever fits it best. They drink. No arguing allowed.",
-  },
-  {
-    id: "liar",
-    name: "LIAR",
-    vibe: "Bluff",
-    players: "3–8",
-    minPlayers: 3,
-    maxPlayers: 8,
-    ready: true,
-    accent: "secret",
-    howTo:
-      "One player reads a claim out loud. Everyone else decides: true, or lying through their teeth?",
+    howTo: "Drop bizarre junk onto a seesaw raft. Stack high, survive the wind, and use two rescue pulses before the whole thing falls apart.",
+    tip: "Drag to aim. Rotate before dropping. Pass the phone after each landing.",
   },
 ]
 

@@ -1,0 +1,58 @@
+.wobble-screen { background: #182d48; color: #f7f7ff; }
+.wobble-screen > header { position: relative; z-index: 6; }
+.wobble-scoreboard {
+  display: grid; grid-template-columns: 1.35fr 1fr .7fr; flex: 0 0 auto;
+  gap: 1px; min-height: 54px; border: 1px solid #4d6584; background: #4d6584;
+}
+.wobble-scoreboard > div { min-width: 0; display: flex; flex-direction: column; justify-content: center; padding: 7px 12px; background: #213b5c; }
+.wobble-scoreboard span { font: 700 9px sans-serif; letter-spacing: .16em; color: #9bb8cf; }
+.wobble-scoreboard b { font: 900 clamp(17px, 5vw, 23px)/1.2 sans-serif; font-variant-numeric: tabular-nums; }
+.wobble-tray { padding: 8px 0 6px; flex: 0 0 auto; }
+.wobble-tray-heading { display: flex; align-items: center; justify-content: space-between; padding: 0 3px 5px; gap: 8px; font-size: 9px; font-weight: 900; letter-spacing: .13em; }
+.wobble-tray-tip { color: #e9d58b; text-align: right; }
+.wobble-queue { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; min-height: 76px; }
+.wobble-queue-tile {
+  position: relative; min-width: 0; min-height: 73px; padding: 4px 2px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  border: 2px solid #4c6483; border-radius: 11px; background: #284568; color: #fff;
+  transition: background .15s ease, border-color .15s ease, transform .15s ease;
+}
+.wobble-queue-tile:disabled { opacity: .58; }
+.wobble-queue-tile.is-current {
+  opacity: 1; border-color: #f8e080; background: #405779;
+  box-shadow: 0 0 0 2px #ffd87137, inset 0 0 15px #f4d67533;
+  cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
+}
+.wobble-queue-tile.is-dragging { background: #324963; cursor: grabbing; }
+.wobble-queue-tile.is-current:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+.wobble-queue-art { display: block; font-size: clamp(23px, 7vw, 33px); line-height: 1.15; pointer-events: none; filter: drop-shadow(0 2px 1px #162d4f55); }
+.wobble-queue-name { font: 900 8px/1.1 sans-serif; white-space: nowrap; letter-spacing: .03em; pointer-events: none; }
+.wobble-instruction { flex: 0 0 auto; min-height: 44px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; text-align: center; }
+.wobble-instruction strong { font: 900 clamp(13px, 3.4vw, 17px)/1.15 sans-serif; letter-spacing: .06em; }
+.wobble-instruction span { font: 700 clamp(9px, 2.6vw, 11px)/1.25 sans-serif; letter-spacing: .06em; color: #b7d6ee; }
+.wobble-stage { position: relative; flex: 1 1 auto; min-height: 170px; overflow: hidden; border: 3px solid #315176; border-radius: 8px; background: #88ccef; max-width: 740px; width: 100%; margin: 0 auto; }
+.wobble-canvas { display: block; width: 100%; height: 100%; touch-action: manipulation; cursor: crosshair; outline-offset: -4px; }
+.wobble-stage-banner {
+  position: absolute; top: 14%; left: 50%; transform: translateX(-50%); width: max-content; max-width: 90%;
+  padding: 10px 15px; text-align: center; border: 2px solid #f8e18b; border-radius: 12px;
+  color: #fff; background: #314d7eea; pointer-events: none; box-shadow: 0 5px 15px #23445f66;
+}
+.wobble-stage-banner span { display: block; font-size: 10px; font-weight: 900; letter-spacing: .14em; color: #ffdf79; }
+.wobble-stage-banner strong { display: block; font: 900 27px/1.15 sans-serif; }
+.wobble-bottom { flex: 0 0 auto; min-height: 32px; padding-top: 7px; }
+.wobble-bottom button { min-height: 52px; }
+.wobble-footer { margin: 6px 0 0; text-align: center; color: #a9c4dd; font: 700 10px/1.3 monospace; letter-spacing: .06em; }
+.wobble-result { position: absolute; inset: 0; z-index: 5; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #1d244bee; padding: clamp(12px, 3vw, 24px); text-align: center; overflow: auto; }
+.wobble-result-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; margin: 14px 0; gap: 2px; }
+.wobble-result-stats > div { display: flex; flex-direction: column; background: #ffffff14; padding: 12px 4px; min-width: 0; }
+.wobble-result-stats b { font-size: clamp(16px, 5vw, 28px); }
+.wobble-result-stats span { font-size: 9px; letter-spacing: .13em; color: #b9aec4; }
+@media (max-height: 690px) {
+  .wobble-scoreboard { min-height: 42px; }
+  .wobble-queue { min-height: 58px; }
+  .wobble-queue-tile { min-height: 57px; }
+  .wobble-tray { padding-top: 3px; padding-bottom: 1px; }
+  .wobble-instruction { min-height: 36px; }
+  .wobble-queue-art { font-size: 24px; }
+  .wobble-stage { min-height: 120px; }
+}

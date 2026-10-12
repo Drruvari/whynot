@@ -2,6 +2,7 @@
 import { GameButton } from "@/components/game/GameButton"
 import { GameIcon } from "@/components/game/GameIcon"
 import { getGame } from "@/games/catalog"
+import { WobbleSetup } from "@/games/wobble/components/WobbleSetup"
 import { SpySetup } from "@/games/spy/components/SpySetup"
 import { RouletteSetup } from "@/games/roulette/components/RouletteSetup"
 import { BeerBombSetup } from "@/games/beer-bomb/components/BeerBombSetup"
@@ -104,7 +105,7 @@ export function GameSetupDrawer() {
 
 
 
-              {game.id !== "beer-bomb" ? (
+              {game.id !== "beer-bomb" && game.id !== "wobble" ? (
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium tracking-[0.14em] text-muted-foreground uppercase">Punishments</span>
                   <span className="bg-elevated px-3 py-1 font-pixel text-xs tracking-wider">MIXED</span>
@@ -146,6 +147,8 @@ export function GameSetupDrawer() {
                 onNeedPlayers={openPlayers}
                 onStarted={() => startGame("spy")}
               />
+            ) : game.id === "wobble" ? (
+              <WobbleSetup key={setupGameId} playerIds={players.map((p) => p.id)} tooManyPlayers={tooManyPlayers} onNeedPlayers={openPlayers} onStarted={() => startGame("wobble")} />
             ) : (
               <DrawerFooter className="px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
                 <GameButton tone="go" onClick={play}>
