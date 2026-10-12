@@ -2,6 +2,7 @@
 import { GameButton } from "@/components/game/GameButton"
 import { GameIcon } from "@/components/game/GameIcon"
 import { getGame } from "@/games/catalog"
+import { SpySetup } from "@/games/spy/components/SpySetup"
 import { RouletteSetup } from "@/games/roulette/components/RouletteSetup"
 import { BeerBombSetup } from "@/games/beer-bomb/components/BeerBombSetup"
 import { haptic } from "@/lib/haptic"
@@ -137,6 +138,13 @@ export function GameSetupDrawer() {
                 tooManyPlayers={tooManyPlayers}
                 onNeedPlayers={openPlayers}
                 onStarted={() => startGame("roulette")}
+              />
+            ) : game.id === "spy" ? (
+              <SpySetup
+                key={setupGameId}
+                tooManyPlayers={tooManyPlayers}
+                onNeedPlayers={openPlayers}
+                onStarted={() => startGame("spy")}
               />
             ) : (
               <DrawerFooter className="px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">

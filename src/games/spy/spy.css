@@ -1,0 +1,14 @@
+/* Game-only visuals; shared colors, typography and buttons stay in src/. */
+.spy-folder {
+  min-height: 11rem;
+  border: 2px dashed color-mix(in srgb, var(--color-secret) 48%, transparent);
+  background: repeating-linear-gradient(-45deg, var(--color-card), var(--color-card) 14px, var(--color-elevated) 14px, var(--color-elevated) 15px);
+  transition: background-color .15s, border-color .15s;
+}
+.spy-folder-open { background: var(--color-card); border-style: solid; border-color: var(--color-secret); }
+.spy-clock { display:flex; align-items:center; gap:1rem; color:var(--color-foreground); }
+.spy-clock-danger { color:var(--color-danger); animation:spy-pulse .7s ease-in-out infinite alternate; }
+.spy-verdict { background:var(--color-secret); color:white; }
+.spy-verdict-caught { background:var(--color-go); color:var(--color-primary-foreground); }
+@keyframes spy-pulse { from { opacity:1 } to { opacity:.6 } }
+@media (prefers-reduced-motion:reduce) { .spy-clock-danger { animation:none; } .spy-folder { transition:none; } }

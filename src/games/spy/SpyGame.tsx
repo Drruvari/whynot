@@ -1,234 +1,71 @@
-import { DetectiveIcon, TargetIcon } from "@phosphor-icons/react"
-import { useEffect, useRef, useState } from "react"
-import { motion } from "motion/react"
-
-import {
-  GameArea,
-  GameHeader,
-  GamePrompt,
-  GameScreen,
-  GameStatus,
-} from "@/components/game/GameScreen"
-import { PlayerToken } from "@/components/game/PlayerToken"
-import { ResultReveal } from "@/components/game/ResultReveal"
-import { useGameMotion } from "@/hooks/use-game-motion"
+import { useEffect, useRef } from "react"
+import { GameButton } from "@/components/game/GameButton"
+import { GameHeader, GameScreen } from "@/components/game/GameScreen"
 import { haptic } from "@/lib/haptic"
 import { playSound } from "@/lib/sound"
-import { pickRandom, shuffle } from "@/lib/shuffle"
-import type { Player } from "@/lib/types"
 import { useSession } from "@/store/session"
-
-type SpyPhase = "pass" | "vote" | "result"
-
-const SPY_CATEGORIES = [
-  "Movies",
-  "Countries",
-  "Foods",
-  "Sports",
-  "Animals",
-  "Jobs",
-  "Celebrities",
-]
-
-function voteSeconds(playerCount: number) {
-  return Math.min(20, Math.max(8, playerCount * 2))
-}
-
-function dealSpy(players: Player[]) {
-  return {
-    spyId: players[Math.floor(Math.random() * Math.max(players.length, 1))]?.id,
-    order: shuffle(players),
-    category: pickRandom(SPY_CATEGORIES),
-  }
-}
+import { DiscussionClock } from "./components/DiscussionClock"
+import { PrivateBallot } from "./components/PrivateBallot"
+import { RolePass } from "./components/RolePass"
+import { SpyGuess } from "./components/SpyGuess"
+import { SpyResults } from "./components/SpyResults"
+import { MAX_PLAYERS, MIN_PLAYERS } from "./rules"
+import { useSpy } from "./store"
+import "./spy.css"
 
 export function SpyGame() {
+  const round = useSpy((state) => state.round)
+  const start = useSpy((state) => state.start)
+  const markSeen = useSpy((state) => state.markSeen)
+  const nextViewer = useSpy((state) => state.nextViewer)
+  const beginVoting = useSpy((state) => state.beginVoting)
+  const vote = useSpy((state) => state.vote)
+  const guess = useSpy((state) => state.guess)
   const players = useSession((state) => state.players)
-  const reduceMotion = useGameMotion()
-  const [round, setRound] = useState(() => dealSpy(players))
-  const [phase, setPhase] = useState<SpyPhase>("pass")
-  const [index, setIndex] = useState(0)
-  const [holding, setHolding] = useState(false)
-  const [hasLooked, setHasLooked] = useState(false)
-  const [voteId, setVoteId] = useState<string | null>(null)
-  const [seconds, setSeconds] = useState(() => voteSeconds(players.length))
-  const secondsRef = useRef(seconds)
+  const lastResult = useRef<string | null>(null)
 
-  const current = round.order[index]
-  const spy = players.find((player) => player.id === round.spyId)
-  const voted = players.find((player) => player.id === voteId)
-  const caught = voteId === round.spyId
+  // Compatibility with an older shared GameSetupDrawer that doesn't call start().
+  useEffect(() => {
+    if (!useSpy.getState().round) start()
+  }, [start])
 
   useEffect(() => {
-    secondsRef.current = seconds
-  }, [seconds])
+    if (round?.phase !== "result") return
+    const key = `${round.roundNumber}:${round.outcome?.winner}`
+    if (key === lastResult.current) return
+    lastResult.current = key
+    haptic("success")
+    playSound(round.outcome?.winner === "civilians" ? "spyCaught" : "loser")
+  }, [round?.phase, round?.roundNumber, round?.outcome?.winner])
 
-  useEffect(() => {
-    if (phase !== "result") {
-      return
-    }
-
-    playSound(caught ? "spyCaught" : "loser")
-  }, [caught, phase])
-
-  useEffect(() => {
-    if (phase !== "vote") {
-      return
-    }
-
-    const timer = window.setInterval(() => {
-      const currentSeconds = secondsRef.current
-
-      if (currentSeconds <= 1) {
-        setSeconds(0)
-        haptic("warn")
-        playSound("voteReveal")
-        setPhase("result")
-        return
-      }
-
-      const next = currentSeconds - 1
-      setSeconds(next)
-      if (next <= 4) {
-        haptic("tap")
-        playSound(next <= 2 ? "tickFinal" : "tick")
-      }
-    }, 1000)
-
-    return () => window.clearInterval(timer)
-  }, [phase])
-
-  if (!current || !spy) {
-    return null
+  function startVote() {
+    const current = useSpy.getState().round
+    if (current?.phase !== "discussion") return
+    haptic("success")
+    playSound("voteReveal")
+    beginVoting()
   }
 
   return (
     <GameScreen className="relative">
       <GameHeader title="SPY" />
-
-      {phase === "pass" ? (
-        <>
-          <GamePrompt title="Pass to" />
-          <GameArea>
-            <PlayerToken player={current} size="lg" className="text-4xl" />
-          </GameArea>
-          <GameStatus>Nobody else look.</GameStatus>
-          <motion.button
-            type="button"
-            className="min-h-17 bg-secret text-lg font-semibold tracking-[0.16em] text-white uppercase"
-            whileTap={reduceMotion ? undefined : { x: 2, y: 2 }}
-            onContextMenu={(event) => event.preventDefault()}
-            onPointerDown={(event) => {
-              event.currentTarget.setPointerCapture(event.pointerId)
-              haptic("tap")
-              playSound("spyReveal")
-              setHolding(true)
-              setHasLooked(true)
-            }}
-            onPointerUp={() => setHolding(false)}
-            onPointerCancel={() => setHolding(false)}
-          >
-            HOLD TO REVEAL
-          </motion.button>
-          <button
-            type="button"
-            disabled={!hasLooked}
-            className="mt-3 h-12 text-sm font-semibold tracking-wide text-muted-foreground uppercase disabled:opacity-30"
-            onClick={() => {
-              if (index >= round.order.length - 1) {
-                setSeconds(voteSeconds(players.length))
-                setPhase("vote")
-                return
-              }
-              setIndex((value) => value + 1)
-              setHasLooked(false)
-              setHolding(false)
-            }}
-          >
-            {index >= round.order.length - 1 ? "EVERYONE'S IN" : "NEXT PERSON"}
-          </button>
-          {holding ? (
-            <div
-              className={`pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center ${
-                current.id === round.spyId ? "bg-secret" : "bg-card"
-              }`}
-            >
-              <p className="font-pixel text-6xl font-bold">
-                {current.id === round.spyId ? "SPY" : "CIVIL"}
-              </p>
-              <p className="mt-4 text-sm font-medium tracking-wide text-muted-foreground">
-                {current.id === round.spyId
-                  ? `Category: ${round.category}. Blend in.`
-                  : `${round.category}. Stay cool, ${current.name}.`}
-              </p>
-            </div>
-          ) : null}
-        </>
-      ) : null}
-
-      {phase === "vote" ? (
-        <>
-          <GamePrompt
-            title="Who's the spy?"
-            subtitle="one tap. no take-backs."
-          />
-          <GameArea className="items-stretch">
-            <div className="flex w-full flex-col gap-3">
-              {players.map((player) => (
-                <motion.button
-                  key={player.id}
-                  type="button"
-                  whileTap={reduceMotion ? undefined : { x: 2, y: 2 }}
-                  onClick={() => {
-                    haptic("tap")
-                    playSound("voteLock")
-                    setVoteId(player.id)
-                  }}
-                  className={`flex min-h-16 items-center px-4 ${
-                    voteId === player.id
-                      ? "bg-elevated outline-2 outline-go"
-                      : "bg-card"
-                  }`}
-                >
-                  <PlayerToken player={player} />
-                </motion.button>
-              ))}
-            </div>
-          </GameArea>
-          <p
-            className={`text-center font-pixel leading-none ${
-              seconds <= 3 ? "text-8xl text-danger" : "text-7xl"
-            }`}
-          >
-            {seconds}
-          </p>
-        </>
-      ) : null}
-
-      <ResultReveal
-        open={phase === "result"}
-        tone={caught ? "go" : "secret"}
-        icon={
-          caught ? (
-            <TargetIcon weight="fill" size={72} />
-          ) : (
-            <DetectiveIcon weight="fill" size={72} />
-          )
-        }
-        title={caught ? "CAUGHT" : "SPY"}
-        name={caught ? voted?.name : spy.name}
-        detail={caught ? "DRINK 0" : "DRINK 2"}
-        caption={caught ? "nice read" : `${spy.name} walked free`}
-        actionLabel="AGAIN"
-        onContinue={() => {
-          setRound(dealSpy(players))
-          setPhase("pass")
-          setIndex(0)
-          setVoteId(null)
-          setHolding(false)
-          setHasLooked(false)
-        }}
-      />
+      {!round ? (
+        <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-5 text-center">
+          <h1 className="font-display text-3xl font-black">AGENT CHECK</h1>
+          <p className="max-w-xs text-sm text-muted-foreground">You need {MIN_PLAYERS}–{MAX_PLAYERS} players to start.</p>
+          <GameButton tone="secret" disabled={players.length < MIN_PLAYERS || players.length > MAX_PLAYERS} onClick={() => start()}>START MISSION</GameButton>
+        </div>
+      ) : round.phase === "reveal" ? (
+        <RolePass key={`${round.roundNumber}:${round.revealIndex}`} round={round} onSeen={markSeen} onNext={nextViewer} />
+      ) : round.phase === "discussion" ? (
+        <DiscussionClock round={round} onVote={startVote} />
+      ) : round.phase === "vote" ? (
+        <PrivateBallot key={`${round.roundNumber}:${round.voteIndex}`} round={round} onVote={vote} />
+      ) : round.phase === "guess" ? (
+        <SpyGuess round={round} onGuess={guess} />
+      ) : (
+        <SpyResults round={round} onAgain={() => { haptic("tap"); playSound("roundStart"); start() }} />
+      )}
     </GameScreen>
   )
 }
