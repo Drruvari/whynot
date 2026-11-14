@@ -110,8 +110,6 @@ export function ChaosCourtGame() {
   const defendant = roster.find((p) => p.id === accused)
   const voters = roster.filter((p) => p.id !== accused)
   const currentVoter = voters[Object.keys(votes).length]
-  const guilty = Object.values(votes).filter((v) => v === "guilty").length
-  const innocent = Object.values(votes).filter((v) => v === "innocent").length
 
   useEffect(() => {
     if (phase !== "defend" || seconds <= 0) return
