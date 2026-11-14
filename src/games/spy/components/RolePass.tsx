@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { ArrowRightIcon, EyeIcon, EyeSlashIcon, FingerprintIcon, ShieldCheckIcon } from "@phosphor-icons/react"
+import { ArrowRightIcon, EyeIcon, FingerprintIcon, ShieldCheckIcon } from "@phosphor-icons/react"
 import { haptic } from "@/lib/haptic"
 import { playSound } from "@/lib/sound"
 import type { SpyData } from "../types"
@@ -27,13 +27,9 @@ export function RolePass({ round, onSeen, onNext }: {
     }
   }
 
-  function hide() {
-    setVisible(false)
-    haptic("tap")
-  }
-
   function next() {
-    if (!seen || visible) return
+    if (!seen || !visible) return
+    haptic("tap")
     onNext(player.id)
   }
 
@@ -45,7 +41,7 @@ export function RolePass({ round, onSeen, onNext }: {
         </div>
         <p className="spy-deal-step">PLAYER {round.revealIndex + 1} / {round.order.length}</p>
         <h1 className="spy-deal-name">{player.name}</h1>
-        <p className="spy-deal-hint">{visible ? "Your eyes only. Read your secret card." : seen ? "Card hidden. Pass the phone when ready." : "Hand the phone to this player."}</p>
+        <p className="spy-deal-hint">{visible ? "Read your card, then pass the phone." : "Hand the phone to this player."}</p>
       </div>
 
       <div className={`spy-role-card ${visible ? (isSpy ? "spy-role-card--spy" : "spy-role-card--civilian") : "spy-role-card--locked"}`}>
@@ -89,16 +85,13 @@ export function RolePass({ round, onSeen, onNext }: {
 
       <div className="spy-deal-actions">
         {visible ? (
-          <button type="button" className="spy-deal-primary" onClick={hide}><EyeSlashIcon size={23} weight="bold" /> HIDE CARD</button>
-        ) : !seen ? (
-          <button type="button" className="spy-deal-primary" onClick={reveal}><EyeIcon size={23} weight="bold" /> REVEAL MY CARD</button>
+          <button type="button" className="spy-deal-primary" onClick={next}>
+            {isLast ? "START DISCUSSION" : "HIDE & NEXT PLAYER"} <ArrowRightIcon size={23} weight="bold" />
+          </button>
         ) : (
-          <>
-            <button type="button" className="spy-deal-primary" onClick={next}>
-              {isLast ? "START DISCUSSION" : "NEXT PLAYER"} <ArrowRightIcon size={23} weight="bold" />
-            </button>
-            <button type="button" className="spy-deal-secondary" onClick={reveal}>View my card again</button>
-          </>
+          <button type="button" className="spy-deal-primary" onClick={reveal}>
+            <EyeIcon size={23} weight="bold" /> REVEAL MY CARD
+          </button>
         )}
       </div>
     </section>
