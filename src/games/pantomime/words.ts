@@ -1,491 +1,951 @@
-/** Clear, physical charades prompts with an acting hint for each word. */
+/** Concrete objects, animals, foods and places with gesture hints. */
 export const MIME_WORDS: readonly { word: string; description: string }[] = [
   {
-    "word": "Brushing teeth",
-    "description": "Pretend to hold a toothbrush and brush your teeth."
+    "word": "Elephant",
+    "description": "Swing one arm like a trunk and stomp heavily."
   },
   {
-    "word": "Riding a bicycle",
-    "description": "Pedal your legs and steer imaginary handlebars."
+    "word": "Monkey",
+    "description": "Scratch your head and pretend to climb a tree."
   },
   {
-    "word": "Playing guitar",
-    "description": "Strum an imaginary guitar and move your fingers along the neck."
+    "word": "Penguin",
+    "description": "Waddle with arms pressed against your sides."
   },
   {
-    "word": "Taking a selfie",
-    "description": "Hold up an imaginary phone, pose and press the camera button."
+    "word": "Rabbit",
+    "description": "Hop and hold two fingers up as long ears."
   },
   {
-    "word": "Walking a dog",
-    "description": "Hold an imaginary leash while a dog pulls you."
+    "word": "Frog",
+    "description": "Crouch low and jump forward."
   },
   {
-    "word": "Cooking pasta",
-    "description": "Stir a pot, taste the food and drain the water."
+    "word": "Snake",
+    "description": "Slither your arms and sway your body."
   },
   {
-    "word": "Flying a plane",
-    "description": "Spread your arms like wings and steer through the air."
-  },
-  {
-    "word": "Fishing",
-    "description": "Cast an imaginary fishing rod and reel in a fish."
-  },
-  {
-    "word": "Swimming",
-    "description": "Move your arms in swimming strokes."
-  },
-  {
-    "word": "Skiing",
-    "description": "Bend your knees and glide with imaginary ski poles."
-  },
-  {
-    "word": "Playing basketball",
-    "description": "Dribble an imaginary ball and shoot into a hoop."
-  },
-  {
-    "word": "Washing dishes",
-    "description": "Scrub and rinse an imaginary plate."
-  },
-  {
-    "word": "Vacuuming",
-    "description": "Push an imaginary vacuum cleaner across the floor."
-  },
-  {
-    "word": "Opening an umbrella",
-    "description": "Unfold an umbrella and hold it above your head."
-  },
-  {
-    "word": "Eating spaghetti",
-    "description": "Twirl noodles on a fork and slurp them."
-  },
-  {
-    "word": "Sleeping",
-    "description": "Rest your head on folded hands and snore silently."
-  },
-  {
-    "word": "Waking up late",
-    "description": "Wake up, check the time and panic."
-  },
-  {
-    "word": "Dancing salsa",
-    "description": "Move your hips and feet in quick dance steps."
-  },
-  {
-    "word": "Playing video games",
-    "description": "Hold a controller and react to the screen."
-  },
-  {
-    "word": "Taking a shower",
-    "description": "Turn on water and wash your hair."
-  },
-  {
-    "word": "Sneezing",
-    "description": "Build up to a big silent sneeze."
-  },
-  {
-    "word": "Lifting weights",
-    "description": "Lift heavy imaginary dumbbells with effort."
-  },
-  {
-    "word": "Blowing up a balloon",
-    "description": "Stretch a balloon and blow until it grows."
-  },
-  {
-    "word": "Walking on the moon",
-    "description": "Take slow, bouncy steps in low gravity."
-  },
-  {
-    "word": "Driving a car",
-    "description": "Turn a steering wheel, change gears and brake."
-  },
-  {
-    "word": "Climbing a mountain",
-    "description": "Grab imaginary rocks and pull yourself upward."
-  },
-  {
-    "word": "Building a snowman",
-    "description": "Roll snowballs and stack them."
-  },
-  {
-    "word": "Putting on makeup",
-    "description": "Apply imaginary lipstick and mascara."
-  },
-  {
-    "word": "Typing on a laptop",
-    "description": "Type rapidly on an imaginary keyboard."
-  },
-  {
-    "word": "Painting a wall",
-    "description": "Move an imaginary paint roller up and down."
-  },
-  {
-    "word": "Playing drums",
-    "description": "Hit imaginary drums and cymbals."
-  },
-  {
-    "word": "Skateboarding",
-    "description": "Push off and balance on an imaginary skateboard."
-  },
-  {
-    "word": "Surfing",
-    "description": "Balance on a board and ride a wave."
-  },
-  {
-    "word": "Riding a horse",
-    "description": "Hold reins and bounce in a saddle."
-  },
-  {
-    "word": "Jumping rope",
-    "description": "Swing an imaginary rope and hop over it."
-  },
-  {
-    "word": "Doing yoga",
-    "description": "Stretch into a yoga pose and hold your balance."
-  },
-  {
-    "word": "Taking a photograph",
-    "description": "Lift a camera, focus and press the shutter."
-  },
-  {
-    "word": "Eating ice cream",
-    "description": "Lick an imaginary cone before it melts."
-  },
-  {
-    "word": "Bowling",
-    "description": "Swing your arm and roll a heavy bowling ball."
-  },
-  {
-    "word": "Playing tennis",
-    "description": "Serve and hit a ball with an imaginary racket."
-  },
-  {
-    "word": "Opening a present",
-    "description": "Tear wrapping paper and react to the gift."
-  },
-  {
-    "word": "Writing a letter",
-    "description": "Write with a pen, fold paper and seal an envelope."
-  },
-  {
-    "word": "Reading a book",
-    "description": "Open a book, turn pages and react to the story."
-  },
-  {
-    "word": "Putting out a fire",
-    "description": "Aim an imaginary hose at flames."
-  },
-  {
-    "word": "Changing a tire",
-    "description": "Lift a car and unscrew wheel nuts."
-  },
-  {
-    "word": "Flying a kite",
-    "description": "Run while holding a string and watching the sky."
-  },
-  {
-    "word": "Catching a butterfly",
-    "description": "Chase something fluttering and catch it gently."
-  },
-  {
-    "word": "Making pizza",
-    "description": "Toss dough, spread sauce and add toppings."
-  },
-  {
-    "word": "Washing a car",
-    "description": "Scrub windows and rinse with a hose."
-  },
-  {
-    "word": "Running a marathon",
-    "description": "Run in place, get tired and cross a finish line."
-  },
-  {
-    "word": "Walking a tightrope",
-    "description": "Stretch your arms and balance carefully."
-  },
-  {
-    "word": "Getting a haircut",
-    "description": "Snip hair with imaginary scissors."
-  },
-  {
-    "word": "Singing karaoke",
-    "description": "Hold a microphone and perform dramatically without sound."
-  },
-  {
-    "word": "Digging a hole",
-    "description": "Dig with an imaginary shovel."
-  },
-  {
-    "word": "Planting a tree",
-    "description": "Dig, place a sapling and water it."
-  },
-  {
-    "word": "Escaping from prison",
-    "description": "Sneak past guards and climb an imaginary wall."
-  },
-  {
-    "word": "Being chased by bees",
-    "description": "Swat around your head and run away."
-  },
-  {
-    "word": "Slipping on a banana peel",
-    "description": "Step forward, lose balance and catch yourself."
-  },
-  {
-    "word": "Winning the lottery",
-    "description": "Check a ticket, look shocked and celebrate."
-  },
-  {
-    "word": "Losing your keys",
-    "description": "Search every pocket and look under furniture."
-  },
-  {
-    "word": "Fighting a dragon",
-    "description": "Block fire, swing a sword and dodge claws."
-  },
-  {
-    "word": "Being a robot",
-    "description": "Walk stiffly with mechanical arm movements."
-  },
-  {
-    "word": "Being a zombie",
-    "description": "Shuffle with outstretched arms."
-  },
-  {
-    "word": "Being a penguin",
-    "description": "Waddle with your arms tucked at your sides."
-  },
-  {
-    "word": "Being a monkey",
-    "description": "Scratch your head, swing your arms and climb."
-  },
-  {
-    "word": "Being a cat",
-    "description": "Stretch, lick your paws and stalk quietly."
-  },
-  {
-    "word": "Being a chicken",
+    "word": "Chicken",
     "description": "Flap your elbows and peck at the ground."
   },
   {
-    "word": "Being a dinosaur",
-    "description": "Stomp with tiny arms and a huge roar without sound."
+    "word": "Cat",
+    "description": "Stretch, lick your paw and creep silently."
   },
   {
-    "word": "Being an elephant",
-    "description": "Swing one arm as a trunk and stomp heavily."
+    "word": "Dog",
+    "description": "Pant, wag an imaginary tail and fetch a ball."
   },
   {
-    "word": "Being a snake",
-    "description": "Slither your arms and sway side to side."
+    "word": "Horse",
+    "description": "Gallop in place and pretend to neigh silently."
   },
   {
-    "word": "Being a frog",
-    "description": "Crouch and hop with your hands forward."
+    "word": "Giraffe",
+    "description": "Stretch your neck and reach for high leaves."
   },
   {
-    "word": "Being a superhero",
-    "description": "Strike a heroic pose and pretend to fly."
+    "word": "Kangaroo",
+    "description": "Hop with both feet and hold tiny front paws."
   },
   {
-    "word": "Being a pirate",
-    "description": "Walk with a wooden leg and look through a telescope."
+    "word": "Crocodile",
+    "description": "Open and close your arms like giant jaws."
   },
   {
-    "word": "Being a magician",
-    "description": "Wave a wand and pull something from a hat."
+    "word": "Crab",
+    "description": "Walk sideways and pinch with your fingers."
   },
   {
-    "word": "Being a detective",
-    "description": "Search for clues with a magnifying glass."
+    "word": "Octopus",
+    "description": "Wave eight imaginary tentacles around."
   },
   {
-    "word": "Being a waiter",
-    "description": "Carry a tray and serve imaginary food."
+    "word": "Butterfly",
+    "description": "Flutter your hands like delicate wings."
   },
   {
-    "word": "Being a firefighter",
-    "description": "Spray a hose and climb a ladder."
+    "word": "Bee",
+    "description": "Buzz around silently and pretend to sting."
   },
   {
-    "word": "Being an astronaut",
-    "description": "Float slowly and plant a flag."
+    "word": "Spider",
+    "description": "Crawl your fingers like eight legs."
   },
   {
-    "word": "Being a dentist",
-    "description": "Inspect teeth and drill carefully."
+    "word": "Turtle",
+    "description": "Walk slowly and pull your head into a shell."
   },
   {
-    "word": "Being a teacher",
-    "description": "Write on a board and point to students."
+    "word": "Lion",
+    "description": "Shake your mane and roar without sound."
   },
   {
-    "word": "Being a DJ",
-    "description": "Turn knobs and scratch imaginary records."
+    "word": "Gorilla",
+    "description": "Beat your chest and walk on your knuckles."
   },
   {
-    "word": "Being a boxer",
-    "description": "Raise your fists, dodge and punch the air."
+    "word": "Duck",
+    "description": "Waddle and make a beak with your hand."
   },
   {
-    "word": "Being a goalkeeper",
-    "description": "Dive sideways to save an imaginary ball."
+    "word": "Fish",
+    "description": "Purse your lips and swim with your hands."
   },
   {
-    "word": "Being a chef",
-    "description": "Chop vegetables and stir a pan."
+    "word": "Shark",
+    "description": "Make a fin above your head and circle."
   },
   {
-    "word": "Being a baby",
-    "description": "Crawl, suck your thumb and cry silently."
+    "word": "Dolphin",
+    "description": "Leap and dive through imaginary waves."
   },
   {
-    "word": "Being a ghost",
-    "description": "Float with arms out and try to scare someone."
+    "word": "Owl",
+    "description": "Turn your head and blink with big eyes."
   },
   {
-    "word": "Being a vampire",
-    "description": "Show fangs with your fingers and pull up a cape."
+    "word": "Flamingo",
+    "description": "Stand on one leg and bend your neck."
   },
   {
-    "word": "Being a king",
-    "description": "Put on a crown and wave from a throne."
+    "word": "Squirrel",
+    "description": "Nibble a nut and hide it in your cheeks."
   },
   {
-    "word": "Being a statue",
-    "description": "Strike a pose and freeze completely."
+    "word": "Bear",
+    "description": "Stand tall, swipe with paws and lumber around."
   },
   {
-    "word": "Being a clown",
-    "description": "Juggle, trip and make exaggerated faces."
+    "word": "Mouse",
+    "description": "Nibble tiny bites and scurry quickly."
   },
   {
-    "word": "Being a ninja",
-    "description": "Sneak silently and throw imaginary stars."
+    "word": "Bicycle",
+    "description": "Pedal your feet and steer handlebars."
   },
   {
-    "word": "Being stuck in an elevator",
-    "description": "Press buttons, wait and try to open the doors."
+    "word": "Motorcycle",
+    "description": "Twist a throttle and lean into turns."
   },
   {
-    "word": "Walking in heavy wind",
-    "description": "Lean forward and shield your face from wind."
+    "word": "Car",
+    "description": "Turn a steering wheel and press imaginary pedals."
   },
   {
-    "word": "Walking on hot sand",
-    "description": "Hop quickly from foot to foot."
+    "word": "Bus",
+    "description": "Steer a big wheel and open passenger doors."
   },
   {
-    "word": "Walking through deep snow",
-    "description": "Lift your knees high through imaginary snow."
+    "word": "Train",
+    "description": "Pump your arms like wheels and pull a whistle."
   },
   {
-    "word": "Trying to catch a bus",
-    "description": "Run, wave your arm and watch the bus leave."
+    "word": "Airplane",
+    "description": "Spread your arms like wings and take off."
   },
   {
-    "word": "Trying not to laugh",
-    "description": "Cover your mouth and hold in laughter."
+    "word": "Helicopter",
+    "description": "Spin a finger overhead like a rotor."
   },
   {
-    "word": "Trying to stay awake",
-    "description": "Nod off, jerk awake and rub your eyes."
+    "word": "Boat",
+    "description": "Row with two imaginary oars."
   },
   {
-    "word": "Looking for your glasses",
-    "description": "Search around while squinting and touching your face."
+    "word": "Sailboat",
+    "description": "Pull ropes and lean with the wind."
   },
   {
-    "word": "Stepping on Lego",
-    "description": "Step down and react to sudden foot pain."
+    "word": "Submarine",
+    "description": "Look through a periscope and dive."
   },
   {
-    "word": "Eating something very spicy",
-    "description": "Fan your mouth and reach for water."
+    "word": "Rocket",
+    "description": "Count down on fingers and blast upward."
   },
   {
-    "word": "Drinking something too hot",
-    "description": "Take a sip, recoil and fan your tongue."
+    "word": "Tractor",
+    "description": "Grip a large wheel and bounce on a rough field."
   },
   {
-    "word": "Getting scared by a spider",
-    "description": "Spot a tiny spider and jump back."
+    "word": "Ambulance",
+    "description": "Drive fast and imitate a flashing siren with gestures."
   },
   {
-    "word": "Taking a difficult exam",
-    "description": "Write, erase, panic and check the clock."
+    "word": "Fire truck",
+    "description": "Climb a ladder and spray an imaginary hose."
   },
   {
-    "word": "Playing hide and seek",
-    "description": "Cover your eyes, count and search for someone."
+    "word": "Taxi",
+    "description": "Drive, stop and collect a fare."
   },
   {
-    "word": "Building a sandcastle",
-    "description": "Scoop sand into a bucket and shape towers."
+    "word": "Scooter",
+    "description": "Push with one foot and hold handlebars."
   },
   {
-    "word": "Pushing a broken car",
-    "description": "Lean into an imaginary car and push hard."
+    "word": "Skateboard",
+    "description": "Push off and balance on a board."
   },
   {
-    "word": "Getting caught in the rain",
-    "description": "Cover your head and run through heavy rain."
+    "word": "Roller skates",
+    "description": "Glide and wobble on wheeled shoes."
   },
   {
-    "word": "Being late for work",
-    "description": "Check your watch, grab your bag and rush."
+    "word": "Hot-air balloon",
+    "description": "Pull a burner cord and float slowly upward."
   },
   {
-    "word": "Trying to open a stuck jar",
-    "description": "Grip a lid, twist hard and strain."
+    "word": "Spaceship",
+    "description": "Press controls and float in zero gravity."
   },
   {
-    "word": "Trying to kill a mosquito",
-    "description": "Track a tiny insect and clap your hands at it."
+    "word": "Toothbrush",
+    "description": "Hold a small brush and scrub your teeth."
   },
   {
-    "word": "Hiccups",
-    "description": "Jolt repeatedly with sudden silent hiccups."
+    "word": "Hairbrush",
+    "description": "Brush long hair from top to bottom."
   },
   {
-    "word": "Hula hooping",
-    "description": "Rotate your hips to keep a hoop spinning."
+    "word": "Comb",
+    "description": "Pull a comb through your hair."
   },
   {
-    "word": "Arm wrestling",
-    "description": "Lock elbows on a table and push against an opponent."
+    "word": "Scissors",
+    "description": "Open and close two fingers to cut."
   },
   {
-    "word": "Playing chess",
-    "description": "Think hard and move pieces on a board."
+    "word": "Hammer",
+    "description": "Hold a handle and hammer a nail."
   },
   {
-    "word": "Walking a runway",
-    "description": "Walk confidently, pose and turn around."
+    "word": "Screwdriver",
+    "description": "Twist your wrist to tighten a screw."
   },
   {
-    "word": "Taking care of a baby",
-    "description": "Rock a baby, feed it and change a diaper."
+    "word": "Saw",
+    "description": "Move both hands back and forth cutting wood."
   },
   {
-    "word": "Wrapping a gift",
-    "description": "Fold paper, tape corners and tie a ribbon."
+    "word": "Shovel",
+    "description": "Dig into the ground and throw soil aside."
   },
   {
-    "word": "Blowing out birthday candles",
-    "description": "Make a wish and blow across a cake."
+    "word": "Broom",
+    "description": "Sweep the floor in long strokes."
   },
   {
-    "word": "Making popcorn",
-    "description": "Shake a pan and react as kernels pop."
+    "word": "Vacuum cleaner",
+    "description": "Push a heavy cleaner across the floor."
   },
   {
-    "word": "Eating a giant burger",
-    "description": "Hold a huge burger with both hands and take a bite."
+    "word": "Mop",
+    "description": "Dip and swish a mop over the floor."
   },
   {
-    "word": "Riding a roller coaster",
-    "description": "Hold a safety bar and react to sudden drops."
+    "word": "Umbrella",
+    "description": "Pop open a canopy and hold it over your head."
+  },
+  {
+    "word": "Backpack",
+    "description": "Put straps over both shoulders and walk."
+  },
+  {
+    "word": "Suitcase",
+    "description": "Pull a wheeled case by its handle."
+  },
+  {
+    "word": "Camera",
+    "description": "Look through a viewfinder and take photos."
+  },
+  {
+    "word": "Binoculars",
+    "description": "Hold two circles to your eyes and scan around."
+  },
+  {
+    "word": "Telescope",
+    "description": "Look through a long tube at the stars."
+  },
+  {
+    "word": "Magnifying glass",
+    "description": "Hold a lens close and inspect tiny details."
+  },
+  {
+    "word": "Telephone",
+    "description": "Hold a handset to your ear and dial."
+  },
+  {
+    "word": "Smartphone",
+    "description": "Swipe a screen and take a selfie."
+  },
+  {
+    "word": "Laptop",
+    "description": "Open a screen and type on a keyboard."
+  },
+  {
+    "word": "Keyboard",
+    "description": "Type rapidly with both hands."
+  },
+  {
+    "word": "Computer mouse",
+    "description": "Move a mouse and click repeatedly."
+  },
+  {
+    "word": "Television",
+    "description": "Point a remote and change channels."
+  },
+  {
+    "word": "Remote control",
+    "description": "Aim and press buttons at a screen."
+  },
+  {
+    "word": "Flashlight",
+    "description": "Hold a torch and search in the dark."
+  },
+  {
+    "word": "Clock",
+    "description": "Point to your wrist and move hands around a dial."
+  },
+  {
+    "word": "Alarm clock",
+    "description": "Wake suddenly and hit the snooze button."
+  },
+  {
+    "word": "Mirror",
+    "description": "Look at your reflection and fix your hair."
+  },
+  {
+    "word": "Chair",
+    "description": "Pretend to pull out a chair and sit down."
+  },
+  {
+    "word": "Table",
+    "description": "Wipe a tabletop and place dishes on it."
+  },
+  {
+    "word": "Bed",
+    "description": "Fluff a pillow, lie down and sleep."
+  },
+  {
+    "word": "Pillow",
+    "description": "Rest your cheek on folded hands."
+  },
+  {
+    "word": "Blanket",
+    "description": "Pull a cover over yourself and get cozy."
+  },
+  {
+    "word": "Door",
+    "description": "Turn a handle and push a door open."
+  },
+  {
+    "word": "Key",
+    "description": "Put a key in a lock and turn it."
+  },
+  {
+    "word": "Padlock",
+    "description": "Snap a lock shut and turn its key."
+  },
+  {
+    "word": "Ladder",
+    "description": "Climb rungs with alternating hands and feet."
+  },
+  {
+    "word": "Elevator",
+    "description": "Press a button and rise between floors."
+  },
+  {
+    "word": "Stairs",
+    "description": "Climb imaginary steps one by one."
+  },
+  {
+    "word": "Shopping cart",
+    "description": "Push a cart and put groceries inside."
+  },
+  {
+    "word": "Basket",
+    "description": "Carry a basket and fill it with items."
+  },
+  {
+    "word": "Balloon",
+    "description": "Blow into a balloon and tie it."
+  },
+  {
+    "word": "Kite",
+    "description": "Run with a string and look up at the sky."
+  },
+  {
+    "word": "Drum",
+    "description": "Hit imaginary drums with two sticks."
+  },
+  {
+    "word": "Guitar",
+    "description": "Strum strings and move fingers on the neck."
+  },
+  {
+    "word": "Piano",
+    "description": "Play keys with both hands."
+  },
+  {
+    "word": "Violin",
+    "description": "Hold an instrument under your chin and move a bow."
+  },
+  {
+    "word": "Trumpet",
+    "description": "Press valves and blow into a mouthpiece."
+  },
+  {
+    "word": "Flute",
+    "description": "Hold a flute sideways and move your fingers."
+  },
+  {
+    "word": "Microphone",
+    "description": "Hold a microphone and sing silently."
+  },
+  {
+    "word": "Headphones",
+    "description": "Put headphones over your ears and dance."
+  },
+  {
+    "word": "Football",
+    "description": "Dribble with your feet and kick a goal."
+  },
+  {
+    "word": "Basketball",
+    "description": "Bounce a ball and shoot into a hoop."
+  },
+  {
+    "word": "Tennis racket",
+    "description": "Swing a racket and serve a ball."
+  },
+  {
+    "word": "Baseball bat",
+    "description": "Hold a bat and swing at a pitch."
+  },
+  {
+    "word": "Bowling ball",
+    "description": "Swing a heavy ball and roll it down a lane."
+  },
+  {
+    "word": "Golf club",
+    "description": "Line up a shot and swing a club."
+  },
+  {
+    "word": "Fishing rod",
+    "description": "Cast a line and reel in a fish."
+  },
+  {
+    "word": "Jump rope",
+    "description": "Turn a rope and jump over it."
+  },
+  {
+    "word": "Hula hoop",
+    "description": "Spin a hoop around your waist."
+  },
+  {
+    "word": "Dumbbells",
+    "description": "Curl weights with both arms."
+  },
+  {
+    "word": "Skis",
+    "description": "Plant poles and glide downhill."
+  },
+  {
+    "word": "Snowboard",
+    "description": "Turn sideways and balance downhill."
+  },
+  {
+    "word": "Surfboard",
+    "description": "Paddle, stand up and ride a wave."
+  },
+  {
+    "word": "Parachute",
+    "description": "Jump and pull a cord to open a canopy."
+  },
+  {
+    "word": "Bicycle helmet",
+    "description": "Place a helmet on your head and buckle it."
+  },
+  {
+    "word": "Pizza",
+    "description": "Stretch dough, add toppings and take a slice."
+  },
+  {
+    "word": "Hamburger",
+    "description": "Hold a huge burger and take a bite."
+  },
+  {
+    "word": "Spaghetti",
+    "description": "Twirl noodles around a fork and slurp."
+  },
+  {
+    "word": "Ice cream",
+    "description": "Lick a cone before it melts."
+  },
+  {
+    "word": "Banana",
+    "description": "Peel a banana and eat it."
+  },
+  {
+    "word": "Apple",
+    "description": "Polish an apple and take a crunchy bite."
+  },
+  {
+    "word": "Watermelon",
+    "description": "Cut a large melon and eat a slice."
+  },
+  {
+    "word": "Popcorn",
+    "description": "Shake a pan and eat handfuls of popcorn."
+  },
+  {
+    "word": "Cake",
+    "description": "Frost a cake and blow out candles."
+  },
+  {
+    "word": "Sandwich",
+    "description": "Stack fillings between two slices of bread."
+  },
+  {
+    "word": "Soup",
+    "description": "Stir a bowl and sip from a spoon."
+  },
+  {
+    "word": "Egg",
+    "description": "Crack an egg and fry it in a pan."
+  },
+  {
+    "word": "Carrot",
+    "description": "Pull a carrot from the ground and munch."
+  },
+  {
+    "word": "Corn",
+    "description": "Hold a cob with both hands and eat across."
+  },
+  {
+    "word": "Lemon",
+    "description": "Squeeze a lemon and react to the sour taste."
+  },
+  {
+    "word": "Coffee cup",
+    "description": "Sip a hot drink and blow to cool it."
+  },
+  {
+    "word": "Teapot",
+    "description": "Pour tea from a spout into a cup."
+  },
+  {
+    "word": "Bottle",
+    "description": "Twist off a cap and drink."
+  },
+  {
+    "word": "Fork",
+    "description": "Twirl food around a fork and eat."
+  },
+  {
+    "word": "Spoon",
+    "description": "Scoop food and bring it to your mouth."
+  },
+  {
+    "word": "Knife",
+    "description": "Slice food carefully on a cutting board."
+  },
+  {
+    "word": "Toaster",
+    "description": "Push down a lever and catch popping toast."
+  },
+  {
+    "word": "Microwave",
+    "description": "Press buttons and wait for food to heat."
+  },
+  {
+    "word": "Refrigerator",
+    "description": "Open a tall door and reach for cold food."
+  },
+  {
+    "word": "Oven",
+    "description": "Put on mitts and pull out a hot tray."
+  },
+  {
+    "word": "Washing machine",
+    "description": "Load clothes, close the door and start a spin."
+  },
+  {
+    "word": "Iron",
+    "description": "Press a hot iron across a shirt."
+  },
+  {
+    "word": "Hair dryer",
+    "description": "Aim warm air at your hair and shake it dry."
+  },
+  {
+    "word": "Lipstick",
+    "description": "Twist up a lipstick and apply it."
+  },
+  {
+    "word": "Perfume",
+    "description": "Spray perfume on your neck and wrists."
+  },
+  {
+    "word": "Sunglasses",
+    "description": "Put on shades and pose."
+  },
+  {
+    "word": "Hat",
+    "description": "Place a hat on your head and adjust the brim."
+  },
+  {
+    "word": "Shoes",
+    "description": "Put on shoes and tie the laces."
+  },
+  {
+    "word": "Gloves",
+    "description": "Pull gloves over your fingers."
+  },
+  {
+    "word": "Ring",
+    "description": "Slide a ring onto your finger."
+  },
+  {
+    "word": "Necklace",
+    "description": "Fasten a chain behind your neck."
+  },
+  {
+    "word": "Watch",
+    "description": "Strap a watch on your wrist and check the time."
+  },
+  {
+    "word": "Book",
+    "description": "Open a book and turn its pages."
+  },
+  {
+    "word": "Pencil",
+    "description": "Write with a pencil and erase a mistake."
+  },
+  {
+    "word": "Paintbrush",
+    "description": "Dip a brush in paint and make strokes."
+  },
+  {
+    "word": "Paint roller",
+    "description": "Roll paint up and down a wall."
+  },
+  {
+    "word": "Broomstick",
+    "description": "Hold a long stick and sweep with it."
+  },
+  {
+    "word": "Soap",
+    "description": "Rub your hands together and rinse."
+  },
+  {
+    "word": "Towel",
+    "description": "Dry your face and hair."
+  },
+  {
+    "word": "Bathtub",
+    "description": "Step into a tub and scrub your arms."
+  },
+  {
+    "word": "Showerhead",
+    "description": "Stand under falling water and wash your hair."
+  },
+  {
+    "word": "Toilet",
+    "description": "Sit down and press a flush button."
+  },
+  {
+    "word": "Toilet paper",
+    "description": "Pull paper from a roll."
+  },
+  {
+    "word": "Trash can",
+    "description": "Lift a lid and throw something away."
+  },
+  {
+    "word": "Gift box",
+    "description": "Shake a wrapped box and open it."
+  },
+  {
+    "word": "Birthday candle",
+    "description": "Light a candle and blow it out."
+  },
+  {
+    "word": "Snowman",
+    "description": "Roll snowballs and stack them with a carrot nose."
+  },
+  {
+    "word": "Christmas tree",
+    "description": "Decorate a tall tree and place a star on top."
+  },
+  {
+    "word": "Tent",
+    "description": "Hammer pegs and crawl into a tent."
+  },
+  {
+    "word": "Campfire",
+    "description": "Rub your hands near a fire and roast a marshmallow."
+  },
+  {
+    "word": "Bicycle pump",
+    "description": "Push a pump handle up and down."
+  },
+  {
+    "word": "Wheelbarrow",
+    "description": "Lift handles and push a loaded barrow."
+  },
+  {
+    "word": "Traffic light",
+    "description": "Hold up a stop hand then wave cars forward."
+  },
+  {
+    "word": "Stop sign",
+    "description": "Hold your palm out and signal everyone to stop."
+  },
+  {
+    "word": "Flag",
+    "description": "Raise a flagpole and wave a flag."
+  },
+  {
+    "word": "Crown",
+    "description": "Put a crown on your head and wave royally."
+  },
+  {
+    "word": "Sword",
+    "description": "Draw a sword and swing it."
+  },
+  {
+    "word": "Shield",
+    "description": "Raise a shield to block an attack."
+  },
+  {
+    "word": "Bow and arrow",
+    "description": "Pull back a bowstring and release an arrow."
+  },
+  {
+    "word": "Treasure chest",
+    "description": "Unlock a heavy chest and lift its lid."
+  },
+  {
+    "word": "Pirate hat",
+    "description": "Put on a three-cornered hat and scan the horizon."
+  },
+  {
+    "word": "Magic wand",
+    "description": "Wave a wand and make something disappear."
+  },
+  {
+    "word": "Broomstick horse",
+    "description": "Ride an imaginary stick horse."
+  },
+  {
+    "word": "Rubber duck",
+    "description": "Squeeze a duck and make it float in a bath."
+  },
+  {
+    "word": "Teddy bear",
+    "description": "Hug a stuffed bear tightly."
+  },
+  {
+    "word": "Doll",
+    "description": "Cradle a doll and brush its hair."
+  },
+  {
+    "word": "Toy car",
+    "description": "Push a small car along the floor."
+  },
+  {
+    "word": "Yo-yo",
+    "description": "Flick a yo-yo down and pull it back up."
+  },
+  {
+    "word": "Frisbee",
+    "description": "Throw a flat disc and catch it."
+  },
+  {
+    "word": "Dice",
+    "description": "Shake dice in your hand and roll them."
+  },
+  {
+    "word": "Playing cards",
+    "description": "Shuffle cards and deal them out."
+  },
+  {
+    "word": "Chess piece",
+    "description": "Move a piece on a board and think carefully."
+  },
+  {
+    "word": "Jigsaw puzzle",
+    "description": "Fit small puzzle pieces together."
+  },
+  {
+    "word": "Rubik's cube",
+    "description": "Twist the sides of a cube repeatedly."
+  },
+  {
+    "word": "Magnets",
+    "description": "Pull two magnets together and struggle to separate them."
+  },
+  {
+    "word": "Compass",
+    "description": "Hold a compass flat and turn to find north."
+  },
+  {
+    "word": "Map",
+    "description": "Unfold a large map and trace a route."
+  },
+  {
+    "word": "Globe",
+    "description": "Spin a globe and point to a country."
+  },
+  {
+    "word": "Hourglass",
+    "description": "Turn an hourglass over and watch sand fall."
+  },
+  {
+    "word": "Bubbles",
+    "description": "Blow soap bubbles and pop them."
+  },
+  {
+    "word": "Watering can",
+    "description": "Tilt a can and water plants."
+  },
+  {
+    "word": "Flower",
+    "description": "Smell a flower and open your fingers like petals."
+  },
+  {
+    "word": "Tree",
+    "description": "Stand tall with arms spreading like branches."
+  },
+  {
+    "word": "Cactus",
+    "description": "Hold your arms like prickly cactus branches."
+  },
+  {
+    "word": "Mushroom",
+    "description": "Crouch low and make a cap above your head."
+  },
+  {
+    "word": "Sunflower",
+    "description": "Open your arms like petals and turn toward the sun."
+  },
+  {
+    "word": "Volcano",
+    "description": "Build a mountain with your arms and mime an eruption."
+  },
+  {
+    "word": "Mountain",
+    "description": "Make a tall peak with your hands and pretend to climb."
+  },
+  {
+    "word": "Rainbow",
+    "description": "Draw a big curved arc across the sky."
+  },
+  {
+    "word": "Cloud",
+    "description": "Make a fluffy shape and float your hands along."
+  },
+  {
+    "word": "Sun",
+    "description": "Make a large circle and spread rays with your fingers."
+  },
+  {
+    "word": "Moon",
+    "description": "Make a crescent with your arms and point upward."
+  },
+  {
+    "word": "Star",
+    "description": "Spread fingers like points and twinkle."
+  },
+  {
+    "word": "Snowflake",
+    "description": "Flutter your fingers down as falling snow."
+  },
+  {
+    "word": "Raindrop",
+    "description": "Let one finger fall from the sky and splash."
+  },
+  {
+    "word": "Lightning bolt",
+    "description": "Zigzag your arm down suddenly."
+  },
+  {
+    "word": "Wave",
+    "description": "Roll your arms like ocean waves."
+  },
+  {
+    "word": "Sandcastle",
+    "description": "Fill a bucket with sand and turn it over."
+  },
+  {
+    "word": "Shell",
+    "description": "Hold a shell to your ear and listen."
+  },
+  {
+    "word": "Seashell",
+    "description": "Pick up a shell and hold it to your ear."
+  },
+  {
+    "word": "Anchor",
+    "description": "Drop a heavy anchor and pull up its chain."
+  },
+  {
+    "word": "Lighthouse",
+    "description": "Sweep an imaginary beam of light across the sea."
+  },
+  {
+    "word": "Bridge",
+    "description": "Form an arch with your arms and walk across."
+  },
+  {
+    "word": "Castle",
+    "description": "Build tall towers with your hands and lower a drawbridge."
+  },
+  {
+    "word": "Clock tower",
+    "description": "Point high above and mime a large clock striking."
+  },
+  {
+    "word": "Statue",
+    "description": "Strike a pose and freeze without moving."
+  },
+  {
+    "word": "Robot",
+    "description": "Move with stiff mechanical joints."
+  },
+  {
+    "word": "Dinosaur",
+    "description": "Stomp with tiny arms and a long tail."
+  },
+  {
+    "word": "Dragon",
+    "description": "Flap huge wings and breathe imaginary fire."
+  },
+  {
+    "word": "Unicorn",
+    "description": "Make a horn on your forehead and gallop."
+  },
+  {
+    "word": "Mermaid",
+    "description": "Swim with your legs together like a tail."
+  },
+  {
+    "word": "Ghost",
+    "description": "Float around under an imaginary sheet."
+  },
+  {
+    "word": "Vampire",
+    "description": "Raise a cape and show pointed fangs."
+  },
+  {
+    "word": "Skeleton",
+    "description": "Move like loose bones and rattle your arms."
+  },
+  {
+    "word": "Snow globe",
+    "description": "Shake a globe and watch snow swirl inside."
   }
 ]

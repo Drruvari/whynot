@@ -8,10 +8,13 @@ import { MIME_WORDS } from "./words"
 
 type Phase = "ready" | "acting" | "result"
 const DURATIONS = [30, 60, 90, 120] as const
+const MAX_DURATION = 30 * 60
 
 export function PantomimeGame() {
   const players = useSession((state) => state.players)
   const [duration, setDuration] = useState(60)
+  const [customMinutes, setCustomMinutes] = useState("1")
+  const [customSeconds, setCustomSeconds] = useState("0")
   const [phase, setPhase] = useState<Phase>("ready")
   const [turn, setTurn] = useState(0)
   const [used, setUsed] = useState<number[]>([])
@@ -37,6 +40,20 @@ export function PantomimeGame() {
     const interval = window.setInterval(tick, 200)
     return () => window.clearInterval(interval)
   }, [phase, turn])
+
+  function setCustomTime(minutes: string, seconds: string) {
+    setCustomMinutes(minutes)
+    setCustomSeconds(seconds)
+    if (minutes.trim() === "" && seconds.trim() === "") return
+    const m = Number(minutes || 0)
+    const s = Number(seconds || 0)
+    if (!Number.isInteger(m) || !Number.isInteger(s) || m < 0 || s < 0 || s > 59) return
+    const total = m * 60 + s
+    if (total >= 5 && total <= MAX_DURATION) {
+      setDuration(total)
+      setRemaining(total)
+    }
+  }
 
   function begin() {
     if (!actor) return
@@ -110,8 +127,14 @@ export function PantomimeGame() {
                 <div className="w-full border-t border-foreground/15 pt-4">
                   <p className="mb-3 text-xs font-bold tracking-widest text-muted-foreground">ROUND TIMER</p>
                   <div className="grid grid-cols-4 gap-2">
-                    {DURATIONS.map((n) => <button key={n} type="button" onClick={() => { setDuration(n); setRemaining(n) }} className={`min-h-12 border-2 text-sm font-bold ${duration === n ? "border-warn bg-warn text-black" : "border-foreground/20 bg-elevated"}`}>{n < 60 ? `${n}s` : `${n / 60}m`}</button>)}
+                    {DURATIONS.map((n) => <button key={n} type="button" onClick={() => { setDuration(n); setRemaining(n); setCustomMinutes(String(Math.floor(n / 60))); setCustomSeconds(String(n % 60)) }} className={`min-h-12 border-2 text-sm font-bold ${duration === n ? "border-warn bg-warn text-black" : "border-foreground/20 bg-elevated"}`}>{n < 60 ? `${n}s` : `${n / 60}m`}</button>)}
                   </div>
+                  <div className="mt-3 flex items-center justify-center gap-2">
+                    <label className="flex items-center gap-2 text-xs font-bold text-muted-foreground">MIN <input aria-label="Custom timer minutes" type="number" min="0" max="30" inputMode="numeric" value={customMinutes} onChange={(e) => setCustomTime(e.target.value, customSeconds)} className="h-11 w-16 border-2 border-foreground/25 bg-card px-2 text-center text-base font-bold text-foreground" /></label>
+                    <span className="font-pixel text-xl">:</span>
+                    <label className="flex items-center gap-2 text-xs font-bold text-muted-foreground">SEC <input aria-label="Custom timer seconds" type="number" min="0" max="59" inputMode="numeric" value={customSeconds} onChange={(e) => setCustomTime(customMinutes, e.target.value)} className="h-11 w-16 border-2 border-foreground/25 bg-card px-2 text-center text-base font-bold text-foreground" /></label>
+                  </div>
+                  <p className="mt-2 text-xs text-muted-foreground">Custom: 5 seconds to 30 minutes · Selected: {Math.floor(duration / 60)}m {duration % 60}s</p>
                 </div>
                 <button type="button" onClick={() => setShowWord((v) => !v)} className="w-full border-2 border-foreground/25 bg-elevated p-4">
                   <p className="text-xs font-bold tracking-widest text-muted-foreground">{showWord ? "YOUR WORD" : "SECRET WORD"}</p>
