@@ -1,951 +1,947 @@
-/** Concrete objects, animals, foods and places with gesture hints. */
+/** Unique, concrete Pantomime words with plain-language definitions for players. */
 export const MIME_WORDS: readonly { word: string; description: string }[] = [
   {
     "word": "Elephant",
-    "description": "Swing one arm like a trunk and stomp heavily."
+    "description": "A very large gray animal with a long trunk and big ears."
   },
   {
     "word": "Monkey",
-    "description": "Scratch your head and pretend to climb a tree."
+    "description": "A playful primate that climbs trees and uses its hands to grab things."
   },
   {
     "word": "Penguin",
-    "description": "Waddle with arms pressed against your sides."
+    "description": "A black-and-white bird that cannot fly but swims very well."
   },
   {
     "word": "Rabbit",
-    "description": "Hop and hold two fingers up as long ears."
+    "description": "A small furry animal with long ears and strong jumping legs."
   },
   {
     "word": "Frog",
-    "description": "Crouch low and jump forward."
+    "description": "A small amphibian with long back legs that lives near water."
   },
   {
     "word": "Snake",
-    "description": "Slither your arms and sway your body."
+    "description": "A long, legless reptile that moves by slithering."
   },
   {
     "word": "Chicken",
-    "description": "Flap your elbows and peck at the ground."
+    "description": "A farm bird raised for its eggs and meat."
   },
   {
     "word": "Cat",
-    "description": "Stretch, lick your paw and creep silently."
+    "description": "A small pet with whiskers, claws and a long tail."
   },
   {
     "word": "Dog",
-    "description": "Pant, wag an imaginary tail and fetch a ball."
+    "description": "A common pet known for barking and loyalty."
   },
   {
     "word": "Horse",
-    "description": "Gallop in place and pretend to neigh silently."
+    "description": "A large four-legged animal that people can ride."
   },
   {
     "word": "Giraffe",
-    "description": "Stretch your neck and reach for high leaves."
+    "description": "A tall African animal with a very long neck and spotted coat."
   },
   {
     "word": "Kangaroo",
-    "description": "Hop with both feet and hold tiny front paws."
+    "description": "An Australian animal that jumps on strong hind legs and carries babies in a pouch."
   },
   {
     "word": "Crocodile",
-    "description": "Open and close your arms like giant jaws."
+    "description": "A large reptile with powerful jaws that lives in rivers and swamps."
   },
   {
     "word": "Crab",
-    "description": "Walk sideways and pinch with your fingers."
+    "description": "A sea animal with a hard shell, claws and sideways movement."
   },
   {
     "word": "Octopus",
-    "description": "Wave eight imaginary tentacles around."
+    "description": "A sea creature with eight flexible arms and no bones."
   },
   {
     "word": "Butterfly",
-    "description": "Flutter your hands like delicate wings."
+    "description": "A flying insect with large colorful wings."
   },
   {
     "word": "Bee",
-    "description": "Buzz around silently and pretend to sting."
+    "description": "A flying insect that gathers nectar and makes honey."
   },
   {
     "word": "Spider",
-    "description": "Crawl your fingers like eight legs."
+    "description": "A small eight-legged creature that often spins webs."
   },
   {
     "word": "Turtle",
-    "description": "Walk slowly and pull your head into a shell."
+    "description": "A reptile with a hard protective shell around its body."
   },
   {
     "word": "Lion",
-    "description": "Shake your mane and roar without sound."
+    "description": "A large wild cat; males usually have a mane."
   },
   {
     "word": "Gorilla",
-    "description": "Beat your chest and walk on your knuckles."
+    "description": "A very large, powerful ape that lives in African forests."
   },
   {
     "word": "Duck",
-    "description": "Waddle and make a beak with your hand."
+    "description": "A water bird with a broad bill and webbed feet."
   },
   {
     "word": "Fish",
-    "description": "Purse your lips and swim with your hands."
+    "description": "An animal that lives in water and breathes through gills."
   },
   {
     "word": "Shark",
-    "description": "Make a fin above your head and circle."
+    "description": "A large predatory fish with sharp teeth."
   },
   {
     "word": "Dolphin",
-    "description": "Leap and dive through imaginary waves."
+    "description": "An intelligent sea mammal that breathes air and swims quickly."
   },
   {
     "word": "Owl",
-    "description": "Turn your head and blink with big eyes."
+    "description": "A bird of prey with large eyes, often active at night."
   },
   {
     "word": "Flamingo",
-    "description": "Stand on one leg and bend your neck."
+    "description": "A tall pink wading bird with long legs and a curved neck."
   },
   {
     "word": "Squirrel",
-    "description": "Nibble a nut and hide it in your cheeks."
+    "description": "A small bushy-tailed rodent that climbs trees and stores nuts."
   },
   {
     "word": "Bear",
-    "description": "Stand tall, swipe with paws and lumber around."
+    "description": "A large furry mammal with strong paws and a short tail."
   },
   {
     "word": "Mouse",
-    "description": "Nibble tiny bites and scurry quickly."
+    "description": "A tiny rodent with a pointed nose and a long tail."
   },
   {
     "word": "Bicycle",
-    "description": "Pedal your feet and steer handlebars."
+    "description": "A two-wheeled vehicle moved by pedaling."
   },
   {
     "word": "Motorcycle",
-    "description": "Twist a throttle and lean into turns."
+    "description": "A two-wheeled vehicle powered by an engine."
   },
   {
     "word": "Car",
-    "description": "Turn a steering wheel and press imaginary pedals."
+    "description": "A road vehicle with four wheels that carries passengers."
   },
   {
     "word": "Bus",
-    "description": "Steer a big wheel and open passenger doors."
+    "description": "A large road vehicle that carries many passengers."
   },
   {
     "word": "Train",
-    "description": "Pump your arms like wheels and pull a whistle."
+    "description": "A series of connected vehicles that travel on railway tracks."
   },
   {
     "word": "Airplane",
-    "description": "Spread your arms like wings and take off."
+    "description": "A powered aircraft with wings that flies through the sky."
   },
   {
     "word": "Helicopter",
-    "description": "Spin a finger overhead like a rotor."
+    "description": "An aircraft lifted by rotating blades above its body."
   },
   {
     "word": "Boat",
-    "description": "Row with two imaginary oars."
+    "description": "A small vessel used to travel on water."
   },
   {
     "word": "Sailboat",
-    "description": "Pull ropes and lean with the wind."
+    "description": "A boat moved mainly by wind pushing its sails."
   },
   {
     "word": "Submarine",
-    "description": "Look through a periscope and dive."
+    "description": "A vessel designed to travel underwater."
   },
   {
     "word": "Rocket",
-    "description": "Count down on fingers and blast upward."
+    "description": "A vehicle propelled by engines, often used for space travel."
   },
   {
     "word": "Tractor",
-    "description": "Grip a large wheel and bounce on a rough field."
+    "description": "A powerful farm vehicle used to pull equipment."
   },
   {
     "word": "Ambulance",
-    "description": "Drive fast and imitate a flashing siren with gestures."
+    "description": "An emergency vehicle that transports sick or injured people."
   },
   {
     "word": "Fire truck",
-    "description": "Climb a ladder and spray an imaginary hose."
+    "description": "An emergency vehicle carrying firefighters and firefighting equipment."
   },
   {
     "word": "Taxi",
-    "description": "Drive, stop and collect a fare."
+    "description": "A car hired to take passengers to a destination for a fare."
   },
   {
     "word": "Scooter",
-    "description": "Push with one foot and hold handlebars."
+    "description": "A small two-wheeled vehicle, often ridden standing up."
   },
   {
     "word": "Skateboard",
-    "description": "Push off and balance on a board."
+    "description": "A short board with four wheels used for riding and tricks."
   },
   {
     "word": "Roller skates",
-    "description": "Glide and wobble on wheeled shoes."
+    "description": "Shoes fitted with wheels for gliding over smooth ground."
   },
   {
     "word": "Hot-air balloon",
-    "description": "Pull a burner cord and float slowly upward."
+    "description": "A large balloon carrying a basket, lifted by heated air."
   },
   {
     "word": "Spaceship",
-    "description": "Press controls and float in zero gravity."
+    "description": "A vehicle designed to travel beyond Earth's atmosphere."
   },
   {
     "word": "Toothbrush",
-    "description": "Hold a small brush and scrub your teeth."
+    "description": "A small brush used to clean teeth."
   },
   {
     "word": "Hairbrush",
-    "description": "Brush long hair from top to bottom."
+    "description": "A brush used to smooth and untangle hair."
   },
   {
     "word": "Comb",
-    "description": "Pull a comb through your hair."
+    "description": "A flat tool with teeth used to arrange hair."
   },
   {
     "word": "Scissors",
-    "description": "Open and close two fingers to cut."
+    "description": "A cutting tool with two blades joined in the middle."
   },
   {
     "word": "Hammer",
-    "description": "Hold a handle and hammer a nail."
+    "description": "A hand tool with a heavy head used to drive nails."
   },
   {
     "word": "Screwdriver",
-    "description": "Twist your wrist to tighten a screw."
+    "description": "A tool used to tighten or loosen screws."
   },
   {
     "word": "Saw",
-    "description": "Move both hands back and forth cutting wood."
+    "description": "A tool with a toothed blade used for cutting materials."
   },
   {
     "word": "Shovel",
-    "description": "Dig into the ground and throw soil aside."
+    "description": "A tool with a broad blade used for digging or moving material."
   },
   {
     "word": "Broom",
-    "description": "Sweep the floor in long strokes."
+    "description": "A long-handled tool with bristles used for sweeping."
   },
   {
     "word": "Vacuum cleaner",
-    "description": "Push a heavy cleaner across the floor."
+    "description": "An electric machine that removes dirt by suction."
   },
   {
     "word": "Mop",
-    "description": "Dip and swish a mop over the floor."
+    "description": "A cleaning tool used with water to wash floors."
   },
   {
     "word": "Umbrella",
-    "description": "Pop open a canopy and hold it over your head."
+    "description": "A folding cover held overhead to protect from rain or sun."
   },
   {
     "word": "Backpack",
-    "description": "Put straps over both shoulders and walk."
+    "description": "A bag carried on the back using shoulder straps."
   },
   {
     "word": "Suitcase",
-    "description": "Pull a wheeled case by its handle."
+    "description": "A travel case used to carry clothes and belongings."
   },
   {
     "word": "Camera",
-    "description": "Look through a viewfinder and take photos."
+    "description": "A device used to take photographs or record videos."
   },
   {
     "word": "Binoculars",
-    "description": "Hold two circles to your eyes and scan around."
+    "description": "Two linked telescopes used to see distant objects with both eyes."
   },
   {
     "word": "Telescope",
-    "description": "Look through a long tube at the stars."
+    "description": "An instrument used to see distant objects such as stars."
   },
   {
     "word": "Magnifying glass",
-    "description": "Hold a lens close and inspect tiny details."
+    "description": "A handheld lens that makes small things look larger."
   },
   {
     "word": "Telephone",
-    "description": "Hold a handset to your ear and dial."
+    "description": "A device used to speak with people over long distances."
   },
   {
     "word": "Smartphone",
-    "description": "Swipe a screen and take a selfie."
+    "description": "A mobile phone that also runs apps and connects to the internet."
   },
   {
     "word": "Laptop",
-    "description": "Open a screen and type on a keyboard."
+    "description": "A portable computer with a screen and keyboard."
   },
   {
     "word": "Keyboard",
-    "description": "Type rapidly with both hands."
+    "description": "A set of keys used to type into a computer."
   },
   {
     "word": "Computer mouse",
-    "description": "Move a mouse and click repeatedly."
+    "description": "A handheld device used to move a pointer on a computer screen."
   },
   {
     "word": "Television",
-    "description": "Point a remote and change channels."
+    "description": "An electronic screen used to watch programs and videos."
   },
   {
     "word": "Remote control",
-    "description": "Aim and press buttons at a screen."
+    "description": "A handheld device used to operate equipment from a distance."
   },
   {
     "word": "Flashlight",
-    "description": "Hold a torch and search in the dark."
+    "description": "A portable electric light powered by batteries."
   },
   {
     "word": "Clock",
-    "description": "Point to your wrist and move hands around a dial."
+    "description": "A device that shows the current time."
   },
   {
     "word": "Alarm clock",
-    "description": "Wake suddenly and hit the snooze button."
+    "description": "A clock that makes a sound at a chosen time."
   },
   {
     "word": "Mirror",
-    "description": "Look at your reflection and fix your hair."
+    "description": "A reflective surface that shows your image."
   },
   {
     "word": "Chair",
-    "description": "Pretend to pull out a chair and sit down."
+    "description": "A piece of furniture designed for one person to sit on."
   },
   {
     "word": "Table",
-    "description": "Wipe a tabletop and place dishes on it."
+    "description": "Furniture with a flat raised surface supported by legs."
   },
   {
     "word": "Bed",
-    "description": "Fluff a pillow, lie down and sleep."
+    "description": "Furniture used for sleeping or resting."
   },
   {
     "word": "Pillow",
-    "description": "Rest your cheek on folded hands."
+    "description": "A soft cushion that supports the head while sleeping."
   },
   {
     "word": "Blanket",
-    "description": "Pull a cover over yourself and get cozy."
+    "description": "A large piece of fabric used to keep warm."
   },
   {
     "word": "Door",
-    "description": "Turn a handle and push a door open."
+    "description": "A movable panel used to open or close an entrance."
   },
   {
     "word": "Key",
-    "description": "Put a key in a lock and turn it."
+    "description": "A shaped piece of metal used to operate a lock."
   },
   {
     "word": "Padlock",
-    "description": "Snap a lock shut and turn its key."
+    "description": "A portable lock with a curved metal bar."
   },
   {
     "word": "Ladder",
-    "description": "Climb rungs with alternating hands and feet."
+    "description": "A climbing tool with two side rails and steps between them."
   },
   {
     "word": "Elevator",
-    "description": "Press a button and rise between floors."
+    "description": "A moving cabin that carries people between floors."
   },
   {
     "word": "Stairs",
-    "description": "Climb imaginary steps one by one."
+    "description": "A series of steps connecting different heights."
   },
   {
     "word": "Shopping cart",
-    "description": "Push a cart and put groceries inside."
+    "description": "A wheeled basket used to carry items in a store."
   },
   {
     "word": "Basket",
-    "description": "Carry a basket and fill it with items."
+    "description": "An open container, often woven, used for carrying things."
   },
   {
     "word": "Balloon",
-    "description": "Blow into a balloon and tie it."
+    "description": "A thin flexible bag filled with air or gas."
   },
   {
     "word": "Kite",
-    "description": "Run with a string and look up at the sky."
+    "description": "A lightweight object flown in the wind on a string."
   },
   {
     "word": "Drum",
-    "description": "Hit imaginary drums with two sticks."
+    "description": "A musical instrument played by striking a stretched surface."
   },
   {
     "word": "Guitar",
-    "description": "Strum strings and move fingers on the neck."
+    "description": "A stringed musical instrument played by plucking or strumming."
   },
   {
     "word": "Piano",
-    "description": "Play keys with both hands."
+    "description": "A large keyboard instrument whose keys make hammers strike strings."
   },
   {
     "word": "Violin",
-    "description": "Hold an instrument under your chin and move a bow."
+    "description": "A small string instrument played with a bow."
   },
   {
     "word": "Trumpet",
-    "description": "Press valves and blow into a mouthpiece."
+    "description": "A brass musical instrument played by blowing through a mouthpiece."
   },
   {
     "word": "Flute",
-    "description": "Hold a flute sideways and move your fingers."
+    "description": "A wind instrument played by blowing across an opening."
   },
   {
     "word": "Microphone",
-    "description": "Hold a microphone and sing silently."
+    "description": "A device that converts sound into an electrical signal."
   },
   {
     "word": "Headphones",
-    "description": "Put headphones over your ears and dance."
+    "description": "Speakers worn over or inside the ears for private listening."
   },
   {
     "word": "Football",
-    "description": "Dribble with your feet and kick a goal."
+    "description": "A ball used in the sport where players mainly kick it."
   },
   {
     "word": "Basketball",
-    "description": "Bounce a ball and shoot into a hoop."
+    "description": "A large ball used in a game of shooting into raised hoops."
   },
   {
     "word": "Tennis racket",
-    "description": "Swing a racket and serve a ball."
+    "description": "A handled frame with strings used to hit a tennis ball."
   },
   {
     "word": "Baseball bat",
-    "description": "Hold a bat and swing at a pitch."
+    "description": "A wooden or metal club used to hit a baseball."
   },
   {
     "word": "Bowling ball",
-    "description": "Swing a heavy ball and roll it down a lane."
+    "description": "A heavy ball with finger holes used to knock down pins."
   },
   {
     "word": "Golf club",
-    "description": "Line up a shot and swing a club."
+    "description": "A long-handled stick used to strike a golf ball."
   },
   {
     "word": "Fishing rod",
-    "description": "Cast a line and reel in a fish."
+    "description": "A flexible pole used to cast a line and catch fish."
   },
   {
     "word": "Jump rope",
-    "description": "Turn a rope and jump over it."
+    "description": "A rope swung under the feet during jumping exercise."
   },
   {
     "word": "Hula hoop",
-    "description": "Spin a hoop around your waist."
+    "description": "A large plastic ring spun around the waist or limbs."
   },
   {
     "word": "Dumbbells",
-    "description": "Curl weights with both arms."
+    "description": "Short handheld weights used for strength exercises."
   },
   {
     "word": "Skis",
-    "description": "Plant poles and glide downhill."
+    "description": "Long narrow boards worn on the feet to glide over snow."
   },
   {
     "word": "Snowboard",
-    "description": "Turn sideways and balance downhill."
+    "description": "A single wide board ridden sideways down snowy slopes."
   },
   {
     "word": "Surfboard",
-    "description": "Paddle, stand up and ride a wave."
+    "description": "A long floating board used to ride ocean waves."
   },
   {
     "word": "Parachute",
-    "description": "Jump and pull a cord to open a canopy."
+    "description": "A fabric canopy that slows a fall through the air."
   },
   {
     "word": "Bicycle helmet",
-    "description": "Place a helmet on your head and buckle it."
+    "description": "A protective hard hat worn while cycling."
   },
   {
     "word": "Pizza",
-    "description": "Stretch dough, add toppings and take a slice."
+    "description": "A baked flatbread topped with tomato sauce, cheese and other ingredients."
   },
   {
     "word": "Hamburger",
-    "description": "Hold a huge burger and take a bite."
+    "description": "A sandwich made with a cooked meat patty inside a bun."
   },
   {
     "word": "Spaghetti",
-    "description": "Twirl noodles around a fork and slurp."
+    "description": "Long thin strands of Italian pasta."
   },
   {
     "word": "Ice cream",
-    "description": "Lick a cone before it melts."
+    "description": "A sweet frozen dessert made from milk or similar ingredients."
   },
   {
     "word": "Banana",
-    "description": "Peel a banana and eat it."
+    "description": "A long curved fruit with yellow skin when ripe."
   },
   {
     "word": "Apple",
-    "description": "Polish an apple and take a crunchy bite."
+    "description": "A round fruit with crisp flesh and red, green or yellow skin."
   },
   {
     "word": "Watermelon",
-    "description": "Cut a large melon and eat a slice."
+    "description": "A large green-skinned fruit with juicy red or pink flesh."
   },
   {
     "word": "Popcorn",
-    "description": "Shake a pan and eat handfuls of popcorn."
+    "description": "Corn kernels that puff up when heated."
   },
   {
     "word": "Cake",
-    "description": "Frost a cake and blow out candles."
+    "description": "A sweet baked dessert often served at celebrations."
   },
   {
     "word": "Sandwich",
-    "description": "Stack fillings between two slices of bread."
+    "description": "Food made by placing fillings between slices of bread."
   },
   {
     "word": "Soup",
-    "description": "Stir a bowl and sip from a spoon."
+    "description": "A liquid dish made by cooking ingredients in broth or water."
   },
   {
     "word": "Egg",
-    "description": "Crack an egg and fry it in a pan."
+    "description": "An oval food laid by birds, commonly eaten boiled or fried."
   },
   {
     "word": "Carrot",
-    "description": "Pull a carrot from the ground and munch."
+    "description": "An orange root vegetable that grows underground."
   },
   {
     "word": "Corn",
-    "description": "Hold a cob with both hands and eat across."
+    "description": "A cereal plant with rows of edible kernels on a cob."
   },
   {
     "word": "Lemon",
-    "description": "Squeeze a lemon and react to the sour taste."
+    "description": "A yellow citrus fruit with a sour taste."
   },
   {
     "word": "Coffee cup",
-    "description": "Sip a hot drink and blow to cool it."
+    "description": "A small drinking vessel used for coffee."
   },
   {
     "word": "Teapot",
-    "description": "Pour tea from a spout into a cup."
+    "description": "A pot with a lid, handle and spout used to brew tea."
   },
   {
     "word": "Bottle",
-    "description": "Twist off a cap and drink."
+    "description": "A narrow-necked container used to hold liquids."
   },
   {
     "word": "Fork",
-    "description": "Twirl food around a fork and eat."
+    "description": "An eating utensil with several pointed prongs."
   },
   {
     "word": "Spoon",
-    "description": "Scoop food and bring it to your mouth."
+    "description": "An eating utensil with a small rounded bowl."
   },
   {
     "word": "Knife",
-    "description": "Slice food carefully on a cutting board."
+    "description": "A tool with a sharp blade used for cutting."
   },
   {
     "word": "Toaster",
-    "description": "Push down a lever and catch popping toast."
+    "description": "An electric appliance that browns slices of bread."
   },
   {
     "word": "Microwave",
-    "description": "Press buttons and wait for food to heat."
+    "description": "An appliance that heats food using electromagnetic waves."
   },
   {
     "word": "Refrigerator",
-    "description": "Open a tall door and reach for cold food."
+    "description": "An appliance that keeps food and drinks cold."
   },
   {
     "word": "Oven",
-    "description": "Put on mitts and pull out a hot tray."
+    "description": "An enclosed appliance used for baking and roasting."
   },
   {
     "word": "Washing machine",
-    "description": "Load clothes, close the door and start a spin."
+    "description": "An appliance that washes clothes automatically."
   },
   {
     "word": "Iron",
-    "description": "Press a hot iron across a shirt."
+    "description": "A heated appliance used to remove wrinkles from clothes."
   },
   {
     "word": "Hair dryer",
-    "description": "Aim warm air at your hair and shake it dry."
+    "description": "An electric device that blows warm air to dry hair."
   },
   {
     "word": "Lipstick",
-    "description": "Twist up a lipstick and apply it."
+    "description": "Colored makeup applied to the lips."
   },
   {
     "word": "Perfume",
-    "description": "Spray perfume on your neck and wrists."
+    "description": "A scented liquid worn on the skin or clothing."
   },
   {
     "word": "Sunglasses",
-    "description": "Put on shades and pose."
+    "description": "Darkened glasses that protect the eyes from sunlight."
   },
   {
     "word": "Hat",
-    "description": "Place a hat on your head and adjust the brim."
+    "description": "A covering worn on the head."
   },
   {
     "word": "Shoes",
-    "description": "Put on shoes and tie the laces."
+    "description": "Footwear that protects the feet when walking."
   },
   {
     "word": "Gloves",
-    "description": "Pull gloves over your fingers."
+    "description": "Clothing worn on the hands and fingers."
   },
   {
     "word": "Ring",
-    "description": "Slide a ring onto your finger."
+    "description": "A small circular piece of jewelry worn on a finger."
   },
   {
     "word": "Necklace",
-    "description": "Fasten a chain behind your neck."
+    "description": "Jewelry worn around the neck."
   },
   {
     "word": "Watch",
-    "description": "Strap a watch on your wrist and check the time."
+    "description": "A small timepiece worn on the wrist."
   },
   {
     "word": "Book",
-    "description": "Open a book and turn its pages."
+    "description": "A collection of written or printed pages bound together."
   },
   {
     "word": "Pencil",
-    "description": "Write with a pencil and erase a mistake."
+    "description": "A writing tool with a graphite core that can be erased."
   },
   {
     "word": "Paintbrush",
-    "description": "Dip a brush in paint and make strokes."
+    "description": "A brush used to apply paint to a surface."
   },
   {
     "word": "Paint roller",
-    "description": "Roll paint up and down a wall."
+    "description": "A cylindrical tool used to spread paint over large areas."
   },
   {
     "word": "Broomstick",
-    "description": "Hold a long stick and sweep with it."
+    "description": "The long handle of a broom, sometimes imagined as a flying stick."
   },
   {
     "word": "Soap",
-    "description": "Rub your hands together and rinse."
+    "description": "A substance used with water to clean skin or objects."
   },
   {
     "word": "Towel",
-    "description": "Dry your face and hair."
+    "description": "An absorbent cloth used for drying the body or hands."
   },
   {
     "word": "Bathtub",
-    "description": "Step into a tub and scrub your arms."
+    "description": "A large container filled with water for bathing."
   },
   {
     "word": "Showerhead",
-    "description": "Stand under falling water and wash your hair."
+    "description": "A bathroom fitting that sprays water for washing."
   },
   {
     "word": "Toilet",
-    "description": "Sit down and press a flush button."
+    "description": "A bathroom fixture used for disposing of bodily waste."
   },
   {
     "word": "Toilet paper",
-    "description": "Pull paper from a roll."
+    "description": "Soft paper used for cleaning after using the toilet."
   },
   {
     "word": "Trash can",
-    "description": "Lift a lid and throw something away."
+    "description": "A container used to collect rubbish."
   },
   {
     "word": "Gift box",
-    "description": "Shake a wrapped box and open it."
+    "description": "A box used to hold a present."
   },
   {
     "word": "Birthday candle",
-    "description": "Light a candle and blow it out."
+    "description": "A small candle placed on a birthday cake."
   },
   {
     "word": "Snowman",
-    "description": "Roll snowballs and stack them with a carrot nose."
+    "description": "A human-shaped figure built from snow."
   },
   {
     "word": "Christmas tree",
-    "description": "Decorate a tall tree and place a star on top."
+    "description": "A decorated evergreen tree associated with Christmas."
   },
   {
     "word": "Tent",
-    "description": "Hammer pegs and crawl into a tent."
+    "description": "A portable shelter made from fabric stretched over supports."
   },
   {
     "word": "Campfire",
-    "description": "Rub your hands near a fire and roast a marshmallow."
+    "description": "An outdoor fire used for warmth, cooking or light."
   },
   {
     "word": "Bicycle pump",
-    "description": "Push a pump handle up and down."
+    "description": "A hand-operated device used to inflate bicycle tires."
   },
   {
     "word": "Wheelbarrow",
-    "description": "Lift handles and push a loaded barrow."
+    "description": "A small one-wheeled cart pushed by handles."
   },
   {
     "word": "Traffic light",
-    "description": "Hold up a stop hand then wave cars forward."
+    "description": "A road signal with colored lights that control traffic."
   },
   {
     "word": "Stop sign",
-    "description": "Hold your palm out and signal everyone to stop."
+    "description": "A red road sign telling drivers to stop completely."
   },
   {
     "word": "Flag",
-    "description": "Raise a flagpole and wave a flag."
+    "description": "A piece of cloth bearing colors or symbols, often representing a country."
   },
   {
     "word": "Crown",
-    "description": "Put a crown on your head and wave royally."
+    "description": "A decorative headpiece worn by a monarch."
   },
   {
     "word": "Sword",
-    "description": "Draw a sword and swing it."
+    "description": "A weapon with a long metal blade and handle."
   },
   {
     "word": "Shield",
-    "description": "Raise a shield to block an attack."
+    "description": "A protective object held to block attacks."
   },
   {
     "word": "Bow and arrow",
-    "description": "Pull back a bowstring and release an arrow."
+    "description": "A curved weapon and pointed projectile used together."
   },
   {
     "word": "Treasure chest",
-    "description": "Unlock a heavy chest and lift its lid."
+    "description": "A sturdy box traditionally used to store valuables."
   },
   {
     "word": "Pirate hat",
-    "description": "Put on a three-cornered hat and scan the horizon."
+    "description": "A distinctive hat associated with historical pirates."
   },
   {
     "word": "Magic wand",
-    "description": "Wave a wand and make something disappear."
+    "description": "A thin stick used by magicians in tricks or stories."
   },
   {
     "word": "Broomstick horse",
-    "description": "Ride an imaginary stick horse."
+    "description": "A toy horse made from a stick with a horse's head."
   },
   {
     "word": "Rubber duck",
-    "description": "Squeeze a duck and make it float in a bath."
+    "description": "A small floating duck-shaped bath toy."
   },
   {
     "word": "Teddy bear",
-    "description": "Hug a stuffed bear tightly."
+    "description": "A soft stuffed toy shaped like a bear."
   },
   {
     "word": "Doll",
-    "description": "Cradle a doll and brush its hair."
+    "description": "A toy made to look like a person or baby."
   },
   {
     "word": "Toy car",
-    "description": "Push a small car along the floor."
+    "description": "A small model vehicle used as a toy."
   },
   {
     "word": "Yo-yo",
-    "description": "Flick a yo-yo down and pull it back up."
+    "description": "A toy made of two disks that spins on a string."
   },
   {
     "word": "Frisbee",
-    "description": "Throw a flat disc and catch it."
+    "description": "A flat plastic flying disc thrown between people."
   },
   {
     "word": "Dice",
-    "description": "Shake dice in your hand and roll them."
+    "description": "Small numbered cubes rolled in games of chance."
   },
   {
     "word": "Playing cards",
-    "description": "Shuffle cards and deal them out."
+    "description": "A deck of rectangular cards used for many games."
   },
   {
     "word": "Chess piece",
-    "description": "Move a piece on a board and think carefully."
+    "description": "One of the figures moved on a chessboard."
   },
   {
     "word": "Jigsaw puzzle",
-    "description": "Fit small puzzle pieces together."
+    "description": "A picture divided into interlocking pieces to be assembled."
   },
   {
     "word": "Rubik's cube",
-    "description": "Twist the sides of a cube repeatedly."
+    "description": "A colored rotating puzzle cube whose faces must be matched."
   },
   {
     "word": "Magnets",
-    "description": "Pull two magnets together and struggle to separate them."
+    "description": "Objects that attract iron and can pull or repel other magnets."
   },
   {
     "word": "Compass",
-    "description": "Hold a compass flat and turn to find north."
+    "description": "A navigation instrument with a needle pointing toward magnetic north."
   },
   {
     "word": "Map",
-    "description": "Unfold a large map and trace a route."
+    "description": "A drawing showing the location of places and geographical features."
   },
   {
     "word": "Globe",
-    "description": "Spin a globe and point to a country."
+    "description": "A spherical model of Earth."
   },
   {
     "word": "Hourglass",
-    "description": "Turn an hourglass over and watch sand fall."
+    "description": "A timer made from two glass bulbs with sand flowing between them."
   },
   {
     "word": "Bubbles",
-    "description": "Blow soap bubbles and pop them."
+    "description": "Small pockets of air or gas surrounded by liquid."
   },
   {
     "word": "Watering can",
-    "description": "Tilt a can and water plants."
+    "description": "A container with a spout used to water plants."
   },
   {
     "word": "Flower",
-    "description": "Smell a flower and open your fingers like petals."
+    "description": "The colorful reproductive part of many plants."
   },
   {
     "word": "Tree",
-    "description": "Stand tall with arms spreading like branches."
+    "description": "A tall woody plant with a trunk and branches."
   },
   {
     "word": "Cactus",
-    "description": "Hold your arms like prickly cactus branches."
+    "description": "A plant adapted to dry places, often with spines."
   },
   {
     "word": "Mushroom",
-    "description": "Crouch low and make a cap above your head."
+    "description": "The soft, often umbrella-shaped fruiting body of a fungus."
   },
   {
     "word": "Sunflower",
-    "description": "Open your arms like petals and turn toward the sun."
+    "description": "A tall plant with a large yellow flower head."
   },
   {
     "word": "Volcano",
-    "description": "Build a mountain with your arms and mime an eruption."
+    "description": "A mountain or opening in the ground that can release lava and ash."
   },
   {
     "word": "Mountain",
-    "description": "Make a tall peak with your hands and pretend to climb."
+    "description": "A very high natural rise in the land."
   },
   {
     "word": "Rainbow",
-    "description": "Draw a big curved arc across the sky."
+    "description": "A curved band of colors seen when sunlight passes through water droplets."
   },
   {
     "word": "Cloud",
-    "description": "Make a fluffy shape and float your hands along."
+    "description": "A visible mass of tiny water droplets or ice crystals in the sky."
   },
   {
     "word": "Sun",
-    "description": "Make a large circle and spread rays with your fingers."
+    "description": "The star at the center of our solar system."
   },
   {
     "word": "Moon",
-    "description": "Make a crescent with your arms and point upward."
+    "description": "Earth's natural satellite, visible in the night sky."
   },
   {
     "word": "Star",
-    "description": "Spread fingers like points and twinkle."
+    "description": "A huge glowing ball of hot gas in space."
   },
   {
     "word": "Snowflake",
-    "description": "Flutter your fingers down as falling snow."
+    "description": "A small crystal of frozen water that falls as snow."
   },
   {
     "word": "Raindrop",
-    "description": "Let one finger fall from the sky and splash."
+    "description": "A single drop of water falling from a cloud."
   },
   {
     "word": "Lightning bolt",
-    "description": "Zigzag your arm down suddenly."
+    "description": "A bright electrical flash during a storm."
   },
   {
     "word": "Wave",
-    "description": "Roll your arms like ocean waves."
+    "description": "A moving rise and fall of water on the surface of a sea or lake."
   },
   {
     "word": "Sandcastle",
-    "description": "Fill a bucket with sand and turn it over."
+    "description": "A model castle made from wet sand."
   },
   {
     "word": "Shell",
-    "description": "Hold a shell to your ear and listen."
-  },
-  {
-    "word": "Seashell",
-    "description": "Pick up a shell and hold it to your ear."
+    "description": "The hard outer covering of a mollusk or similar animal."
   },
   {
     "word": "Anchor",
-    "description": "Drop a heavy anchor and pull up its chain."
+    "description": "A heavy object lowered from a boat to hold it in place."
   },
   {
     "word": "Lighthouse",
-    "description": "Sweep an imaginary beam of light across the sea."
+    "description": "A tall coastal tower with a light that guides ships."
   },
   {
     "word": "Bridge",
-    "description": "Form an arch with your arms and walk across."
+    "description": "A structure built to cross a river, road or valley."
   },
   {
     "word": "Castle",
-    "description": "Build tall towers with your hands and lower a drawbridge."
+    "description": "A large fortified building, often associated with medieval rulers."
   },
   {
     "word": "Clock tower",
-    "description": "Point high above and mime a large clock striking."
+    "description": "A tall building or tower with a clock displayed near its top."
   },
   {
     "word": "Statue",
-    "description": "Strike a pose and freeze without moving."
+    "description": "A three-dimensional figure of a person or animal made from solid material."
   },
   {
     "word": "Robot",
-    "description": "Move with stiff mechanical joints."
+    "description": "A machine that can perform tasks automatically."
   },
   {
     "word": "Dinosaur",
-    "description": "Stomp with tiny arms and a long tail."
+    "description": "A member of an ancient group of reptiles that lived millions of years ago."
   },
   {
     "word": "Dragon",
-    "description": "Flap huge wings and breathe imaginary fire."
+    "description": "A mythical creature often shown as a giant winged reptile."
   },
   {
     "word": "Unicorn",
-    "description": "Make a horn on your forehead and gallop."
+    "description": "A mythical horse-like animal with one horn on its forehead."
   },
   {
     "word": "Mermaid",
-    "description": "Swim with your legs together like a tail."
+    "description": "A mythical being with a human upper body and fish tail."
   },
   {
     "word": "Ghost",
-    "description": "Float around under an imaginary sheet."
+    "description": "The spirit of a dead person as imagined in stories."
   },
   {
     "word": "Vampire",
-    "description": "Raise a cape and show pointed fangs."
+    "description": "A mythical creature said to drink blood."
   },
   {
     "word": "Skeleton",
-    "description": "Move like loose bones and rattle your arms."
+    "description": "The framework of bones supporting a human or animal body."
   },
   {
     "word": "Snow globe",
-    "description": "Shake a globe and watch snow swirl inside."
+    "description": "A clear decorative globe containing a scene and floating white flakes."
   }
 ]
