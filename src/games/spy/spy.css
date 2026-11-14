@@ -1,14 +1,44 @@
-/* Game-only visuals; shared colors, typography and buttons stay in src/. */
-.spy-folder {
-  min-height: 11rem;
-  border: 2px dashed color-mix(in srgb, var(--color-secret) 48%, transparent);
-  background: repeating-linear-gradient(-45deg, var(--color-card), var(--color-card) 14px, var(--color-elevated) 14px, var(--color-elevated) 15px);
-  transition: background-color .15s, border-color .15s;
-}
-.spy-folder-open { background: var(--color-card); border-style: solid; border-color: var(--color-secret); }
+/* Spy role-dealing screen: compact, mobile-first layout. */
+.spy-deal { display:flex; flex:1; min-height:0; flex-direction:column; gap:clamp(10px,2vh,16px); padding:4px 0 6px; }
+.spy-deal-top { flex-shrink:0; text-align:center; }
+.spy-deal-progress { display:flex; gap:5px; max-width:260px; margin:0 auto 10px; }
+.spy-deal-progress span { height:4px; flex:1; border-radius:10px; background:var(--color-elevated); }
+.spy-deal-progress span.is-active { background:var(--color-secret); }
+.spy-deal-step { font-size:11px; font-weight:800; letter-spacing:.16em; color:var(--color-muted-foreground); }
+.spy-deal-name { margin-top:5px; font-family:var(--font-display,inherit); font-size:clamp(25px,5.5vw,34px); line-height:1.15; font-weight:900; overflow-wrap:anywhere; }
+.spy-deal-hint { margin-top:4px; font-size:13px; line-height:1.35; color:var(--color-muted-foreground); }
+.spy-role-card { position:relative; flex:1; min-height:0; width:100%; max-width:450px; margin:0 auto; overflow-y:auto; overscroll-behavior:contain; border-radius:20px; border:1px solid rgba(255,255,255,.13); background:var(--color-card); box-shadow:0 12px 35px rgba(0,0,0,.14); }
+.spy-role-card--locked { display:flex; align-items:center; justify-content:center; background:radial-gradient(circle at 50% 20%,color-mix(in srgb,var(--color-secret) 20%,var(--color-card)),var(--color-card) 68%); }
+.spy-role-locked { text-align:center; padding:22px; }
+.spy-role-lock-icon { display:grid; place-items:center; width:82px; height:82px; margin:0 auto 18px; border:1px solid color-mix(in srgb,var(--color-secret) 40%,transparent); border-radius:22px; color:var(--color-secret); background:color-mix(in srgb,var(--color-secret) 12%,transparent); }
+.spy-role-eyebrow,.spy-role-label { font-size:10px; line-height:1.4; font-weight:800; letter-spacing:.16em; color:var(--color-muted-foreground); }
+.spy-role-locked h2 { margin-top:8px; font-family:var(--font-display,inherit); font-size:clamp(27px,7vw,38px); font-weight:900; line-height:1.1; }
+.spy-role-locked>p:last-child { margin-top:12px; font-size:14px; color:var(--color-muted-foreground); }
+.spy-role-card--spy { border-color:color-mix(in srgb,var(--color-secret) 65%,transparent); background:linear-gradient(160deg,color-mix(in srgb,var(--color-secret) 15%,var(--color-card)),var(--color-card) 55%); }
+.spy-role-card--civilian { border-color:color-mix(in srgb,var(--color-go) 50%,transparent); }
+.spy-role-content { padding:clamp(16px,4vw,24px); text-align:left; }
+.spy-role-heading { display:flex; align-items:center; gap:9px; font-size:11px; font-weight:800; letter-spacing:.14em; color:var(--color-muted-foreground); }
+.spy-role-card--spy .spy-role-heading,.spy-role-card--spy .spy-role-title { color:var(--color-secret); }
+.spy-role-card--civilian .spy-role-heading,.spy-role-card--civilian .spy-role-title { color:var(--color-go); }
+.spy-role-title { margin-top:7px; font-family:var(--font-display,inherit); font-size:clamp(25px,6vw,34px); font-weight:900; line-height:1.12; }
+.spy-role-category { display:flex; align-items:center; gap:9px; margin-top:11px; font-size:10px; font-weight:800; letter-spacing:.11em; color:var(--color-muted-foreground); }
+.spy-role-category strong { padding:5px 9px; border-radius:6px; background:var(--color-elevated); color:var(--color-foreground); font-size:12px; letter-spacing:0; }
+.spy-role-word-section,.spy-role-spy-message { margin-top:17px; padding-top:16px; border-top:1px solid color-mix(in srgb,var(--color-foreground) 14%,transparent); }
+.spy-role-word { margin-top:5px; font-family:var(--font-display,inherit); font-size:clamp(28px,7vw,42px); font-weight:900; line-height:1.1; overflow-wrap:anywhere; }
+.spy-role-translation { margin-top:15px; padding:14px 15px; border-radius:12px; background:var(--color-elevated); }
+.spy-role-albanian { margin-top:5px; font-size:clamp(19px,5vw,25px); font-weight:800; line-height:1.2; overflow-wrap:anywhere; }
+.spy-role-description { margin-top:12px; padding-top:12px; border-top:1px solid color-mix(in srgb,var(--color-foreground) 12%,transparent); }
+.spy-role-description>p:last-child { margin-top:5px; font-size:15px; line-height:1.45; color:var(--color-foreground); }
+.spy-role-main-message { font-size:clamp(20px,5vw,26px); line-height:1.25; font-weight:800; }
+.spy-role-spy-message>p:last-child { margin-top:14px; font-size:16px; line-height:1.55; color:var(--color-muted-foreground); }
+.spy-deal-actions { flex-shrink:0; display:flex; flex-direction:column; gap:5px; }
+.spy-deal-primary { display:flex; min-height:56px; width:100%; align-items:center; justify-content:center; gap:12px; border-radius:13px; background:var(--color-secret); color:white; font-size:15px; font-weight:900; letter-spacing:.055em; }
+.spy-deal-primary:active { transform:scale(.99); }
+.spy-deal-secondary { min-height:37px; font-size:13px; font-weight:700; color:var(--color-muted-foreground); text-decoration:underline; text-underline-offset:4px; }
 .spy-clock { display:flex; align-items:center; gap:1rem; color:var(--color-foreground); }
 .spy-clock-danger { color:var(--color-danger); animation:spy-pulse .7s ease-in-out infinite alternate; }
 .spy-verdict { background:var(--color-secret); color:white; }
 .spy-verdict-caught { background:var(--color-go); color:var(--color-primary-foreground); }
 @keyframes spy-pulse { from { opacity:1 } to { opacity:.6 } }
-@media (prefers-reduced-motion:reduce) { .spy-clock-danger { animation:none; } .spy-folder { transition:none; } }
+@media (max-height:700px) { .spy-deal { gap:8px; } .spy-deal-progress { margin-bottom:6px; } .spy-role-content { padding:14px; } .spy-role-word-section,.spy-role-spy-message { margin-top:11px; padding-top:11px; } .spy-role-translation { margin-top:10px; padding:11px; } .spy-role-description { margin-top:9px; padding-top:9px; } }
+@media (prefers-reduced-motion:reduce) { .spy-clock-danger { animation:none; } .spy-deal-primary:active { transform:none; } }
