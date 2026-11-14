@@ -7,6 +7,7 @@ import { useGameMotion } from "@/hooks/use-game-motion"
 import { haptic } from "@/lib/haptic"
 import { playSound } from "@/lib/sound"
 import type { SpyData } from "../types"
+import { SPY_DESCRIPTIONS_SQ } from "../descriptions-sq"
 
 export function RolePass({
   round, onSeen, onNext,
@@ -56,7 +57,7 @@ export function RolePass({
             {isSpy ? (
               <p className="mt-4 text-base font-semibold">You don't know the word. Listen carefully and blend in.</p>
             ) : (
-              <><p className="mt-3 break-words font-display text-3xl font-extrabold text-foreground">{round.word}</p><p className="mt-4 text-sm text-muted-foreground">Don't say the word out loud.</p></>
+              <><p className="mt-3 break-words font-display text-3xl font-extrabold text-foreground">{round.word}</p><p className="mt-3 text-sm leading-relaxed text-muted-foreground" lang="sq">{SPY_DESCRIPTIONS_SQ[round.word] ?? `Fjalë nga kategoria ${round.category}.`}</p><p className="mt-3 text-xs text-muted-foreground">Don't say the word out loud.</p></>
             )}
           </div>
         ) : (
