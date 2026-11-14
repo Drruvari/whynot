@@ -50,7 +50,8 @@ export function RouletteCylinder({
               key={index}
               className={cn(
                 "roulette-chamber",
-                spent && "roulette-chamber-spent"
+                spent && "roulette-chamber-spent",
+                compact && "roulette-chamber-compact"
               )}
               style={{
                 transform: `translate(-50%, -50%) rotate(${angle * index}deg) translateY(calc(-1 * min(32vw, 7.4rem, 15.2vh)))`,
