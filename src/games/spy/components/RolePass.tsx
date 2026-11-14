@@ -1,15 +1,11 @@
 import { useState } from "react"
-import { EyeIcon, FingerprintIcon, ShieldCheckIcon } from "@phosphor-icons/react"
-import { GameButton } from "@/components/game/GameButton"
-import { PlayerToken } from "@/components/game/PlayerToken"
+import { ArrowRightIcon, EyeIcon, EyeSlashIcon, FingerprintIcon, ShieldCheckIcon } from "@phosphor-icons/react"
 import { haptic } from "@/lib/haptic"
 import { playSound } from "@/lib/sound"
 import type { SpyData } from "../types"
 import { SPY_WORD_DETAILS_SQ } from "../word-details-sq"
 
-export function RolePass({
-  round, onSeen, onNext,
-}: {
+export function RolePass({ round, onSeen, onNext }: {
   round: SpyData
   onSeen: (playerId: string) => void
   onNext: (playerId: string) => void
@@ -19,8 +15,9 @@ export function RolePass({
   const details = SPY_WORD_DETAILS_SQ[round.word]
   const [visible, setVisible] = useState(false)
   const [seen, setSeen] = useState(round.revealSeen)
+  const isLast = round.revealIndex === round.order.length - 1
 
-  function showRole() {
+  function reveal() {
     setVisible(true)
     haptic("tap")
     playSound("spyReveal")
@@ -30,80 +27,80 @@ export function RolePass({
     }
   }
 
-  function hideRole() {
+  function hide() {
     setVisible(false)
     haptic("tap")
   }
 
-  function advance() {
+  function next() {
     if (!seen || visible) return
     onNext(player.id)
   }
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-1 pb-3 text-center">
-      <div className="shrink-0 pt-2">
-        <p className="font-pixel text-xs tracking-wider text-muted-foreground">PLAYER {round.revealIndex + 1} OF {round.order.length}</p>
-        <div className="mt-3 flex justify-center"><PlayerToken player={player} size="lg" className="text-2xl" /></div>
-        <p className="mt-2 text-sm font-medium text-muted-foreground">{visible ? "Read your card privately" : "Pass the phone to this player"}</p>
+    <section className="spy-deal">
+      <div className="spy-deal-top">
+        <div className="spy-deal-progress" aria-label={`Player ${round.revealIndex + 1} of ${round.order.length}`}>
+          {round.order.map((id, index) => <span key={id} className={index <= round.revealIndex ? "is-active" : ""} />)}
+        </div>
+        <p className="spy-deal-step">PLAYER {round.revealIndex + 1} / {round.order.length}</p>
+        <h1 className="spy-deal-name">{player.name}</h1>
+        <p className="spy-deal-hint">{visible ? "Your eyes only. Read your secret card." : seen ? "Card hidden. Pass the phone when ready." : "Hand the phone to this player."}</p>
       </div>
 
-      <div className={`spy-folder relative flex min-h-0 w-full max-w-md flex-1 flex-col items-center justify-center overflow-y-auto px-4 py-5 sm:px-6 ${visible ? "spy-folder-open" : ""}`}>
-        {visible ? (
-          <div className="w-full space-y-3" aria-live="off">
-            <div className="flex items-center justify-center gap-2">
-              {isSpy ? <FingerprintIcon weight="fill" size={30} className="text-secret" /> : <ShieldCheckIcon weight="fill" size={30} className="text-go" />}
-              <p className="text-xs font-bold tracking-widest text-muted-foreground">YOUR SECRET ROLE</p>
+      <div className={`spy-role-card ${visible ? (isSpy ? "spy-role-card--spy" : "spy-role-card--civilian") : "spy-role-card--locked"}`}>
+        {!visible ? (
+          <div className="spy-role-locked">
+            <div className="spy-role-lock-icon"><FingerprintIcon size={46} weight="duotone" /></div>
+            <p className="spy-role-eyebrow">PRIVATE ROLE</p>
+            <h2>TOP SECRET</h2>
+            <p>Only {player.name} should look.</p>
+          </div>
+        ) : (
+          <div className="spy-role-content">
+            <div className="spy-role-heading">
+              {isSpy ? <FingerprintIcon size={25} weight="fill" /> : <ShieldCheckIcon size={25} weight="fill" />}
+              <span>YOUR ROLE</span>
             </div>
-            <h2 className={`font-display text-3xl font-black leading-tight sm:text-4xl ${isSpy ? "text-secret" : "text-go"}`}>
-              {isSpy ? "YOU ARE THE SPY" : "CIVILIAN"}
-            </h2>
-            <p className="text-sm font-semibold text-muted-foreground">Category: <span className="text-foreground">{round.category}</span></p>
+            <h2 className="spy-role-title">{isSpy ? "YOU'RE THE SPY" : "CIVILIAN"}</h2>
+            <div className="spy-role-category">CATEGORY <strong>{round.category}</strong></div>
             {isSpy ? (
-              <div className="space-y-3 border-t border-foreground/15 pt-5">
-                <p className="text-xl font-bold leading-snug">You do not know the secret word.</p>
-                <p className="text-base leading-relaxed text-muted-foreground">Listen to the others, ask questions, and try to blend in.</p>
+              <div className="spy-role-spy-message">
+                <p className="spy-role-main-message">You don't know the word.</p>
+                <p>Listen carefully, ask questions and blend in.</p>
               </div>
             ) : (
-              <div className="space-y-3 border-t border-foreground/15 pt-4">
-                <div>
-                  <p className="text-xs font-bold tracking-widest text-muted-foreground">SECRET WORD</p>
-                  <p className="mt-2 break-words font-display text-3xl font-black leading-tight text-foreground sm:text-4xl">{round.word}</p>
+              <div className="spy-role-word-section">
+                <p className="spy-role-label">SECRET WORD</p>
+                <p className="spy-role-word">{round.word}</p>
+                <div className="spy-role-translation" lang="sq">
+                  <p className="spy-role-label">NË SHQIP</p>
+                  <p className="spy-role-albanian">{details?.translation ?? round.word}</p>
+                  <div className="spy-role-description">
+                    <p className="spy-role-label">PËRSHKRIMI</p>
+                    <p>{details?.description ?? "Përshkrimi nuk është i disponueshëm."}</p>
+                  </div>
                 </div>
-                <div lang="sq" className="rounded-md bg-elevated p-4 text-left">
-                  <p className="text-xs font-bold tracking-widest text-muted-foreground">SHQIP</p>
-                  <p className="mt-1 break-words text-xl font-bold leading-snug text-foreground">{details?.translation ?? round.word}</p>
-                  <p className="mt-3 text-xs font-bold tracking-widest text-muted-foreground">PËRSHKRIMI</p>
-                  <p className="mt-1 text-base leading-relaxed text-foreground">{details?.description ?? "Përshkrimi nuk është i disponueshëm."}</p>
-                </div>
-                <p className="text-sm font-semibold text-muted-foreground">Keep the word secret.</p>
               </div>
             )}
           </div>
-        ) : (
-          <div className="flex flex-col items-center gap-4 py-5">
-            <EyeIcon size={56} weight="duotone" className="text-muted-foreground" />
-            <p className="font-display text-2xl font-black">SECRET CARD</p>
-            <p className="max-w-xs text-base leading-relaxed text-muted-foreground">Make sure nobody else can see the screen. Tap below to read your role.</p>
-          </div>
         )}
       </div>
 
-      <div className="w-full shrink-0 space-y-2">
+      <div className="spy-deal-actions">
         {visible ? (
-          <GameButton tone="secret" onClick={hideRole}>HIDE MY CARD</GameButton>
+          <button type="button" className="spy-deal-primary" onClick={hide}><EyeSlashIcon size={23} weight="bold" /> HIDE CARD</button>
         ) : !seen ? (
-          <GameButton tone="secret" onClick={showRole}>TAP TO REVEAL</GameButton>
+          <button type="button" className="spy-deal-primary" onClick={reveal}><EyeIcon size={23} weight="bold" /> REVEAL MY CARD</button>
         ) : (
           <>
-            <GameButton tone="secret" onClick={advance}>
-              {round.revealIndex + 1 === round.order.length ? "START DISCUSSION" : "PASS TO NEXT PLAYER"}
-            </GameButton>
-            <button type="button" onClick={showRole} className="min-h-11 w-full text-sm font-semibold text-muted-foreground underline underline-offset-4">View my card again</button>
+            <button type="button" className="spy-deal-primary" onClick={next}>
+              {isLast ? "START DISCUSSION" : "NEXT PLAYER"} <ArrowRightIcon size={23} weight="bold" />
+            </button>
+            <button type="button" className="spy-deal-secondary" onClick={reveal}>View my card again</button>
           </>
         )}
-        <p className="text-xs text-muted-foreground">{visible ? "Hide your card before passing the phone." : seen ? "Your role is hidden. It is safe to pass the phone." : "Only the named player should reveal this card."}</p>
       </div>
-    </div>
+    </section>
   )
 }
