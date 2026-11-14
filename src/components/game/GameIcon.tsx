@@ -2,7 +2,8 @@ import {
   BombIcon,
   DetectiveIcon,
   SkullIcon,
-  ScalesIcon,\n  PersonSimpleRunIcon,
+  ScalesIcon,
+  PersonSimpleRunIcon,
   type Icon,
 } from "@phosphor-icons/react"
 

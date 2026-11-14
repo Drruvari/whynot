@@ -59,10 +59,11 @@ export function PantomimeGame() {
   }
 
   function nextRound() {
-    const options = MIME_WORDS.map((_, i) => i).filter((i) => !used.includes(i))
+    const alreadyUsed = [...used, wordIndex]
+    const options = MIME_WORDS.map((_, i) => i).filter((i) => !alreadyUsed.includes(i))
     const pool = options.length ? options : MIME_WORDS.map((_, i) => i)
     const index = pool[Math.floor(Math.random() * pool.length)]
-    setUsed(options.length ? [...used, index] : [index])
+    setUsed(options.length ? [...alreadyUsed] : [])
     setWordIndex(index)
     setTurn((value) => value + 1)
     setRemaining(duration)
@@ -114,7 +115,8 @@ export function PantomimeGame() {
                 </div>
                 <button type="button" onClick={() => setShowWord((v) => !v)} className="w-full border-2 border-foreground/25 bg-elevated p-4">
                   <p className="text-xs font-bold tracking-widest text-muted-foreground">{showWord ? "YOUR WORD" : "SECRET WORD"}</p>
-                  <p className="mt-2 break-words font-display text-2xl font-black">{showWord ? MIME_WORDS[wordIndex] : "TAP TO REVEAL"}</p>
+                  <p className="mt-2 break-words font-display text-2xl font-black">{showWord ? MIME_WORDS[wordIndex].word : "TAP TO REVEAL"}</p>
+                  {showWord ? <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{MIME_WORDS[wordIndex].description}</p> : null}
                 </button>
                 <p className="text-xs text-muted-foreground">No talking, spelling, or pointing at objects.</p>
               </div>
@@ -135,7 +137,7 @@ export function PantomimeGame() {
                 <p className="font-pixel text-xs tracking-widest text-muted-foreground">ROUND COMPLETE</p>
                 <h2 className="font-display text-3xl font-black">{winner ? `${winner.name} WINS!` : "NO WINNER"}</h2>
                 <p className="text-sm text-muted-foreground">The word was</p>
-                <p className="break-words font-display text-2xl font-black text-warn">{MIME_WORDS[wordIndex]}</p>
+                <p className="break-words font-display text-2xl font-black text-warn">{MIME_WORDS[wordIndex].word}</p>
                 <div className="w-full border-t border-foreground/15 pt-4">
                   <p className="mb-2 text-xs font-bold tracking-widest text-muted-foreground">SCORES</p>
                   <div className="flex flex-wrap justify-center gap-2">
