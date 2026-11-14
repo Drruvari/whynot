@@ -14,6 +14,7 @@ const ICONS: Record<GameId, Icon> = {
   spy: DetectiveIcon,
   roulette: SkullIcon,
   wobble: ScalesIcon,
+  "chaos-court": ScalesIcon,
 }
 
 export function GameIcon({

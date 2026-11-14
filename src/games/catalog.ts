@@ -42,6 +42,18 @@ export const GAMES: GameDef[] = [
     tip: "More bullets = shorter fuses.",
   },
   {
+    id: "chaos-court",
+    name: "CHAOS COURT",
+    vibe: "Party",
+    players: "3–10",
+    minPlayers: 3,
+    maxPlayers: 10,
+    ready: true,
+    accent: "danger",
+    howTo: "Take turns accusing friends of ridiculous things. The accused gets 20 seconds to defend themselves, then everyone else votes secretly. Earn points for convincing the jury!",
+    tip: "Five friends, one phone, ten absurd trials. The most convincing player wins.",
+  },
+  {
     id: "wobble",
     name: "WOBBLE LAB",
     vibe: "Physics",

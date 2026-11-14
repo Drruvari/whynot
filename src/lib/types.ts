@@ -13,7 +13,7 @@ export type Player = {
   symbol: PlayerSymbol
 }
 
-export type GameId = "beer-bomb" | "spy" | "roulette" | "wobble"
+export type GameId = "beer-bomb" | "spy" | "roulette" | "wobble" | "chaos-court"
 
 export type Screen = "home" | "settings" | "play"
 

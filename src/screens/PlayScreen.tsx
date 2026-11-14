@@ -1,6 +1,7 @@
 import { WobbleGame } from "@/games/wobble/WobbleGame"
 import { BeerBombGame } from "@/games/beer-bomb/BeerBombGame"
 import { RouletteGame } from "@/games/roulette/RouletteGame"
+import { ChaosCourtGame } from "@/games/chaos-court/ChaosCourtGame"
 import { SpyGame } from "@/games/spy/SpyGame"
 import { getGame } from "@/games/catalog"
 import { useApp } from "@/store/app"
@@ -23,6 +24,10 @@ export function PlayScreen() {
 
   if (game.id === "roulette") {
     return <RouletteGame />
+  }
+
+  if (game.id === "chaos-court") {
+    return <ChaosCourtGame />
   }
 
   if (game.id === "wobble") {
