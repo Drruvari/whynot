@@ -9,7 +9,7 @@ import type { BeerBombData, BeerBombHit } from "./types"
 export type { BeerCell, BeerBombPhase } from "./types"
 
 type BeerBombStore = BeerBombData & {
-  start: (bombCount: number, playerIds: string[]) => boolean
+  start: (bombCount: number, playerIds: string[], beerCount?: number) => boolean
   pick: (cellId: string, playerId: string) => BeerBombHit | null
   continueAfterResult: () => void
   nextRound: () => void
@@ -22,6 +22,7 @@ const defaults: BeerBombData = {
   round: 1,
   totalRounds: 6,
   bombCount: 2,
+  beerCount: 10,
   cells: [],
   playerIds: [],
   turnIndex: 0,
@@ -36,10 +37,10 @@ export const useBeerBomb = create<BeerBombStore>()(
   persist(
     (set, get) => ({
       ...defaults,
-      start: (bombCount, playerIds) => {
+      start: (bombCount, playerIds, beerCount = 10) => {
         const uniqueIds = [...new Set(playerIds.filter(Boolean))]
         if (uniqueIds.length < MIN_PLAYERS || uniqueIds.length > MAX_PLAYERS) return false
-        set(freshGame(bombCount, uniqueIds))
+        set(freshGame(bombCount, uniqueIds, beerCount))
         return true
       },
       pick: (cellId, playerId) => {
@@ -49,7 +50,7 @@ export const useBeerBomb = create<BeerBombStore>()(
       },
       continueAfterResult: () => set((state) => acknowledgeResult(state)),
       nextRound: () => set((state) => advanceRound(state)),
-      abandon: () => set({ ...defaults, bombCount: get().bombCount }),
+      abandon: () => set({ ...defaults, bombCount: get().bombCount, beerCount: get().beerCount }),
     }),
     {
       // Keep the previous key to preserve round history when upgrading.
@@ -60,6 +61,11 @@ export const useBeerBomb = create<BeerBombStore>()(
       merge: (saved, current) => ({
         ...current,
         ...(saved && typeof saved === "object" ? saved : {}),
+        beerCount: typeof (saved as Partial<BeerBombData> | null)?.beerCount === "number"
+          ? (saved as BeerBombData).beerCount
+          : Array.isArray((saved as Partial<BeerBombData> | null)?.cells) && (saved as BeerBombData).cells.length >= 5
+            ? (saved as BeerBombData).cells.length
+            : 10,
         playerIds: Array.isArray((saved as Partial<BeerBombData> | null)?.playerIds)
           ? (saved as BeerBombData).playerIds
           : (saved as Partial<BeerBombData> | null)?.inProgress
@@ -72,6 +78,7 @@ export const useBeerBomb = create<BeerBombStore>()(
         round: state.round,
         totalRounds: state.totalRounds,
         bombCount: state.bombCount,
+        beerCount: state.beerCount,
         cells: state.cells,
         playerIds: state.playerIds,
         turnIndex: state.turnIndex,

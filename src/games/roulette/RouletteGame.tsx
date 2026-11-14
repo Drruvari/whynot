@@ -83,6 +83,12 @@ export function RouletteGame() {
     setSpinning(false)
   }
 
+  useEffect(() => {
+    if (game.phase !== "result") return
+    const timer = window.setTimeout(() => continueAfterResult(), 1900)
+    return () => window.clearTimeout(timer)
+  }, [game.phase, game.lastShot, continueAfterResult])
+
   function next() {
     if (reload) playSound("roundStart")
     continueAfterResult()

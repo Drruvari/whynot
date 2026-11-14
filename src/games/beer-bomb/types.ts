@@ -19,6 +19,7 @@ export type BeerBombData = {
   round: number
   totalRounds: number
   bombCount: number
+  beerCount: number
   cells: BeerCell[]
   /** Frozen at game start so later changes to the session cannot change turns. */
   playerIds: string[]

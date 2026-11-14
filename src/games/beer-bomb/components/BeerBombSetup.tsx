@@ -6,7 +6,7 @@ import { DrawerFooter } from "@/components/ui/drawer"
 import { haptic } from "@/lib/haptic"
 import { playSound } from "@/lib/sound"
 import { useBeerBomb } from "../store"
-import { MAX_BOMBS, MIN_BOMBS, clampBombCount, suggestedBombs } from "../rules"
+import { MAX_BOMBS, MIN_BOMBS, MIN_BEERS, MAX_BEERS, BEER_COUNT, clampBeerCount, clampBombCount, suggestedBombs } from "../rules"
 
 export function BeerBombSetup({
   playerIds,
@@ -24,6 +24,7 @@ export function BeerBombSetup({
     const saved = useBeerBomb.getState()
     return saved.inProgress ? clampBombCount(saved.bombCount) : suggestedBombs(playerIds.length)
   })
+  const [beers, setBeers] = useState(() => clampBeerCount(useBeerBomb.getState().beerCount ?? BEER_COUNT))
   const enoughPlayers = playerIds.length >= 2 && !tooManyPlayers
 
   function play() {
@@ -33,7 +34,7 @@ export function BeerBombSetup({
       onNeedPlayers()
       return
     }
-    if (start(bombs, playerIds)) {
+    if (start(bombs, playerIds, beers)) {
       haptic("success")
       playSound("roundStart")
       onStarted()
@@ -43,6 +44,14 @@ export function BeerBombSetup({
   return (
     <>
       <div className="flex flex-col gap-2 px-5 pt-1">
+        <div className="flex min-h-14 items-center justify-between">
+          <span className="text-sm font-medium tracking-[0.14em] text-muted-foreground uppercase">Beer cups</span>
+          <div className="flex items-center gap-3">
+            <button aria-label="Fewer beers" type="button" disabled={beers <= MIN_BEERS} className="flex size-11 items-center justify-center bg-elevated disabled:opacity-40" onClick={() => setBeers((n) => Math.max(MIN_BEERS, n - 1))}><MinusIcon weight="fill" size={16} /></button>
+            <input aria-label="Custom number of beers" type="number" inputMode="numeric" min={MIN_BEERS} max={MAX_BEERS} value={beers} onChange={(e) => { if (e.target.value !== "") setBeers(clampBeerCount(Number(e.target.value))) }} className="h-11 w-16 border-2 border-foreground/20 bg-elevated text-center font-pixel text-xl text-warn" />
+            <button aria-label="More beers" type="button" disabled={beers >= MAX_BEERS} className="flex size-11 items-center justify-center bg-elevated disabled:opacity-40" onClick={() => setBeers((n) => Math.min(MAX_BEERS, n + 1))}><PlusIcon weight="fill" size={16} /></button>
+          </div>
+        </div>
         <div className="flex min-h-14 items-center justify-between">
           <span className="text-sm font-medium tracking-[0.14em] text-muted-foreground uppercase">Hidden bombs</span>
           <div className="flex items-center gap-3">
@@ -55,7 +64,7 @@ export function BeerBombSetup({
               onClick={() => setBombs((v) => Math.min(MAX_BOMBS, v + 1))}><PlusIcon weight="fill" size={16} /></button>
           </div>
         </div>
-        <p className="text-xs tracking-wide text-muted-foreground">{bombs === 1 ? "1 sneaky bomb. Maximum suspense." : bombs === 4 ? "4 bombs. Absolute chaos." : `${bombs} bombs hiding in 10 beers.`}</p>
+        <p className="text-xs tracking-wide text-muted-foreground">{bombs === 1 ? `1 bomb hiding in ${beers} beers.` : bombs === 4 ? `4 bombs hiding in ${beers} beers.` : `${bombs} bombs hiding in ${beers} beers.`}</p>
       </div>
       <DrawerFooter className="px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
         <GameButton tone="danger" onClick={play}>

@@ -2,7 +2,7 @@ import { BeerSteinIcon, BombIcon, CheckIcon } from "@phosphor-icons/react"
 import { motion } from "motion/react"
 
 import { cn } from "@/lib/utils"
-import { BOARD_ROWS } from "../rules"
+
 import type { BeerCell } from "../types"
 
 export function BeerBoard({
@@ -17,12 +17,8 @@ export function BeerBoard({
   onPick: (cell: BeerCell) => void
 }) {
   return (
-    <div className="flex w-full flex-col items-center gap-2.5 sm:gap-3" role="group" aria-label="Ten mystery beers">
-      {BOARD_ROWS.map((row, rowIndex) => (
-        <div key={rowIndex} className="flex justify-center gap-2.5 sm:gap-3">
-          {row.map((index) => {
-            const cell = cells[index]
-            if (!cell) return null
+    <div className="grid w-full max-w-[24rem] grid-cols-5 justify-items-center gap-2 sm:gap-3" role="group" aria-label={`${cells.length} mystery beers`}>
+      {cells.map((cell, index) => {
             const locked = disabled || cell.opened
             return (
               <motion.button
@@ -36,7 +32,7 @@ export function BeerBoard({
                 transition={reduceMotion ? { duration: 0 } : { type: "spring", stiffness: 360, damping: 22 }}
                 onClick={() => onPick(cell)}
                 className={cn(
-                  "beer-bomb-tile relative flex size-[clamp(3.75rem,18vw,4.9rem)] items-center justify-center overflow-hidden rounded-[1.15rem] border-b-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-go",
+                  "beer-bomb-tile relative flex size-[clamp(2.7rem,15vw,4rem)] items-center justify-center overflow-hidden rounded-[1.15rem] border-b-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-go",
                   cell.opened ? "border-border bg-elevated" : "border-amber-700/70 bg-amber-300 text-amber-950 shadow-[0_5px_20px_rgba(240,168,50,0.17)]",
                   cell.opened && cell.bomb && "border-danger/40 bg-danger/15 text-danger",
                   cell.opened && !cell.bomb && "border-go/30 bg-go/10 text-go"
@@ -52,9 +48,7 @@ export function BeerBoard({
                 )}
               </motion.button>
             )
-          })}
-        </div>
-      ))}
+      })}
     </div>
   )
 }

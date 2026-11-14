@@ -1,13 +1,18 @@
 import type { BeerBombData, BeerBombHit, BeerCell } from "./types"
 
 export const BEER_COUNT = 10
+export const MIN_BEERS = 5
+export const MAX_BEERS = 30
+export function clampBeerCount(value: number): number {
+  return Number.isFinite(value) ? Math.min(MAX_BEERS, Math.max(MIN_BEERS, Math.round(value))) : BEER_COUNT
+}
 export const MIN_BOMBS = 1
 export const MAX_BOMBS = 4
 export const DEFAULT_BOMBS = 2
 export const TOTAL_ROUNDS = 6
 export const MIN_PLAYERS = 2
 export const MAX_PLAYERS = 10
-export const BOARD_ROWS = [[0, 1, 2], [3, 4, 5, 6], [7, 8, 9]] as const
+
 
 export function clampBombCount(value: number): number {
   if (!Number.isFinite(value)) return DEFAULT_BOMBS
@@ -19,8 +24,9 @@ export function suggestedBombs(playerCount: number): number {
 }
 
 /** Exactly 10 beers, with bomb positions shuffled uniformly. Injectable random for tests. */
-export function deal(bombCount: number, random: () => number = Math.random): BeerCell[] {
-  const indexes = Array.from({ length: BEER_COUNT }, (_, index) => index)
+export function deal(bombCount: number, beerCount = BEER_COUNT, random: () => number = Math.random): BeerCell[] {
+  beerCount = clampBeerCount(beerCount)
+  const indexes = Array.from({ length: beerCount }, (_, index) => index)
   for (let index = indexes.length - 1; index > 0; index--) {
     const j = Math.min(index, Math.max(0, Math.floor(random() * (index + 1))))
     ;[indexes[index], indexes[j]] = [indexes[j], indexes[index]]
@@ -37,14 +43,15 @@ export function isRoundClear(cells: BeerCell[]): boolean {
   return cells.length > 0 && cells.every((cell) => !cell.bomb || cell.opened)
 }
 
-export function freshGame(bombCount: number, playerIds: string[], random = Math.random): BeerBombData {
+export function freshGame(bombCount: number, playerIds: string[], beerCount = BEER_COUNT, random = Math.random): BeerBombData {
   return {
     inProgress: true,
     phase: "play",
     round: 1,
     totalRounds: TOTAL_ROUNDS,
     bombCount: clampBombCount(bombCount),
-    cells: deal(bombCount, random),
+    beerCount: clampBeerCount(beerCount),
+    cells: deal(bombCount, beerCount, random),
     playerIds: [...playerIds],
     turnIndex: 0,
     lastHit: null,
@@ -124,7 +131,7 @@ export function advanceRound(state: BeerBombData, random = Math.random): BeerBom
     ...state,
     phase: "play",
     round: state.round + 1,
-    cells: deal(state.bombCount, random),
+    cells: deal(state.bombCount, state.beerCount ?? state.cells.length, random),
     lastHit: null,
   }
 }

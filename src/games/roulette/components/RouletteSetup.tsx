@@ -117,6 +117,9 @@ export function RouletteSetup({
           max={MAX_CHAMBERS}
           onChange={setChamberCount}
         />
+        <label className="flex items-center justify-between gap-3 py-2 text-xs font-bold tracking-wider text-muted-foreground uppercase">Custom chambers
+          <input aria-label="Custom number of chambers" type="number" inputMode="numeric" min={MIN_CHAMBERS} max={MAX_CHAMBERS} value={chambers} onChange={(e) => { if (e.target.value !== "") setChamberCount(clampChambers(Number(e.target.value))) }} className="h-11 w-20 border-2 border-foreground/20 bg-elevated text-center font-pixel text-xl text-warn" />
+        </label>
         <Stepper
           label="Loaded"
           value={bullets}

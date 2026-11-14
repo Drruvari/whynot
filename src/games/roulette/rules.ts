@@ -1,7 +1,7 @@
 import type { RouletteData, RouletteShot } from "./types"
 
 export const MIN_CHAMBERS = 4
-export const MAX_CHAMBERS = 8
+export const MAX_CHAMBERS = 16
 export const DEFAULT_CHAMBERS = 6
 export const DEFAULT_BULLETS = 1
 export const MIN_PLAYERS = 2

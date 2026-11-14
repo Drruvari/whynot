@@ -12,7 +12,7 @@ import { BeerBoard } from "./components/BeerBoard"
 import { BombReveal } from "./components/BombReveal"
 import { NightResults } from "./components/NightResults"
 import { useBeerBomb } from "./store"
-import { BEER_COUNT, isRoundClear } from "./rules"
+import { isRoundClear } from "./rules"
 import "./beer-bomb.css"
 
 const SAFE_LINES = ["CLEAN!", "PHEW!", "NICE PICK!", "SAFE!", "NOT TODAY!"] as const
@@ -31,6 +31,7 @@ export function BeerBombGame() {
   const bombHits = useBeerBomb((state) => state.bombHits)
   const drinks = useBeerBomb((state) => state.drinks)
   const bombCount = useBeerBomb((state) => state.bombCount)
+  const beerCount = useBeerBomb((state) => state.beerCount)
   const pick = useBeerBomb((state) => state.pick)
   const nextRound = useBeerBomb((state) => state.nextRound)
   const continueAfterResult = useBeerBomb((state) => state.continueAfterResult)
@@ -42,6 +43,12 @@ export function BeerBombGame() {
     const timeout = window.setTimeout(() => setSafeToast(0), 700)
     return () => window.clearTimeout(timeout)
   }, [safeToast])
+
+  useEffect(() => {
+    if (phase !== "result") return
+    const timer = window.setTimeout(() => continueAfterResult(), 2200)
+    return () => window.clearTimeout(timer)
+  }, [phase, lastHit, continueAfterResult])
 
   // Legacy saved games may have no playerIds. Current games snapshot the turn order.
   const order = playerIds?.length ? playerIds : players.map((player) => player.id)
@@ -68,10 +75,10 @@ export function BeerBombGame() {
   }
 
   function again() {
-    start(bombCount, order)
+    start(bombCount, order, beerCount)
   }
 
-  if (players.length < 2 || !player && phase === "play" || cells.length !== BEER_COUNT && phase !== "night-over") {
+  if (players.length < 2 || !player && phase === "play" || (cells.length < 5 || cells.length > 30) && phase !== "night-over") {
     return (
       <GameScreen>
         <GameHeader title="BEER BOMB" />
@@ -113,7 +120,7 @@ export function BeerBombGame() {
             <motion.div initial={reduceMotion ? false : { scale: .8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="flex flex-col items-center gap-4 text-center">
               <CheckCircleIcon weight="fill" size={72} className="text-go" aria-hidden="true" />
               <p className="font-pixel text-4xl">DEFUSED!</p>
-              <p className="font-pixel text-sm text-muted-foreground">{bombsFound} BOMBS FOUND · {BEER_COUNT - remaining} BEERS OPENED</p>
+              <p className="font-pixel text-sm text-muted-foreground">{bombsFound} BOMBS FOUND · {cells.length - remaining} BEERS OPENED</p>
               {isRoundClear(cells) && <p className="max-w-64 text-sm text-muted-foreground">New beers, new hiding spots. Everyone keeps their score.</p>}
             </motion.div>
           </GameArea>
