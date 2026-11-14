@@ -17,14 +17,14 @@ const QUESTIONS = [
   "What's the first thing you think of?",
 ]
 
-export function DiscussionClock({ round, onVote }: { round: SpyData; onVote: () => void }) {
+export function DiscussionClock({ round, onReveal, onReset }: { round: SpyData; onReveal: () => void; onReset: () => void }) {
   const [remaining, setRemaining] = useState(() => remainingSeconds(round))
   const lastTick = useRef<number | null>(null)
   useEffect(() => {
     const update = () => {
       const next = remainingSeconds(round)
       setRemaining(next)
-      if (next === 0) { onVote(); return }
+      if (next === 0) return
       if (next <= 5 && next !== lastTick.current) {
         lastTick.current = next
         haptic("tap")
@@ -34,7 +34,7 @@ export function DiscussionClock({ round, onVote }: { round: SpyData; onVote: () 
     update()
     const interval = window.setInterval(update, 250)
     return () => window.clearInterval(interval)
-  }, [round.deadline, round.phase, onVote])
+  }, [round.deadline, round.phase])
 
   const minutes = Math.floor(remaining / 60)
   const seconds = String(remaining % 60).padStart(2, "0")
@@ -60,8 +60,8 @@ export function DiscussionClock({ round, onVote }: { round: SpyData; onVote: () 
         </div>
       </div>
       <div className="w-full">
-        <p className="mb-4 text-xs font-semibold tracking-wider text-muted-foreground uppercase">Ready to accuse somebody?</p>
-        <GameButton tone="secret" onClick={onVote}>START SECRET VOTE</GameButton>
+        <p className="mb-4 text-xs font-semibold tracking-wider text-muted-foreground uppercase">{remaining === 0 ? "TIME IS UP — DECIDE TOGETHER" : "Accuse people out loud whenever you are ready."}</p>
+        <div className="space-y-3"><GameButton tone="secret" onClick={onReveal}>REVEAL THE SPY</GameButton><GameButton tone="muted" onClick={onReset}>RESET ROUND</GameButton></div>
       </div>
     </div>
   )

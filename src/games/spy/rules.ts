@@ -4,8 +4,8 @@ import type { SpyData, SpyOutcome } from "./types"
 
 export const MIN_PLAYERS = 3
 export const MAX_PLAYERS = 10
-export const DISCUSSION_OPTIONS = [60, 90, 120, 180] as const
-export const DEFAULT_DISCUSSION_SECONDS = 90
+export const DISCUSSION_OPTIONS = [180, 300, 600, 900] as const
+export const DEFAULT_DISCUSSION_SECONDS = 300
 
 function randomIndex(length: number, random: () => number) {
   const value = random()
@@ -23,8 +23,8 @@ function shuffle<T>(list: readonly T[], random: () => number): T[] {
 }
 
 export function normalizeDiscussionSeconds(seconds: number) {
-  return DISCUSSION_OPTIONS.includes(seconds as typeof DISCUSSION_OPTIONS[number])
-    ? seconds
+  return Number.isFinite(seconds) && seconds >= 60 && seconds <= 1800
+    ? Math.round(seconds / 60) * 60
     : DEFAULT_DISCUSSION_SECONDS
 }
 
