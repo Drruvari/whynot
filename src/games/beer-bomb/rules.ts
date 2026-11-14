@@ -23,7 +23,7 @@ export function suggestedBombs(playerCount: number): number {
   return clampBombCount(Math.ceil(playerCount / 3))
 }
 
-/** Exactly 10 beers, with bomb positions shuffled uniformly. Injectable random for tests. */
+/** Custom beer count, with bomb positions shuffled uniformly. Injectable random for tests. */
 export function deal(bombCount: number, beerCount = BEER_COUNT, random: () => number = Math.random): BeerCell[] {
   beerCount = clampBeerCount(beerCount)
   const indexes = Array.from({ length: beerCount }, (_, index) => index)
@@ -32,7 +32,7 @@ export function deal(bombCount: number, beerCount = BEER_COUNT, random: () => nu
     ;[indexes[index], indexes[j]] = [indexes[j], indexes[index]]
   }
   const bombs = new Set(indexes.slice(0, clampBombCount(bombCount)))
-  return Array.from({ length: BEER_COUNT }, (_, index) => ({
+  return Array.from({ length: beerCount }, (_, index) => ({
     id: `beer-${index}`,
     bomb: bombs.has(index),
     opened: false,

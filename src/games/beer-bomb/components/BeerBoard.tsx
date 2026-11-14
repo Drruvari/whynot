@@ -17,7 +17,7 @@ export function BeerBoard({
   onPick: (cell: BeerCell) => void
 }) {
   return (
-    <div className="grid min-h-0 w-full max-w-[24rem] flex-1 grid-cols-5 justify-items-center gap-1.5" style={{ gridTemplateRows: `repeat(${Math.ceil(cells.length / 5)}, minmax(0, 1fr))` }} role="group" aria-label={`${cells.length} mystery beers`}>
+    <div className="grid w-full max-w-[24rem] grid-cols-5 content-center justify-items-center gap-1.5" role="group" aria-label={`${cells.length} mystery beers`}>
       {cells.map((cell, index) => {
             const locked = disabled || cell.opened
             return (
