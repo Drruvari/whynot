@@ -93,11 +93,11 @@ export function BeerBombGame() {
       {phase === "play" && player ? (
         <>
           <GamePrompt title={`${player.name}'S TURN`} subtitle="pick a beer. hope for the best." />
-          <GameArea className="relative min-h-0 flex-col gap-3 overflow-y-auto">
+          <GameArea className="relative min-h-0 flex-col gap-2 overflow-hidden">
             <motion.p key={`round-${round}`} initial={reduceMotion ? false : { opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-              className="font-pixel text-sm tracking-[.12em] text-amber-500/90">ROUND {round} / {totalRounds}</motion.p>
+              className="shrink-0 font-pixel text-sm tracking-[.12em] text-amber-500/90">ROUND {round} / {totalRounds}</motion.p>
             <BeerBoard cells={cells} disabled={phase !== "play"} reduceMotion={Boolean(reduceMotion)} onPick={(cell) => handlePick(cell.id)} />
-            <p className="text-center text-xs font-semibold tracking-[.17em] text-muted-foreground uppercase">no takebacks. no peeking.</p>
+            <p className="shrink-0 text-center text-xs font-semibold tracking-[.17em] text-muted-foreground uppercase">no takebacks. no peeking.</p>
           </GameArea>
           <GameStatus footer={`${remaining} UNOPENED · ${bombsFound} FOUND`}>
             <span className="inline-flex items-center gap-2"><BombIcon weight="fill" size={19} className="text-danger" /> {bombsRemaining} BOMBS LEFT</span>
@@ -108,7 +108,7 @@ export function BeerBombGame() {
       {phase === "result" ? (
         <>
           <GamePrompt title="UH OH" subtitle="the beer fought back" />
-          <GameArea className="min-h-0 overflow-y-auto"><BeerBoard cells={cells} disabled reduceMotion={Boolean(reduceMotion)} onPick={() => {}} /></GameArea>
+          <GameArea className="min-h-0 overflow-hidden"><BeerBoard cells={cells} disabled reduceMotion={Boolean(reduceMotion)} onPick={() => {}} /></GameArea>
           <GameStatus>{bombsRemaining} BOMBS LEFT</GameStatus>
         </>
       ) : null}
