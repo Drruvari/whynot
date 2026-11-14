@@ -2,7 +2,7 @@ import {
   BombIcon,
   DetectiveIcon,
   SkullIcon,
-  ScalesIcon,
+  ScalesIcon,\n  PersonSimpleRunIcon,
   type Icon,
 } from "@phosphor-icons/react"
 
@@ -14,7 +14,7 @@ const ICONS: Record<GameId, Icon> = {
   spy: DetectiveIcon,
   roulette: SkullIcon,
   wobble: ScalesIcon,
-  "chaos-court": ScalesIcon,
+  "chaos-court": PersonSimpleRunIcon,
 }
 
 export function GameIcon({

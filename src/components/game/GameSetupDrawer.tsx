@@ -105,7 +105,7 @@ export function GameSetupDrawer() {
 
 
 
-              {game.id !== "beer-bomb" && game.id !== "wobble" ? (
+              {game.id !== "beer-bomb" && game.id !== "wobble" && game.id !== "chaos-court" ? (
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium tracking-[0.14em] text-muted-foreground uppercase">Punishments</span>
                   <span className="bg-elevated px-3 py-1 font-pixel text-xs tracking-wider">MIXED</span>
