@@ -14,6 +14,7 @@ export function ResultReveal({
   detail,
   caption,
   actionLabel = "CONTINUE",
+  autoAdvance = false,
   onContinue,
 }: {
   open: boolean
@@ -24,6 +25,7 @@ export function ResultReveal({
   detail?: string
   caption?: string
   actionLabel?: string
+  autoAdvance?: boolean
   onContinue: () => void
 }) {
   const reduceMotion = useGameMotion()
@@ -86,7 +88,9 @@ export function ResultReveal({
               </p>
             ) : null}
           </motion.div>
-          <div className="absolute inset-x-4 bottom-[max(1.25rem,env(safe-area-inset-bottom))]">
+          {autoAdvance ? (
+            <p className="absolute inset-x-4 bottom-[max(1.25rem,env(safe-area-inset-bottom))] font-pixel text-xs tracking-wider opacity-80">NEXT PLAYER AUTOMATICALLY...</p>
+          ) : <div className="absolute inset-x-4 bottom-[max(1.25rem,env(safe-area-inset-bottom))]">
             <GameButton
               tone="muted"
               className="bg-black/30 text-white"
@@ -94,7 +98,7 @@ export function ResultReveal({
             >
               {actionLabel}
             </GameButton>
-          </div>
+          </div>}
         </motion.div>
       ) : null}
     </AnimatePresence>

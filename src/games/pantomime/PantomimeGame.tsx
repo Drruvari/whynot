@@ -23,6 +23,7 @@ export function PantomimeGame() {
   const [winnerId, setWinnerId] = useState<string | null>(null)
   const [scores, setScores] = useState<Record<string, number>>({})
   const [showWord, setShowWord] = useState(false)
+  const [confirmReset, setConfirmReset] = useState(false)
   const deadline = useRef<number | null>(null)
   const actor = players.length ? players[turn % players.length] : undefined
   const eligible = players.filter((p) => p.id !== actor?.id)
@@ -34,7 +35,11 @@ export function PantomimeGame() {
     const tick = () => {
       const next = Math.max(0, Math.ceil((deadline.current! - Date.now()) / 1000))
       setRemaining(next)
-      if (next === 0) deadline.current = null
+      if (next === 0) {
+        deadline.current = null
+        setWinnerId(null)
+        setPhase("result")
+      }
     }
     tick()
     const interval = window.setInterval(tick, 200)
@@ -82,6 +87,7 @@ export function PantomimeGame() {
     const index = pool[Math.floor(Math.random() * pool.length)]
     setUsed(options.length ? [...alreadyUsed] : [])
     setWordIndex(index)
+    setConfirmReset(false)
     setTurn((value) => value + 1)
     setRemaining(duration)
     setWinnerId(null)
@@ -92,6 +98,7 @@ export function PantomimeGame() {
 
   function reset() {
     setTurn(0)
+    setConfirmReset(false)
     setScores({})
     setUsed([])
     setWordIndex(Math.floor(Math.random() * MIME_WORDS.length))
@@ -177,7 +184,7 @@ export function PantomimeGame() {
             ) : phase === "result" ? (
               <GameButton tone="go" onClick={nextRound}>NEXT ACTOR</GameButton>
             ) : null}
-            <button type="button" onClick={reset} className="min-h-10 w-full text-xs font-bold tracking-widest text-muted-foreground uppercase">Reset game</button>
+            {confirmReset ? <div className="flex gap-2"><button type="button" onClick={() => setConfirmReset(false)} className="min-h-11 flex-1 border-2 border-foreground/20 text-sm font-bold">CANCEL</button><button type="button" onClick={reset} className="min-h-11 flex-1 border-2 border-danger bg-danger/15 text-sm font-bold">RESET ALL SCORES</button></div> : <button type="button" onClick={() => setConfirmReset(true)} className="min-h-10 w-full text-xs font-bold tracking-widest text-muted-foreground uppercase">Reset game</button>}
           </div>
         </div>
       )}

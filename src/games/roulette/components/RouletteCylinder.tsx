@@ -23,9 +23,10 @@ export function RouletteCylinder({
   onFire: () => void
 }) {
   const angle = 360 / Math.max(1, chambers)
+  const compact = chambers > 8
   return (
     <div
-      className="roulette-machine relative flex aspect-square w-[min(79vw,19rem,38vh)] max-w-full items-center justify-center"
+      className="roulette-machine relative flex aspect-square w-[min(86vw,20rem,40vh)] max-w-full items-center justify-center"
       role="group"
       aria-label="Roulette cylinder"
     >
@@ -52,7 +53,7 @@ export function RouletteCylinder({
                 spent && "roulette-chamber-spent"
               )}
               style={{
-                transform: `translate(-50%, -50%) rotate(${angle * index}deg) translateY(calc(-1 * min(28vw, 6.65rem, 13.3vh)))`,
+                transform: `translate(-50%, -50%) rotate(${angle * index}deg) translateY(calc(-1 * min(32vw, 7.4rem, 15.2vh)))`,
               }}
             >
               <span style={{ transform: `rotate(${-angle * index}deg)` }}>

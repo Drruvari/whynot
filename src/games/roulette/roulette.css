@@ -73,3 +73,10 @@
     transition: none !important;
   }
 }
+
+/* Keep larger custom cylinders readable and prevent chamber overlap. */
+.roulette-chamber-compact {
+  width: clamp(1.45rem, 6vw, 2rem);
+  border-width: 2px;
+  font-size: 0.65rem;
+}

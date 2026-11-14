@@ -46,7 +46,7 @@ export function BeerBombGame() {
 
   useEffect(() => {
     if (phase !== "result") return
-    const timer = window.setTimeout(() => continueAfterResult(), 2200)
+    const timer = window.setTimeout(() => continueAfterResult(), 2600)
     return () => window.clearTimeout(timer)
   }, [phase, lastHit, continueAfterResult])
 
@@ -93,7 +93,7 @@ export function BeerBombGame() {
       {phase === "play" && player ? (
         <>
           <GamePrompt title={`${player.name}'S TURN`} subtitle="pick a beer. hope for the best." />
-          <GameArea className="relative flex-col gap-5">
+          <GameArea className="relative min-h-0 flex-col gap-3 overflow-y-auto">
             <motion.p key={`round-${round}`} initial={reduceMotion ? false : { opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
               className="font-pixel text-sm tracking-[.12em] text-amber-500/90">ROUND {round} / {totalRounds}</motion.p>
             <BeerBoard cells={cells} disabled={phase !== "play"} reduceMotion={Boolean(reduceMotion)} onPick={(cell) => handlePick(cell.id)} />
@@ -108,7 +108,7 @@ export function BeerBombGame() {
       {phase === "result" ? (
         <>
           <GamePrompt title="UH OH" subtitle="the beer fought back" />
-          <GameArea><BeerBoard cells={cells} disabled reduceMotion={Boolean(reduceMotion)} onPick={() => {}} /></GameArea>
+          <GameArea className="min-h-0 overflow-y-auto"><BeerBoard cells={cells} disabled reduceMotion={Boolean(reduceMotion)} onPick={() => {}} /></GameArea>
           <GameStatus>{bombsRemaining} BOMBS LEFT</GameStatus>
         </>
       ) : null}

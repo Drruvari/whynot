@@ -89,11 +89,6 @@ export function RouletteGame() {
     return () => window.clearTimeout(timer)
   }, [game.phase, game.lastShot, continueAfterResult])
 
-  function next() {
-    if (reload) playSound("roundStart")
-    continueAfterResult()
-  }
-
   if (!validGame) {
     return (
       <GameScreen>
@@ -199,8 +194,9 @@ export function RouletteGame() {
                   (game.lastShot?.shotNumber ?? 0) % SAFE_LINES.length
                 ] + ". Pass it on."
         }
+        autoAdvance
         actionLabel={reload ? "RELOAD & PASS" : "NEXT PLAYER"}
-        onContinue={next}
+        onContinue={continueAfterResult}
       />
     </GameScreen>
   )

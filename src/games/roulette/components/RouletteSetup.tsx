@@ -37,7 +37,7 @@ function Stepper({
           type="button"
           aria-label={`Fewer ${label.toLowerCase()}`}
           disabled={value <= min}
-          className="flex size-11 items-center justify-center bg-elevated disabled:opacity-40"
+          className="flex size-11 items-center justify-center border-2 border-foreground/20 bg-elevated disabled:opacity-40"
           onClick={() => {
             haptic("tap")
             onChange(Math.max(min, value - 1))

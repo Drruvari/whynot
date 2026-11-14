@@ -37,6 +37,7 @@ export function BombReveal({
       name={playerName}
       detail={isBomb ? `${hit.drinks} ${hit.drinks === 1 ? "SIP" : "SIPS"}` : undefined}
       caption={caption}
+      autoAdvance
       actionLabel="PASS IT ON"
       onContinue={onContinue}
     />

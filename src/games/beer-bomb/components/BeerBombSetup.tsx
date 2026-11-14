@@ -47,7 +47,7 @@ export function BeerBombSetup({
         <div className="flex min-h-14 items-center justify-between">
           <span className="text-sm font-medium tracking-[0.14em] text-muted-foreground uppercase">Beer cups</span>
           <div className="flex items-center gap-3">
-            <button aria-label="Fewer beers" type="button" disabled={beers <= MIN_BEERS} className="flex size-11 items-center justify-center bg-elevated disabled:opacity-40" onClick={() => setBeers((n) => Math.max(MIN_BEERS, n - 1))}><MinusIcon weight="fill" size={16} /></button>
+            <button aria-label="Fewer beers" type="button" disabled={beers <= MIN_BEERS} className="flex size-11 items-center justify-center border-2 border-foreground/20 bg-elevated disabled:opacity-40" onClick={() => setBeers((n) => Math.max(MIN_BEERS, n - 1))}><MinusIcon weight="fill" size={16} /></button>
             <input aria-label="Custom number of beers" type="number" inputMode="numeric" min={MIN_BEERS} max={MAX_BEERS} value={beers} onChange={(e) => { if (e.target.value !== "") setBeers(clampBeerCount(Number(e.target.value))) }} className="h-11 w-16 border-2 border-foreground/20 bg-elevated text-center font-pixel text-xl text-warn" />
             <button aria-label="More beers" type="button" disabled={beers >= MAX_BEERS} className="flex size-11 items-center justify-center bg-elevated disabled:opacity-40" onClick={() => setBeers((n) => Math.min(MAX_BEERS, n + 1))}><PlusIcon weight="fill" size={16} /></button>
           </div>
